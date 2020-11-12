@@ -15,11 +15,8 @@ export default class Dashboard extends Vue {
 
   mounted() {
     fetch(process.env.VUE_APP_API_URL!)
-        .then(value => {
-          return value.text()
-        })
-        .then(value => {
-          this.text = value
+        .then(async value => {
+          this.text = await value.text();
         });
   }
 
