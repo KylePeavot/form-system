@@ -14,12 +14,9 @@ export default class Dashboard extends Vue {
   private text = 'Test';
 
   mounted() {
-    fetch(`http://localhost:8080`)
-        .then(value => {
-          return value.text()
-        })
-        .then(value => {
-          this.text = value
+    fetch(process.env.VUE_APP_API_URL!)
+        .then(async value => {
+          this.text = await value.text();
         });
   }
 
