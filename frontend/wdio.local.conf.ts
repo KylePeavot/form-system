@@ -15,9 +15,7 @@ exports.config = {
       browserName: 'chrome',
       acceptInsecureCerts: true,
       'goog:chromeOptions': {
-        args: process.argv.includes('--headless')
-          ? ['--headless', '--disable-gpu']
-          : []
+        args: ["--headless", '--disable-gpu', '--disable-dev-shm-usage', '--no-sandbox']
       }
     },
   ]
