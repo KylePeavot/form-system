@@ -1,14 +1,19 @@
 package co600.weffs.application.internal.controller;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping
 public class DashboardController {
 
     @GetMapping
-    public String getDashboardHello() {
-        return "Something else";
+    public Map<String, ?> getDashboardHello() {
+        return Map.of("id", 1);
     }
 
     @GetMapping("/test")
