@@ -9,9 +9,9 @@
 <script lang="ts">
 
 import {Component, Vue} from "vue-property-decorator";
-import Heading from "@/components/core/Heading.vue";
-import SingleNavigationLayout from "@/components/layout/SingleNavigationLayout.vue";
-import {CorePage} from "@/models/navigation/CorePage";
+import Heading from "../components/core/Heading.vue";
+import SingleNavigationLayout from "../components/layout/SingleNavigationLayout.vue";
+import {CorePage} from "../models/navigation/CorePage";
 @Component({
   components: {SingleNavigationLayout, Heading}
 })

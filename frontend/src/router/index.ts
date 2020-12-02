@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter, {RouteConfig} from 'vue-router'
-import Dashboard from "@/views/Dashboard.vue";
-import RouteUtils from "@/utils/RouteUtils";
-import {CorePage} from "@/models/navigation/CorePage";
+import Dashboard from "../views/Dashboard.vue";
+import RouteUtils from "../utils/RouteUtils";
+import {CorePage} from "../models/navigation/CorePage";
 
 Vue.use(VueRouter)
 

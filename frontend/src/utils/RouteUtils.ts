@@ -1,4 +1,4 @@
-import {CorePage} from "@/models/navigation/CorePage";
+import {CorePage} from "../models/navigation/CorePage";
 
 export default class RouteUtils {
 
