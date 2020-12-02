@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="bg-gray-800">
+    <nav class="bg-blue-700">
       <div class="max-w-7xl mx-auto px-4 lg:px-8">
         <div class="flex items-center justify-between h-16">
           <div class="flex items-center">
@@ -13,7 +13,7 @@
             <div class="md:block">
               <div class="ml-10 flex items-baseline space-x-4">
                 <a v-for="(value, index) in pages" :key="`${value[0]}-${index}`">
-                  <a :href="getUrl(value[0])" class="px-3 py-2 rounded-md text-sm font-medium text-white" :class="[{'bg-gray-900': isPageSelected(value[1])}]">{{value[1]}}</a>
+                  <a :href="getUrl(value[0])" class="px-3 py-2 rounded-md text-sm font-medium text-white" :class="[{'bg-blue-800': isPageSelected(value[1])}]">{{value[1]}}</a>
                 </a>
               </div>
             </div>
