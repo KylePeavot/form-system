@@ -1,17 +1,24 @@
 <template>
   <div>
-    <p>{{ text }}</p>
+    <SingleNavigationLayout title="Page title" :selected-page="page">
+      <Heading :level="2">Response: {{text}}</Heading>
+    </SingleNavigationLayout>
   </div>
 </template>
 
 <script lang="ts">
 
 import {Component, Vue} from "vue-property-decorator";
-
-@Component
+import Heading from "@/components/core/Heading.vue";
+import SingleNavigationLayout from "@/components/layout/SingleNavigationLayout.vue";
+import {CorePage} from "@/models/navigation/CorePage";
+@Component({
+  components: {SingleNavigationLayout, Heading}
+})
 export default class Dashboard extends Vue {
 
   private text = 'Test';
+  private page = CorePage.DASHBOARD;
 
   mounted() {
     fetch(process.env.VUE_APP_API_URL!)

@@ -1,13 +1,15 @@
 import Vue from 'vue'
-import VueRouter, { RouteConfig } from 'vue-router'
+import VueRouter, {RouteConfig} from 'vue-router'
 import Dashboard from "@/views/Dashboard.vue";
+import RouteUtils from "@/utils/RouteUtils";
+import {CorePage} from "@/models/navigation/CorePage";
 
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
   {
-    path: '/',
-    name: 'Home',
+    path: RouteUtils.getNavigationRoute(CorePage.DASHBOARD),
+    name: 'Dashboard',
     component: Dashboard
   }
 ]
