@@ -13,7 +13,7 @@ module.exports = {
                 500: '#0ea5e9',
                 600: '#0284c7',
                 700: '#05345c', // Kent blue
-                800: '#032745', // Kent nav page selection
+                800: '#022541', // Kent nav page selection
                 900: '#0c4a6e',
             },
             red: colors.rose,
