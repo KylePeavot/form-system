@@ -1,8 +1,8 @@
 <template>
   <div>
-    <SingleNavigationLayout title="Page title" :selected-page="page">
-      <Heading :level="2">Response: {{text}}</Heading>
-    </SingleNavigationLayout>
+    <BaseStyleLayout title="Page title" :selected-page="page">
+      <Heading :level="2">Response: {{ text }}</Heading>
+    </BaseStyleLayout>
   </div>
 </template>
 
@@ -10,10 +10,14 @@
 
 import {Component, Vue} from "vue-property-decorator";
 import Heading from "../components/core/Heading.vue";
-import SingleNavigationLayout from "../components/layout/SingleNavigationLayout.vue";
-import {CorePage} from "../models/navigation/CorePage";
+import BaseStyleLayout from "../components/layout/BaseStyleLayout.vue";
+import {CorePage} from "@/models/navigation/CorePage";
+
 @Component({
-  components: {SingleNavigationLayout, Heading}
+  components: {
+    BaseStyleLayout,
+    Heading
+  }
 })
 export default class Dashboard extends Vue {
 
