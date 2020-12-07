@@ -1,0 +1,60 @@
+# More examples of Codefresh YAML can be found at
+# https://codefresh.io/docs/docs/yaml-examples/examples/
+
+version: "1.0"
+# Stages can help you organize your steps in stages
+stages:
+  - "clone"
+  - "backend"
+  - "frontend_setup"
+  - "frontend_unit"
+  - "frontend_e2e"
+
+steps:
+  clone:
+    title: "Cloning repository"
+    type: "git-clone"
+    repo: "weffs/form-system"
+    # CF_BRANCH value is auto set when pipeline is triggered
+    # Learn more at codefresh.io/docs/docs/codefresh-yaml/variables/
+    revision: "${{CF_BRANCH}}"
+    git: "bitbucket"
+    stage: "clone"
+
+  backend:
+    title: "Backend tests"
+    type: "freestyle"
+    image: "maven:3.6.3"
+    working_directory: "${{clone}}/backend"
+    stage: "backend"
+    commands:
+      - mvn -B verify --file pom.xml
+
+  frontend_setup:
+    title: "Frontend dependency setup"
+    type: "freestyle"
+    image: ca469/node12-chrome-yarn:latest
+    working_directory: "${{clone}}/frontend"
+    stage: "frontend_setup"
+    commands:
+      - yarn global add @vue/cli
+      - yarn install --network-timeout 1000000
+
+  frontend_unit:
+    title: "Unit tests"
+    type: "freestyle"
+    image: ca469/node12-chrome-yarn:latest
+    working_directory: "${{clone}}/frontend"
+    stage: "frontend_unit"
+    commands:
+      - yarn test:unit
+
+  frontend_e2e:
+    title: "End-to-end tests"
+    type: "freestyle"
+    image: ca469/node12-chrome-yarn:latest
+    working_directory: "${{clone}}/frontend"
+    stage: "frontend_e2e"
+    commands:
+      - yarn test:e2e
+
