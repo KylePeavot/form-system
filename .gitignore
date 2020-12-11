@@ -7,6 +7,9 @@
 node_modules/
 dist/
 
+# Frontend build sources
+/backend/src/main/resources/static/*
+
 # Compiled Java class files
 *.class
 
@@ -21,7 +24,6 @@ dist/
 
 # Maven
 target/
-dist/
 
 # JetBrains IDE
 .idea/
@@ -47,4 +49,3 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-
