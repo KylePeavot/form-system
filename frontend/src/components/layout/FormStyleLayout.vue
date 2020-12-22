@@ -57,7 +57,6 @@ export default class SingleNavigationLayout extends Vue {
    * @param page Right side of CorePage enum entry [KEY, Value]
    */
   isPageSelected(page: string): boolean {
-    console.log(page);
     return (this.selectedPage).toString() === page;
   }
 
