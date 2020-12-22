@@ -1,15 +1,17 @@
 class App {
-  /**
-   * elements
-   */
-  get heading () { return $('h1') }
+    /**
+     * elements
+     */
+    getHeadings(level: number) {
+        return $(`h${level}`)
+    }
 
-  /**
-   * methods
-   */
-  open (path = '/') {
-    browser.url(path)
-  }
+    /**
+     * methods
+     */
+    open(path = '/') {
+        browser.url(path)
+    }
 }
 
 export default new App()
