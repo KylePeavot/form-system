@@ -1,29 +1,18 @@
-# README #
+# WEFFS #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+## Aim ##
 
-### What is this repository for? ###
+We are trying to create a web based form filling system to replace paper based 
+versions of the forms that are currently being sent by emails.
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+## Setup ##
+[Development setup](https://weffs.atlassian.net/wiki/spaces/MN/pages/48005164/Development+Setup)
 
-### How do I get set up? ###
+## Deployment ##
+[Deploying the application](https://weffs.atlassian.net/wiki/spaces/MN/pages/48103425/Deploying+the+application)
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+## Links ##
+* [Jira](https://weffs.atlassian.net/secure/RapidBoard.jspa?projectKey=FS&rapidView=1)
+* [Confluence](https://weffs.atlassian.net/wiki/spaces/MN/overview)
 
-### Contribution guidelines ###
 
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
