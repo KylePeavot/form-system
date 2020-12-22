@@ -12,6 +12,7 @@ import {Component, Vue} from "vue-property-decorator";
 import Heading from "../components/core/Heading.vue";
 import BaseStyleLayout from "../components/layout/BaseStyleLayout.vue";
 import {CorePage} from "@/models/navigation/CorePage";
+import WebRequestUtils from "@/utils/WebRequestUtils";
 
 @Component({
   components: {
@@ -25,7 +26,7 @@ export default class Dashboard extends Vue {
   private page = CorePage.DASHBOARD;
 
   mounted() {
-    fetch(process.env.VUE_APP_API_URL!)
+    WebRequestUtils.get(`${process.env.VUE_APP_API_URL!}/api`)
         .then(async value => {
           this.text = await value.text();
         });
