@@ -43,7 +43,7 @@ import NavbarItem from "@/components/layout/Navigation/NavbarItem.vue";
     @Prop({required: true})
     private selectedPage!: IPageDetail;
 
-    @PropSync("class", {default: ""})
+    @Prop({default: ""})
     private componentClass!: string;
 
     isPageSelected(page: IPageDetail): boolean {
