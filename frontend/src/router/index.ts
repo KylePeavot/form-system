@@ -1,16 +1,19 @@
 import Vue from 'vue'
 import VueRouter, {RouteConfig} from 'vue-router'
-import Dashboard from "../views/Dashboard.vue";
-import RouteUtils from "../utils/RouteUtils";
-import {CorePage} from "../models/navigation/CorePage";
+import Pages from "@/models/navigation/Pages";
 
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
   {
-    path: RouteUtils.getNavigationRoute(CorePage.DASHBOARD),
+    path: Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD.url,
     name: 'Dashboard',
-    component: Dashboard
+    component: () => import("../views/Dashboard.vue")
+  },
+  {
+    path: Pages.ROUTES.AUTHENTICATION.LOGIN_OR_LOGOUT().subRoutes!.LOGIN.url,
+    name: 'Login',
+    component: () => import("../views/LoginHandler.vue")
   }
 ]
 

@@ -1,0 +1,21 @@
+server:
+  port: 80
+
+spring:
+  security:
+    saml2:
+      login:
+        service-provider:
+          local-sp-entity-id-template: { baseUrl }/saml2/service-provider-metadata/{registrationId}
+          signing-credentials:
+              - private-key: a
+                certificate:
+          identity-providers:
+            - registration-id: idp1
+              web-sso-url: https://...
+              verification-credentials:
+                - certificate: ...
+            - registration-id: idp2
+              web-sso-url: https://...
+              verification-credentials:
+                - certificate: ...

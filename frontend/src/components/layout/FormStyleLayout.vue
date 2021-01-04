@@ -13,7 +13,7 @@
             <div class="md:block">
               <div class="ml-10 flex items-baseline space-x-4">
                 <a v-for="(value, index) in pages" :key="`${value[0]}-${index}`">
-                  <a :href="getUrl(value[0])" class="px-3 py-2 rounded-md text-sm font-medium text-white" :class="[{'bg-blue-800': isPageSelected(value[1])}]">{{value[1]}}</a>
+                  <a :href="value[1].url" class="px-3 py-2 rounded-md text-sm font-medium text-white" :class="[{'bg-blue-800': isPageSelected(value[1])}]">{{value[1].name}}</a>
                 </a>
               </div>
             </div>
@@ -39,8 +39,8 @@
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
 import Heading from "@/components/core/Heading.vue";
-import {CorePage} from "@/models/navigation/CorePage";
-import RouteUtils from "@/utils/RouteUtils";
+import Pages from "@/models/navigation/Pages";
+import IPageDetail from "@/models/navigation/IPageDetail";
 
 @Component({
   components: {Heading}
@@ -51,24 +51,17 @@ export default class SingleNavigationLayout extends Vue {
   private title!: string;
 
   @Prop({required: true})
-  private selectedPage!: CorePage;
+  private selectedPage!: IPageDetail;
 
   /**
    * @param page Right side of CorePage enum entry [KEY, Value]
    */
-  isPageSelected(page: string): boolean {
-    return (this.selectedPage).toString() === page;
+  isPageSelected(page: IPageDetail): boolean {
+    return page.url === this.selectedPage.url;
   }
 
-  get pages(): [string, string][] {
-    return Object.entries(CorePage);
-  }
-
-  /**
-   * @param page Left side of CorePage enum entry [KEY, Value]
-   */
-  getUrl(page: string): string {
-    return RouteUtils.getNavigationRoute(((CorePage as unknown as {[key: string]: string})[page]) as CorePage);
+  get pages(): [string, IPageDetail][] {
+    return Object.entries(Pages.ROUTES.SHOWN_IN_NAVBAR);
   }
 
 }
