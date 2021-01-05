@@ -1,6 +1,6 @@
 <template>
   <nav class="bg-blue-700" :class="[componentClass]">
-    <div class="mx-auto px-4 lg:px-8 flex flex-1 z-50">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8 flex flex-1 z-50">
       <div class="flex items-center h-16">
         <div class="flex items-center">
           <div class="flex-shrink-0">
