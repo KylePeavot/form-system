@@ -1,8 +1,8 @@
 <template>
   <nav class="bg-blue-700" :class="[componentClass]">
-    <div class="max-w-7xl mx-auto px-4 lg:px-8 flex">
-      <div class="flex items-center justify-start h-16">
-        <div class="flex items-center justify-end">
+    <div class="mx-auto px-4 lg:px-8 flex flex-1 z-50">
+      <div class="flex items-center h-16">
+        <div class="flex items-center">
           <div class="flex-shrink-0">
             <svg id="university-of-kent-logo" xmlns="http://www.w3.org/2000/svg" width="63" height="34" viewBox="0 0 1888 1024" role="img" title="University of Kent logo" style="fill:white;">
               <title>The University of Kent</title>
@@ -35,19 +35,31 @@ import {Component, Prop, PropSync, Vue} from "vue-property-decorator";
 import IPageDetail from "../../../models/navigation/IPageDetail";
 import Pages from "../../../models/navigation/Pages";
 import NavbarItem from "@/components/layout/Navigation/NavbarItem.vue";
+import Heading from "@/components/core/Heading.vue";
 @Component({
-  components: {NavbarItem}
+  components: {Heading, NavbarItem}
 })
   export default class Navbar extends Vue {
 
     @Prop({required: true})
     private selectedPage!: IPageDetail;
 
-    @PropSync("class", {default: ""})
+    @Prop({default: ""})
     private componentClass!: string;
 
+    get routeLinks() {
+      return Pages.generatePageDetailLinks();
+    }
+
     isPageSelected(page: IPageDetail): boolean {
-      return page.url === this.selectedPage.url;
+      if (page.url === this.selectedPage.url) {
+        return true;
+      }
+      const link = Pages.getPageDetailLinkForRoute(page, this.routeLinks);
+      if (link === undefined) {
+        return false;
+      }
+      return link.findNestedChildRouteAsLink(this.selectedPage) !== undefined;
     }
 
     get pages(): [string, IPageDetail][] {
@@ -59,7 +71,7 @@ import NavbarItem from "@/components/layout/Navigation/NavbarItem.vue";
     }
 
     getAuthPageDetail(): IPageDetail {
-      return Pages.ROUTES.AUTHENTICATION.LOGIN_OR_LOGOUT();
+      return Pages.ROUTES.AUTHENTICATION.COMPUTED_LOGIN();
     }
 
   }

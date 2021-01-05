@@ -1,5 +1,4 @@
 import App from '../../pageobjects/app.page'
-import EnumUtils from "../../../../src/utils/EnumUtils";
 
 // TODO
 // describe('Navigation rendering', () => {

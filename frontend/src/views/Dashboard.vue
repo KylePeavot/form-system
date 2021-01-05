@@ -1,8 +1,8 @@
 <template>
   <div>
-    <AlternateStyleLayout title="Page title" :selected-page="page">
+    <BaseStyleLayout title="Page title" :selected-page="page">
       <Heading :level="2">Response: {{ text }}</Heading>
-    </AlternateStyleLayout>
+    </BaseStyleLayout>
   </div>
 </template>
 
@@ -13,11 +13,9 @@ import Heading from "../components/core/Heading.vue";
 import BaseStyleLayout from "../components/layout/BaseStyleLayout.vue";
 import WebRequestUtils from "@/utils/WebRequestUtils";
 import Pages from "@/models/navigation/Pages";
-import AlternateStyleLayout from "@/components/layout/AlternateStyleLayout.vue";
 
 @Component({
   components: {
-    AlternateStyleLayout,
     BaseStyleLayout,
     Heading
   }

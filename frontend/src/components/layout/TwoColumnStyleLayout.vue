@@ -1,21 +1,11 @@
 <template>
   <div class="h-screen flex flex-col">
-    <Navbar :selected-page="selectedPage" class="flex flex-0"/>
+    <Navbar :selected-page="selectedPage" component-class="flex flex-0 items-start justify-start"/>
     <main class="flex flex-1 overflow-y-hidden">
-      <aside class="relative bg-gray-300 w-64 shadow-xl flex flex-col flex-0 overflow-y-auto">
+      <aside class="relative bg-gray-200 w-64 shadow-md flex flex-col flex-0 overflow-y-auto border-r-2 border-gray-300">
         <nav>
           <br/>
-          <p class="px-4 py-2 font-bold">
-            Section
-          </p>
-          <div class="pl-2">
-            <p class="px-4 py-1">
-              Entry
-            </p>
-            <p class="px-4 py-1">
-              Entry
-            </p>
-          </div>
+          <slot name="sidebar"></slot>
         </nav>
       </aside>
 
@@ -42,7 +32,7 @@ import IPageDetail from "@/models/navigation/IPageDetail";
 @Component({
   components: {Navbar, NavbarItem, Heading}
 })
-export default class AlternateStyleLayout extends Vue {
+export default class TwoColumnStyleLayout extends Vue {
 
   @Prop({default: ""})
   private title!: string;
