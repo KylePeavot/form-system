@@ -1,6 +1,6 @@
 import IPageDetail, {SubrouteType} from "@/models/navigation/IPageDetail";
-import AuthenticationUtils from "@/utils/AuthenticationUtils";
-import PageDetailLink from "@/models/navigation/PageDetailLink";
+import AuthenticationUtils from "../../utils/AuthenticationUtils";
+import PageDetailLink from "../../models/navigation/PageDetailLink";
 
 type PageRouteStructure = {
     [area: string]: {

@@ -22,10 +22,10 @@
 <script lang="ts">
 
 import {Component, Vue} from "vue-property-decorator";
-import AuthenticationUtils from "@/utils/AuthenticationUtils";
-import Pages from "@/models/navigation/Pages";
-import BaseStyleLayout from "@/components/layout/BaseStyleLayout.vue";
-import TwoColumnStyleLayout from "@/components/layout/TwoColumnStyleLayout.vue";
+import AuthenticationUtils from "../utils/AuthenticationUtils";
+import Pages from "../models/navigation/Pages";
+import BaseStyleLayout from "../components/layout/BaseStyleLayout.vue";
+import TwoColumnStyleLayout from "../components/layout/TwoColumnStyleLayout.vue";
 
 @Component({
   components: {TwoColumnStyleLayout, BaseStyleLayout}
