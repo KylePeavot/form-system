@@ -34,7 +34,19 @@ describe("PageDetailLink Tests", () => {
   });
 
   describe("Page Routes", () => {
-    Pages.generatePageDetailLinks();
-  })
+
+    const links = Pages.generatePageDetailLinks();
+
+    it("Generates expected top-level route", async () => {
+      const routeLink = Pages.getPageDetailLinkForRoute(Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD, links);
+      expect(routeLink).toBeDefined();
+    });
+
+    it("Contains an expected subroute", async () => {
+      const routeLink = Pages.getPageDetailLinkForRoute(Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS, links);
+      expect(routeLink).toBeDefined();
+      expect(routeLink!.findNestedChildRouteAsLink(Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.MY_FORMS));
+    });
+  });
 
 });
