@@ -1,9 +1,9 @@
 <template>
   <div>
-    <Heading class="pb-1" :level="level">
+    <Heading class="question__title" :level="level">
       {{ title }}
     </Heading>
-    <p v-if="guidance.length !== 0" class="text-gray-500 p-0 pb-2">
+    <p v-if="guidance.length !== 0" class="question__guidance-text">
       {{ guidance }}
     </p>
   </div>
