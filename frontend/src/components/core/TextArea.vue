@@ -1,7 +1,7 @@
 <template>
   <div class="py-2">
     <BaseQuestion :level="level" :title="title" :guidance="guidance"/>
-    <textarea class="border-2 p-1 shadow-sm w-1/2" name="fieldResponse" rows="4" v-model="text"/>
+    <textarea class="question__text-area" name="fieldResponse" rows="4" v-model="text"/>
   </div>
 </template>
 
