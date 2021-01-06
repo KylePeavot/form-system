@@ -1,9 +1,9 @@
 <template>
   <div>
-    <AlternateStyleLayout title="Large text field demo" :selected-page="page">
+    <BaseStyleLayout title="Large text field demo" :selected-page="page">
       <TextArea :level="2" title="Tell us about yourself" guidance="100 words max" @change="textAreaChanged($event)"/>
       <TextArea :level="2" title="Why do you want to pass this module?" @change="textAreaChanged($event)"/>
-    </AlternateStyleLayout>
+    </BaseStyleLayout>
   </div>
 </template>
 
@@ -18,7 +18,6 @@
 
   @Component({
     components: {
-      AlternateStyleLayout,
       BaseStyleLayout,
       Heading,
       TextArea
