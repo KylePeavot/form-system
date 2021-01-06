@@ -7,12 +7,12 @@ Vue.use(VueRouter)
 const routes: Array<RouteConfig> = [
   {
     path: Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD.url,
-    name: 'Dashboard',
+    name: Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD.name,
     component: () => import("../views/Dashboard.vue")
   },
   {
-    path: Pages.ROUTES.AUTHENTICATION.LOGIN_OR_LOGOUT().subRoutes!.LOGIN.url,
-    name: 'Login',
+    path: Pages.ROUTES.STATIC.LOGIN.url,
+    name: Pages.ROUTES.STATIC.LOGIN.name,
     component: () => import("../views/LoginHandler.vue")
   },
   {
@@ -31,6 +31,10 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.afterEach(to => {
+  document.title = to.name!;
 })
 
 export default router

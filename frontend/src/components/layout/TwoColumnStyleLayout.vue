@@ -1,25 +1,20 @@
 <template>
   <div class="h-screen flex flex-col">
-    <Navbar :selected-page="selectedPage" class="flex flex-0"/>
+    <div class="flex">
+      <div class="w-64 bg-blue-700"></div>
+      <div class="w-full flex flex-col flex-1 overflow-y-hidden">
+        <Navbar :selected-page="selectedPage" component-class="flex flex-0 items-start justify-start"/>
+      </div>
+    </div>
     <main class="flex flex-1 overflow-y-hidden">
-      <aside class="relative bg-gray-300 w-64 shadow-xl flex flex-col flex-0 overflow-y-auto">
+      <aside class="relative bg-gray-200 w-64 shadow-md flex flex-col flex-0 overflow-y-auto border-r-2 border-gray-300">
         <nav>
           <br/>
-          <p class="px-4 py-2 font-bold">
-            Section
-          </p>
-          <div class="pl-2">
-            <p class="px-4 py-1">
-              Entry
-            </p>
-            <p class="px-4 py-1">
-              Entry
-            </p>
-          </div>
+          <slot name="sidebar"></slot>
         </nav>
       </aside>
 
-      <div class="w-full flex flex-col px-4 py-3 flex-1 overflow-y-hidden">
+      <div class="max-w-7xl mx-auto w-full flex flex-col px-4 py-3 flex-1 overflow-y-hidden">
         <div class="py-6 px-4 bg-white lg:rounded-lg shadow min-h-screen-half overflow-y-hidden">
           <Heading :level="1">{{title}}</Heading>
           <slot>
@@ -42,7 +37,7 @@ import IPageDetail from "@/models/navigation/IPageDetail";
 @Component({
   components: {Navbar, NavbarItem, Heading}
 })
-export default class AlternateStyleLayout extends Vue {
+export default class TwoColumnStyleLayout extends Vue {
 
   @Prop({default: ""})
   private title!: string;

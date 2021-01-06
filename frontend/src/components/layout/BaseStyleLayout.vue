@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar :selected-page="selectedPage"/>
+    <Navbar :selected-page="selectedPage" component-class="flex flex-0 items-start justify-start"/>
     <header class="border-b-5 border-blue-500" v-if="title.length > 0">
       <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <Heading :level="1">{{title}}</Heading>
