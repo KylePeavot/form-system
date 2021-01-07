@@ -16,13 +16,16 @@
       </p>
     </template>
 
+    <button class="button" @click="login">Login</button>
+
   </TwoColumnStyleLayout>
 </template>
 
 <script lang="ts">
 
+// @ts-nocheck
+
 import {Component, Vue} from "vue-property-decorator";
-import AuthenticationUtils from "../utils/AuthenticationUtils";
 import Pages from "../models/navigation/Pages";
 import BaseStyleLayout from "../components/layout/BaseStyleLayout.vue";
 import TwoColumnStyleLayout from "../components/layout/TwoColumnStyleLayout.vue";
@@ -34,8 +37,8 @@ export default class LoginHandler extends Vue {
 
   private page = Pages.ROUTES.STATIC.LOGIN;
 
-  created() {
-    AuthenticationUtils.login();
+  login() {
+    this.$auth.loginWithRedirect();
   }
 
 }
