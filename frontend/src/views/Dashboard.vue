@@ -11,8 +11,8 @@
 import {Component, Vue} from "vue-property-decorator";
 import Heading from "../components/core/Heading.vue";
 import BaseStyleLayout from "../components/layout/BaseStyleLayout.vue";
-import {CorePage} from "@/models/navigation/CorePage";
-import WebRequestUtils from "@/utils/WebRequestUtils";
+import WebRequestUtils from "../utils/WebRequestUtils";
+import Pages from "../models/navigation/Pages";
 
 @Component({
   components: {
@@ -23,7 +23,7 @@ import WebRequestUtils from "@/utils/WebRequestUtils";
 export default class Dashboard extends Vue {
 
   private text = 'Test';
-  private page = CorePage.DASHBOARD;
+  private page = Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD;
 
   mounted() {
     WebRequestUtils.get(`${process.env.VUE_APP_API_URL!}/api`)
