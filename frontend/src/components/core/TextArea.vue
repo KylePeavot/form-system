@@ -1,7 +1,7 @@
 <template>
   <div class="py-2">
     <BaseQuestion :level="level" :title="title" :guidance="guidance"/>
-    <textarea class="question__text-area" name="fieldResponse" rows="4" v-model="text"/>
+    <textarea class="question__text-area" name="fieldResponse" rows="4" v-model="textValue.value"/>
   </div>
 </template>
 
@@ -10,6 +10,7 @@
   import {Component, Prop, Vue, Watch} from "vue-property-decorator";
   import Heading from "./Heading.vue";
   import BaseQuestion from "@/components/core/BaseQuestion.vue";
+  import TextValue from "@/models/form/TextValue";
 
   @Component({
     components: {BaseQuestion, Heading}
@@ -25,12 +26,8 @@
     @Prop({default: ""})
     private guidance!: string;
 
-    private text = "";
-
-    @Watch("text")
-    textUpdated(updatedValue: string) {
-      this.$emit("change", updatedValue);
-    }
+    @Prop({required: true})
+    private textValue!: TextValue;
   }
 
 </script>

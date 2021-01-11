@@ -1,17 +1,18 @@
 <template>
   <div class="py-2">
     <BaseQuestion :level="level" :title="title" :guidance="guidance"/>
-    <input class="question__text-field" type="text" name="fieldResponse" placeholder=" " v-model="text"/>
+    <input class="question__text-field" type="text" name="fieldResponse" placeholder=" " v-model="textValue.value"/>
   </div>
 </template>
 
 <script lang="ts">
 
-  import {Component, Prop, Vue, Watch} from "vue-property-decorator";
-  import Heading from "./Heading.vue";
-  import BaseQuestion from "@/components/core/BaseQuestion.vue";
+import {Component, Prop, Vue} from "vue-property-decorator";
+import Heading from "./Heading.vue";
+import BaseQuestion from "@/components/core/BaseQuestion.vue";
+import TextValue from "@/models/form/TextValue";
 
-  @Component({
+@Component({
     components: {BaseQuestion, Heading}
   })
   export default class TextField extends Vue {
@@ -25,12 +26,8 @@
     @Prop({default: ""})
     private guidance!: string;
 
-    private text = "";
-
-    @Watch("text")
-    textUpdated(updatedValue: string) {
-      this.$emit("change", updatedValue);
-    }
+    @Prop({required: true})
+    private textValue!: TextValue;
   }
 
 </script>

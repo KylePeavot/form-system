@@ -1,14 +1,45 @@
-import { shallowMount } from '@vue/test-utils'
-// import TextFieldView from "@/views/components/TextFieldView.vue";
-import TextFieldView from "../../../src/views/components/TextFieldView.vue";
+import {mount, Wrapper} from '@vue/test-utils'
+import TextField from "@/components/core/TextField.vue";
+import TextValue from "@/models/form/TextValue";
 
-describe('TextFieldView.vue', () => {
-  it('Displays 2 text fields and can read the data from them', () => {
-    const msg = 'new message'
-    const wrapper = shallowMount(TextFieldView);
+describe('TextField.vue', () => {
+  let title: string;
+  let guidance: string;
+  let textFieldValue: TextValue;
+  let wrapper: Wrapper<TextField>;
 
+  beforeEach(() => {
+    title = "Test question title";
+    guidance = "Test question guidance";
+    textFieldValue = new TextValue("");
 
+    wrapper = mount(TextField, {
+      propsData: {
+        level: 2,
+        title: title,
+        guidance: guidance,
+        textFieldValue: textFieldValue
+      }
+    })
+  })
+  afterEach(() => {
+    wrapper.destroy();
+  })
+  it('contains the given question name, guidance, and input field', () => {
+    expect(wrapper.findAll("h2").at(0).text()).toMatch(title); //title
+    expect(wrapper.findAll("p").at(0).text()).toMatch(guidance); //guidance
+    expect(wrapper.findAll("input").length).toEqual(1);
 
-    expect(wrapper.text()).toMatch(msg)
+  })
+  it('text is updated when text entered in the input field',  () => {
+    const testInput = "Test input";
+
+    expect(textFieldValue.value).toEqual("");
+    expect((wrapper.find("input").element as HTMLInputElement).value).toEqual("");
+
+    wrapper.find("input").setValue(testInput);
+
+    expect(textFieldValue.value).toEqual(testInput);
+    expect((wrapper.find("input").element as HTMLInputElement).value).toMatch(testInput);
   })
 })

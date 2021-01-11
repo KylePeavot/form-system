@@ -1,8 +1,8 @@
 <template>
   <div>
     <BaseStyleLayout title="Large text field demo" :selected-page="page">
-      <TextArea :level="2" title="Tell us about yourself" guidance="100 words max" @change="textAreaChanged($event)"/>
-      <TextArea :level="2" title="Why do you want to pass this module?" @change="textAreaChanged($event)"/>
+      <TextArea :level="2" title="Tell us about yourself" guidance="100 words max" :text-value="textValueQ1"/>
+      <TextArea :level="2" title="Why do you want to change to this module?" :text-value="textValueQ2"/>
     </BaseStyleLayout>
   </div>
 </template>
@@ -15,6 +15,7 @@
   import Pages from "../../models/navigation/Pages";
   import AlternateStyleLayout from "../../components/layout/AlternateStyleLayout.vue";
   import TextArea from "@/components/core/TextArea.vue";
+  import TextValue from "@/models/form/TextValue";
 
   @Component({
     components: {
@@ -25,15 +26,10 @@
   })
 
   export default class TextAreaView extends Vue {
-
     private page = Pages.ROUTES.SHOWN_IN_NAVBAR.COMPONENTS.subRoutes.TEXT_AREA;
 
-    private textAreaValue = "";
-
-    textAreaChanged(value: string) {
-      this.textAreaValue = value;
-    }
-
+    private textValueQ1 = new TextValue("");
+    private textValueQ2 = new TextValue("");
   }
 
 </script>
