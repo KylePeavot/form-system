@@ -32,7 +32,7 @@ import {Component, Prop, Vue} from "vue-property-decorator";
 import Heading from "@/components/core/Heading.vue";
 import NavbarItem from "@/components/layout/Navigation/NavbarItem.vue";
 import Navbar from "@/components/layout/Navigation/Navbar.vue";
-import IPageDetail from "@/models/navigation/IPageDetail";
+import PageDetail from "@/models/navigation/PageDetail";
 
 @Component({
   components: {Navbar, NavbarItem, Heading}
@@ -43,7 +43,7 @@ export default class TwoColumnStyleLayout extends Vue {
   private title!: string;
 
   @Prop({required: true})
-  private selectedPage!: IPageDetail;
+  private selectedPage!: PageDetail;
 
 }
 </script>

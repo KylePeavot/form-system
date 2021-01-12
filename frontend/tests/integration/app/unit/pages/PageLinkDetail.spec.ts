@@ -1,4 +1,4 @@
-import IPageDetail from "@/models/navigation/IPageDetail";
+import PageDetail from "@/models/navigation/PageDetail";
 import PageDetailLink from "@/models/navigation/PageDetailLink";
 import Pages from "@/models/navigation/Pages";
 
@@ -6,29 +6,28 @@ describe("PageDetailLink Tests", () => {
 
   describe("Creation", () => {
     it("Has expected default value", async () => {
-      const pageDetail: IPageDetail = {name: "Detail", url: "/link"};
+      const pageDetail: PageDetail = {name: "Detail", url: "/link"};
       const link = new PageDetailLink(pageDetail);
-      expect(link.children.length).toEqual(0);
-      expect(link.parent).toBeUndefined();
-      expect(link.route).toBe(pageDetail);
+      assert.equal(link.children.length, 0);
+      assert.isUndefined(link.parent);
     });
 
     it("Has correct parent", async () => {
-      const parentDetail: IPageDetail = {name: "Detail", url: "/link"};
-      const childDetail: IPageDetail = {name: "Child", url: "/link/child"};
+      const parentDetail: PageDetail = {name: "Detail", url: "/link"};
+      const childDetail: PageDetail = {name: "Child", url: "/link/child"};
       const parentLink = new PageDetailLink(parentDetail);
       const childLink = new PageDetailLink(childDetail, parentLink);
-      expect(childLink.parent).toBe(parentLink);
+      assert.equal(childLink.parent, parentLink);
     });
 
     it("Has correct children", async () => {
-      const parentDetail: IPageDetail = {name: "Detail", url: "/link"};
-      const childDetail: IPageDetail = {name: "Child", url: "/link/child"};
+      const parentDetail: PageDetail = {name: "Detail", url: "/link"};
+      const childDetail: PageDetail = {name: "Child", url: "/link/child"};
       const parentLink = new PageDetailLink(parentDetail);
       const childLink = new PageDetailLink(childDetail, parentLink);
       parentLink.addChild(childLink);
-      expect(parentLink.children).toContain(childLink);
-      expect(childLink.children.length).toEqual(0);
+      assert.includeMembers(parentLink.children, [childLink]);
+      assert.equal(childLink.children.length, 0);
     });
 
   });
@@ -39,13 +38,13 @@ describe("PageDetailLink Tests", () => {
 
     it("Generates expected top-level route", async () => {
       const routeLink = Pages.getPageDetailLinkForRoute(Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD, links);
-      expect(routeLink).toBeDefined();
+      assert.isDefined(routeLink);
     });
 
     it("Contains an expected subroute", async () => {
       const routeLink = Pages.getPageDetailLinkForRoute(Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS, links);
-      expect(routeLink).toBeDefined();
-      expect(routeLink!.findNestedChildRouteAsLink(Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.MY_FORMS));
+      assert.isDefined(routeLink);
+      assert.isDefined(routeLink!.findNestedChildRouteAsLink(Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.MY_FORMS));
     });
   });
 
