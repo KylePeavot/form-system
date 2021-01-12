@@ -19,14 +19,17 @@ describe("Text field demo page", () => {
     // expect($('p=Please enter your surname')).toBeDefined();
     // expect($('input')).toBeDefined();
 
-    const question1ContainerElement = $('h2=First name').$('..');
+    let question1ContainerElement = $('h2=First name');
+    question1ContainerElement = question1ContainerElement.$('..');
+
 
     expect(question1ContainerElement).toBeDefined();
     expect(question1ContainerElement.$('h2=First name')).toBeDefined();
     expect(question1ContainerElement.$('p=Please enter your first name')).toBeDefined();
     expect(question1ContainerElement.$('input')).toBeDefined();
 
-    const question2ContainerElement = $('h3=Surname').$('..');
+    let question2ContainerElement = $('h3=Surname').$('..');
+    // question2ContainerElement = question2ContainerElement.$('..');
 
     expect(question2ContainerElement).toBeDefined();
     expect(question2ContainerElement.$('h3=Surname')).toBeDefined();
