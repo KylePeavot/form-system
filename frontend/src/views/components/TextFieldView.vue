@@ -1,8 +1,8 @@
 <template>
   <div>
     <BaseStyleLayout title="Text field demo" :selected-page="page">
-      <TextField :level="2" title="Full name" guidance="Please enter your first name, surname, and any middle names" @change="textFieldChanged($event)"/>
-      <TextField :level="2" title="Mother's maiden name" guidance="Please enter your mother's maiden name for... security reasons" @change="textFieldChanged($event)"/>
+      <TextField :level="2" title="Full name" guidance="Please enter your first name, surname, and any middle names" :text-value="textValueQ1"/>
+      <TextField :level="2" title="Mother's maiden name" guidance="Please enter your mother's maiden name for... security reasons" :text-value="textValueQ2"/>
     </BaseStyleLayout>
   </div>
 </template>
@@ -28,11 +28,8 @@ import TextValue from "@/models/form/TextValue";
   export default class TextFieldView extends Vue {
     private page = Pages.ROUTES.SHOWN_IN_NAVBAR.COMPONENTS.subRoutes.TEXT_FIELD;
 
-    private textFieldValue = "";
-
-    textFieldChanged(value: string) {
-      this.textFieldValue = value;
-    }
+    private textValueQ1 = new TextValue("");
+    private textValueQ2 = new TextValue("");
 
   }
 
