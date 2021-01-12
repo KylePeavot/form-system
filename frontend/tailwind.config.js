@@ -29,5 +29,8 @@ module.exports = {
             'screen': '100vh',
             'screen-half': '50vh'
         }
-    }
+    },
+    plugins: [
+        require("@tailwindcss/forms")
+    ]
 }
