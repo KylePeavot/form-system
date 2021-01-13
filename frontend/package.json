@@ -48,5 +48,8 @@
     "ts-node": "^8.10.2",
     "typescript": "~3.9.3",
     "vue-template-compiler": "^2.6.11"
+  },
+  "resolutions": {
+    "cypress": "6.2.1"
   }
 }
