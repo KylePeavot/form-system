@@ -2,16 +2,28 @@ pipeline {
   agent any
   stages {
     stage('Backend') {
-      agent {
-        docker {
-          image 'openjdk:15.0.1-jdk'
+      parallel {
+        stage('Backend') {
+          agent {
+            docker {
+              image 'openjdk:15.0.1-jdk'
+            }
+
+          }
+          steps {
+            dir(path: 'backend') {
+              sh 'chmod +x ./mvnw'
+              sh './mvnw -B verify --file pom.xml'
+            }
+
+          }
         }
 
-      }
-      steps {
-        dir(path: 'backend') {
-          sh 'chmod +x ./mvnw'
-          sh './mvnw -B verify --file pom.xml'
+        stage('Yarn Global') {
+          steps {
+            sh 'export PATH="$(yarn global bin):$PATH"'
+            sh 'yarn global add @vue/cli'
+          }
         }
 
       }
@@ -27,12 +39,10 @@ pipeline {
 
           }
           steps {
-            sh 'npm config set prefix \'~/.npm-global\''
-            sh 'export PATH=~/.npm-global/bin:$PATH'
+            sh 'export PATH="$(yarn global bin):$PATH"'
             dir(path: 'frontend') {
-              sh 'npm install -g @vue/cli'
-              sh 'npm install'
-              sh 'npm run test:unit'
+              sh 'yarn install'
+              sh 'yarn test:unit'
             }
 
           }
@@ -48,7 +58,6 @@ pipeline {
           steps {
             sh 'export PATH="$(yarn global bin):$PATH"'
             dir(path: 'frontend') {
-              sh 'yarn global add @vue/cli'
               sh 'yarn install'
               sh 'yarn test:e2e'
             }
