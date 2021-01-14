@@ -36,8 +36,10 @@ pipeline {
           steps {
             sh 'export PATH="$(yarn global bin):$PATH"'
             sh 'yarn global add @vue/cli'
-            sh 'yarn install'
-            sh 'yarn test:ci'
+            dir(path: 'frontend') {
+              sh 'yarn install'
+              sh 'yarn test:ci'
+            }
           }
         }
 
