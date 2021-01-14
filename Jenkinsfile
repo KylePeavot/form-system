@@ -28,6 +28,7 @@ pipeline {
           }
           steps {
             dir(path: 'frontend') {
+              sh 'npm install -g @vue/cli'
               sh 'npm install'
             }
 
