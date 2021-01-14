@@ -1609,8 +1609,8 @@
 
 "@vue/cli-plugin-e2e-cypress@~4.5.0":
   version "4.5.10"
-  resolved "https://registry.npm.taobao.org/@vue/cli-plugin-e2e-cypress/download/@vue/cli-plugin-e2e-cypress-4.5.10.tgz#69bf718e61bee65bbfc5ab4c40033b9e206f0685"
-  integrity sha1-ab9xjmG+5lu/xatMQAM7niBvBoU=
+  resolved "https://registry.yarnpkg.com/@vue/cli-plugin-e2e-cypress/-/cli-plugin-e2e-cypress-4.5.10.tgz#69bf718e61bee65bbfc5ab4c40033b9e206f0685"
+  integrity sha512-0j42utcD5Jnw0M5A2Zhgt23GmbKOkJ3fjqSVqd0uHM4IXuPLe8Kcem9MZ1wmeWeCAbG4BBSk1QQZhTrnFolt6Q==
   dependencies:
     "@vue/cli-shared-utils" "^4.5.10"
     cypress "^3.8.3"

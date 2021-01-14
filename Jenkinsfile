@@ -26,7 +26,7 @@ pipeline {
           }
         }
 
-        stage('Yarn Global') {
+        stage('Frontend (Cypress)') {
           agent {
             docker {
               image 'cypress/browsers:node12.18.3-chrome87-ff82'
@@ -36,45 +36,8 @@ pipeline {
           steps {
             sh 'export PATH="$(yarn global bin):$PATH"'
             sh 'yarn global add @vue/cli'
-          }
-        }
-
-      }
-    }
-
-    stage('Frontend') {
-      parallel {
-        stage('Unit') {
-          agent {
-            docker {
-              image 'cypress/browsers:node12.18.3-chrome87-ff82'
-            }
-
-          }
-          steps {
-            sh 'export PATH="$(yarn global bin):$PATH"'
-            dir(path: 'frontend') {
-              sh 'yarn install'
-              sh 'yarn test:unit'
-            }
-
-          }
-        }
-
-        stage('E2E Yarn') {
-          agent {
-            docker {
-              image 'cypress/browsers:node12.18.3-chrome87-ff82'
-            }
-
-          }
-          steps {
-            sh 'export PATH="$(yarn global bin):$PATH"'
-            dir(path: 'frontend') {
-              sh 'yarn install'
-              sh 'yarn test:e2e'
-            }
-
+            sh 'yarn install'
+            sh 'yarn test:ci'
           }
         }
 
