@@ -27,7 +27,10 @@ pipeline {
 
           }
           steps {
-            sh 'npm -g config set user root'
+            sh 'mkdir ~/.npm-global'
+            sh 'npm config set prefix \'~/.npm-global\''
+            sh 'export PATH=~/.npm-global/bin:$PATH'
+            sh 'source ~/.profile'
             dir(path: 'frontend') {
               sh 'npm install -g @vue/cli'
               sh 'npm install'
