@@ -19,7 +19,7 @@ pipeline {
           }
         }
 
-        stage('NPM CI') {
+        stage('NPM Install') {
           agent {
             docker {
               image 'cypress/browsers:node12.18.3-chrome87-ff82'
@@ -28,7 +28,7 @@ pipeline {
           }
           steps {
             dir(path: 'frontend') {
-              sh 'npm ci'
+              sh 'npm install'
             }
 
           }
