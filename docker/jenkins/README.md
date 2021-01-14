@@ -6,6 +6,11 @@ Short and sweet, Jenkins is a pipeline tool that lets us run CI locally.
 ## Prerequisites
 1. Docker
 
+## Alternative to Docker
+You may prefer to not use Docker, in which case you can run a local Windows-built instance of Jenkins.
+
+I have no idea how to set it up. Good luck.
+
 ## First launch
 1. Run `start.bat`
     - Note that the first run will take a while.
