@@ -11,6 +11,7 @@ pipeline {
 
           }
           steps {
+            sh 'chmod +x backend/mvnw'
             sh 'cd backend && ./mvnw -B verify --file pom.xml'
           }
         }
