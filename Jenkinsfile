@@ -45,8 +45,8 @@ pipeline {
 
           }
           steps {
-            sh 'yarn global add cypress'
-            sh 'cd frontend && yarn test:unit'
+            sh '''cd frontend && && yarn global add @vue/cli
+&& yarn test:unit'''
           }
         }
 
@@ -58,7 +58,8 @@ pipeline {
 
           }
           steps {
-            sh 'cd frontend && yarn test:e2e'
+            sh '''cd frontend && yarn global add @vue/cli
+ && yarn test:e2e'''
           }
         }
 
