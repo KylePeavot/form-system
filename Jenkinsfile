@@ -17,7 +17,7 @@ pipeline {
       }
     }
 
-    stage('Unit') {
+    stage('Frontend') {
       parallel {
         stage('Unit') {
           agent {
@@ -46,10 +46,12 @@ pipeline {
 
           }
           steps {
-            sh 'export PATH="$PATH:$(yarn global bin)"'
+            sh 'npm config set prefix \'~/.npm-global\''
+            sh 'export PATH=~/.npm-global/bin:$PATH'
             dir(path: 'frontend') {
-              sh 'yarn global add @vue/cli'
-              sh 'yarn test:e2e'
+              sh 'npm install -g @vue/cli'
+              sh 'npm install'
+              sh 'npm run test:e2e'
             }
 
           }
