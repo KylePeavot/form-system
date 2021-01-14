@@ -16,6 +16,7 @@ pipeline {
               sh './mvnw -B verify --file pom.xml'
             }
 
+            bitbucketStatusNotify 'INPROGRESS'
           }
         }
 
