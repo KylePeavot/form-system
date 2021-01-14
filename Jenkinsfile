@@ -7,7 +7,6 @@ pipeline {
           agent {
             docker {
               image 'openjdk:15.0.1-jdk'
-              registryUrl 'https://index.docker.io/v1/'
             }
 
           }
@@ -25,7 +24,6 @@ pipeline {
           agent {
             docker {
               image 'cypress/browsers:node12.18.3-chrome87-ff82'
-              registryUrl 'https://index.docker.io/v1/'
             }
 
           }
@@ -44,7 +42,6 @@ pipeline {
           agent {
             docker {
               image 'cypress/browsers:node12.18.3-chrome87-ff82'
-              registryUrl 'https://index.docker.io/v1/'
             }
 
           }
@@ -62,7 +59,6 @@ pipeline {
           agent {
             docker {
               image 'cypress/browsers:node12.18.3-chrome87-ff82'
-              registryUrl 'https://index.docker.io/v1/'
             }
 
           }
@@ -77,6 +73,17 @@ pipeline {
         }
 
       }
+    }
+
+  }
+  post {
+
+    success {
+        bitbucketStatusNotify 'SUCCESSFUL'
+    }
+
+    failure {
+      bitbucketStatusNotify 'FAILED'
     }
 
   }
