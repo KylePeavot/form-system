@@ -16,21 +16,31 @@ pipeline {
           }
         }
 
-        stage('Cypress') {
-          agent {
-            docker {
-              image 'cypress/browsers:node12.18.3-chrome87-ff82'
-            }
-
-          }
+        stage('Yarn Install') {
           steps {
             sh '''cd frontend && yarn install --network-timeout 1000000
        
 
  '''
             sh 'yarn global add @vue/cli'
+          }
+        }
+
+      }
+    }
+
+    stage('Unit') {
+      parallel {
+        stage('Unit') {
+          steps {
             sh 'yarn global add cypress'
-            sh '# $(npm bin)/cypress run'
+            sh 'cd frontend && yarn test:unit'
+          }
+        }
+
+        stage('E2E') {
+          steps {
+            sh 'cd frontend && yarn test:e2e'
           }
         }
 
