@@ -30,7 +30,6 @@ pipeline {
             sh 'mkdir ~/.npm-global'
             sh 'npm config set prefix \'~/.npm-global\''
             sh 'export PATH=~/.npm-global/bin:$PATH'
-            sh 'source ~/.bash_profile'
             dir(path: 'frontend') {
               sh 'npm install -g @vue/cli'
               sh 'npm install'
