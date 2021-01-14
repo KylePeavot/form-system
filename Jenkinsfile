@@ -24,14 +24,13 @@ pipeline {
 
           }
           steps {
-            sh 'cd frontend'
-            sh '''yarn install --network-timeout 1000000
+            sh '''cd frontend && yarn install --network-timeout 1000000
        
 
  '''
             sh 'yarn global add @vue/cli'
-            sh 'yarn cypress install'
-            sh 'yarn test:ci'
+            sh 'cd frontend && yarn cypress install'
+            sh 'cd frontend && yarn test:ci'
           }
         }
 
