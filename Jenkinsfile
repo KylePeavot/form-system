@@ -1,12 +1,6 @@
 pipeline {
   agent any
   stages {
-    stage('Pull') {
-      steps {
-        git 'https://bitbucket.org/weffs/form-system'
-      }
-    }
-
     stage('Backend') {
       parallel {
         stage('Backend') {
@@ -17,6 +11,7 @@ pipeline {
 
           }
           steps {
+            sh 'cd backend'
             sh 'mvn -B verify --file pom.xml'
           }
         }
@@ -29,6 +24,7 @@ pipeline {
 
           }
           steps {
+            sh 'cd frontend'
             sh '''yarn install --network-timeout 1000000
        
 
