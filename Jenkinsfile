@@ -11,8 +11,11 @@ pipeline {
 
           }
           steps {
-            sh 'chmod +x backend/mvnw'
-            sh 'cd backend && ./mvnw -B verify --file pom.xml'
+            dir(path: 'backend') {
+              sh 'chmod +x ./mvnw'
+              sh './mvnw -B verify --file pom.xml'
+            }
+
           }
         }
 
@@ -24,11 +27,11 @@ pipeline {
 
           }
           steps {
-            sh '''cd frontend && yarn install --network-timeout 1000000
-       
+            dir(path: 'frontend') {
+              sh 'yarn install --network-timeout 1000000'
+              sh 'yarn global add @vue/cli'
+            }
 
- '''
-            sh 'yarn global add @vue/cli'
           }
         }
 
@@ -47,6 +50,11 @@ pipeline {
           steps {
             sh '''cd frontend && && yarn global add @vue/cli
 && yarn test:unit'''
+            dir(path: 'frontend') {
+              sh 'yarn global add @vue/cli'
+              sh 'yarn test:unit'
+            }
+
           }
         }
 
@@ -58,8 +66,11 @@ pipeline {
 
           }
           steps {
-            sh '''cd frontend && yarn global add @vue/cli
- && yarn test:e2e'''
+            dir(path: 'frontend') {
+              sh 'yarn global add @vue/cli'
+              sh 'yarn test:e2e'
+            }
+
           }
         }
 
