@@ -54,6 +54,8 @@ pipeline {
             sh 'npm config set prefix \'~/.npm-global\''
             sh 'export PATH=~/.npm-global/bin:$PATH'
             dir(path: 'frontend') {
+              sh 'npm install -g @vue/cli'
+              sh 'npm install'
               sh 'npm run test:unit'
             }
 
