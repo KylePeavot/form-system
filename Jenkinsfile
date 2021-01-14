@@ -32,6 +32,8 @@ pipeline {
               sh 'yarn global add @vue/cli'
             }
 
+            sh 'echo "$PATH"'
+            sh 'echo "$(yarn global bin)"'
           }
         }
 
