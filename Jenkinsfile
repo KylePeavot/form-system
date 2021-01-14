@@ -27,8 +27,7 @@ pipeline {
 
           }
           steps {
-            sh 'sudo chown -R `whoami` ~/.npm'
-            sh 'sudo chown -R `whoami` /usr/local/lib/node_modules'
+            sh 'npm -g config set user root'
             dir(path: 'frontend') {
               sh 'npm install -g @vue/cli'
               sh 'npm install'
