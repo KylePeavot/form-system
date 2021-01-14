@@ -17,6 +17,12 @@ pipeline {
         }
 
         stage('Yarn Install') {
+          agent {
+            docker {
+              image 'ca469/node12-chrome-yarn'
+            }
+
+          }
           steps {
             sh '''cd frontend && yarn install --network-timeout 1000000
        
@@ -32,6 +38,12 @@ pipeline {
     stage('Unit') {
       parallel {
         stage('Unit') {
+          agent {
+            docker {
+              image 'ca469/node12-chrome-yarn'
+            }
+
+          }
           steps {
             sh 'yarn global add cypress'
             sh 'cd frontend && yarn test:unit'
@@ -39,6 +51,12 @@ pipeline {
         }
 
         stage('E2E') {
+          agent {
+            docker {
+              image 'ca469/node12-chrome-yarn'
+            }
+
+          }
           steps {
             sh 'cd frontend && yarn test:e2e'
           }
