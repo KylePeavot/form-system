@@ -29,7 +29,8 @@ pipeline {
 
  '''
             sh 'yarn global add @vue/cli'
-            sh 'cd frontend && yarn cypress install'
+            sh 'yarn global add cypress'
+            sh 'cd frontend && cypress install'
             sh 'cd frontend && yarn test:ci'
           }
         }
