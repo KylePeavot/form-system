@@ -6,7 +6,7 @@ pipeline {
         stage('Backend') {
           agent {
             docker {
-              image 'maven:3.6.3-openjdk-15-slim'
+              image 'openjdk:15.0.1-jdk'
             }
 
           }
