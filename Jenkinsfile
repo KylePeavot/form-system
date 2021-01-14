@@ -19,7 +19,7 @@ pipeline {
         stage('Yarn Install') {
           agent {
             docker {
-              image 'ca469/node12-chrome-yarn'
+              image 'cypress/browsers:node12.18.3-chrome87-ff82'
             }
 
           }
@@ -40,7 +40,7 @@ pipeline {
         stage('Unit') {
           agent {
             docker {
-              image 'ca469/node12-chrome-yarn'
+              image 'cypress/browsers:node12.18.3-chrome87-ff82'
             }
 
           }
@@ -53,7 +53,7 @@ pipeline {
         stage('E2E') {
           agent {
             docker {
-              image 'ca469/node12-chrome-yarn'
+              image 'cypress/browsers:node12.18.3-chrome87-ff82'
             }
 
           }
