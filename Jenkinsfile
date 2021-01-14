@@ -51,6 +51,8 @@ pipeline {
 
           }
           steps {
+            sh 'npm config set prefix \'~/.npm-global\''
+            sh 'export PATH=~/.npm-global/bin:$PATH'
             dir(path: 'frontend') {
               sh 'npm run test:unit'
             }
