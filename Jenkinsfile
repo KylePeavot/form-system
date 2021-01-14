@@ -1,6 +1,14 @@
 pipeline {
   agent any
   stages {
+
+    stage("Notify BitBucket") {
+      agent none
+      steps {
+        bitbucketStatusNotify 'INPROGRESS'
+      }
+    }
+
     stage('Backend') {
       parallel {
         stage('Backend') {
@@ -15,8 +23,6 @@ pipeline {
               sh 'chmod +x ./mvnw'
               sh './mvnw -B verify --file pom.xml'
             }
-
-            bitbucketStatusNotify 'INPROGRESS'
           }
         }
 

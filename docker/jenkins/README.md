@@ -5,11 +5,12 @@ Short and sweet, Jenkins is a pipeline tool that lets us run CI locally.
 
 ## Prerequisites
 1. Docker
+2. Time
 
 ## Alternative to Docker
 You may prefer to not use Docker, in which case you can run a local Windows-built instance of Jenkins.
 
-I have no idea how to set it up. Good luck.
+I have no idea how to set it up, although it should mostly be similar. Good luck.
 
 ## First launch
 1. Run `start.bat`
@@ -21,16 +22,58 @@ I have no idea how to set it up. Good luck.
     - If using Docker + WSL2, path can be found here: `\\wsl$\docker-desktop\mnt\host\wsl\docker-desktop-data\version-pack-data\community\docker\volumes`
 3. Navigate to `http://localhost:8100`
 4. Enter the secret copied from step 2.
-5. Update the admin account password.
+5. Create your account
+   - I'd recommend using the admin username.
     - Upon updating the password it may error and sign you out. The password should have updated as this point.
-6. Done!
+6. Install recommended plugins
+7. Done!
 
 ## Future launches
 1. Run `start.bat`
 2. Navigate to `http://localhost:8100`
 3. Login
 
-## Generating a `ca.pem` certificate
+## Jenkins Setup
+
+### Plugin Setup
+You'll have to install a plugin called `Bitbucket Build Status Notifier Plugin`
+
+To do this:
+1. On the Jenkins dashboard, click `Manage Jenkins` in the navigation side menu.
+2. Go to `Manage Plugins`
+3. Install `Bitbucket Build Status Notifier Plugin`
+   - Don't restart after installing. Jenkins is broken when doing this and so you'll have to stop the docker containers and run `start.bat` again.
+4. Upon restarting go to `Manage Jenkins`
+5. Click `Configure System`
+6. At the bottom you'll see a `Bitbucket Build Status Notifier Plugin` section. Add global credentials.
+   - Keep everything as default, but set the username to the OAuth key and the password to the value.
+7. Save changes.
+
+### Executors (optional)
+1. Go to `Configure System`
+2. Set the `# of executors` to a value you'd like. 3 is recommended as it can run both steps in parallel.
+3. Save
+
+### Build setup
+You'll have to create a job in order to run builds.
+
+1. From the Jenkins dashboard click `New Item`
+2. Give it a name (WEFFS is probably a good idea).
+3. Select `Bitbucket Team/Project`.
+4. Click `OK`
+5. Give it a display name.
+6. Under the `Projects` section, add your credentials from the [Plugin Setup](#plugin-setup) section if they exist.
+   - If the credentials don't exist here, add the same as in [Plugin Setup](#plugin-setup).
+7. Under `Discover branches` set the strategy to whatever you'd prefer. `All branches` may be the best option.
+8. Click `Save`.
+9. You'll be taken to a `Scan Organization Folder Log` page. Wait for the generated text to end with `Finished: SUCCESS`.
+10. Click `Open Blue Ocean`
+
+## Generating a `ca.pem` certificate (If required)
+
+**I initially had issues with the setup which I think caused it to fail generating the certificates.
+Deleting my volumes and rebuilding no longer required this step.**
+
 This is something required by Jenkins in order to make web requests, and is relatively complicated considering.
 
 Execute the following commands in a terminal
