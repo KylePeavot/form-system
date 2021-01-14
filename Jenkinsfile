@@ -38,7 +38,7 @@ pipeline {
           }
         }
 
-        stage('E2E') {
+        stage('E2E Yarn') {
           agent {
             docker {
               image 'cypress/browsers:node12.18.3-chrome87-ff82'
@@ -46,12 +46,11 @@ pipeline {
 
           }
           steps {
-            sh 'npm config set prefix \'~/.npm-global\''
-            sh 'export PATH=~/.npm-global/bin:$PATH'
+            sh 'export PATH="$(yarn global bin):$PATH"'
             dir(path: 'frontend') {
-              sh 'npm install -g @vue/cli'
-              sh 'npm install'
-              sh 'npm run test:e2e'
+              sh 'yarn global add @vue/cli'
+              sh 'yarn install'
+              sh 'yarn test:e2e'
             }
 
           }
