@@ -12,7 +12,7 @@ pipeline {
           }
           steps {
             sh 'cd backend'
-            sh 'mvn -B verify --file pom.xml'
+            sh './mvnw -B verify --file pom.xml'
           }
         }
 
