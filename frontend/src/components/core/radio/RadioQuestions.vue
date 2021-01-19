@@ -2,18 +2,16 @@
   <div>
     <Heading :level="level">{{ title }}</Heading>
     <p v-if="guidance.length > 0">{{ guidance }}</p>
-    <Radio :id="id" :radio-value="value"/>
   </div>
 </template>
 
 <script lang="ts">
 
 import {Component, Model, Prop, Vue} from "vue-property-decorator";
-import Radio from "@/components/core/radio/Radio.vue";
 import Heading from "@/components/core/Heading.vue";
 import RadioValue from "@/models/form/RadioValue";
 @Component({
-  components: {Heading, Radio}
+  components: {Heading}
 })
 export default class RadioQuestion extends Vue {
 

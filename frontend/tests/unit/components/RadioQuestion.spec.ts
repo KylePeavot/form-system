@@ -1,7 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import RadioQuestion from "@/components/core/radio/RadioQuestions.vue";
 import RadioValue from "@/models/form/RadioValue";
-import Radio from "@/components/core/radio/Radio.vue";
+import RadioGroup from "@/components/core/radio/RadioGroup.vue";
 
 describe("Radio question component", () => {
 
@@ -9,7 +9,7 @@ describe("Radio question component", () => {
 
         const radioValue = new RadioValue("Label", false);
         const wrapper = shallowMount(RadioQuestion, {
-            stubs: {Radio},
+            stubs: {RadioGroup},
             propsData: {
                 id: "id",
                 title: "QTitle",

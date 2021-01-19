@@ -1,13 +1,14 @@
 import { shallowMount } from "@vue/test-utils";
-import Radio from "@/components/core/radio/Radio.vue";
 import RadioValue from "@/models/form/RadioValue";
+import RadioGroup from "@/components/core/radio/RadioGroup.vue";
+
 
 describe("Radio component", () => {
 
     it("Updates model value", () => {
 
         const radioValue = new RadioValue("Label", false);
-        const wrapper = shallowMount(Radio, {
+        const wrapper = shallowMount(RadioGroup, {
             propsData: {
                 id: "id",
                 radioValue: radioValue

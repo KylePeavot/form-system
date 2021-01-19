@@ -5,7 +5,7 @@
       <br/>
       <CheckboxGroup title="Checkbox group" guidance="Select all that apply" id-prefix="cg" v-model="groupValues"/>
       <br/>
-      <RadioGroup title="Radio group" guidance="Radio selection" v-model="radioValues"/>
+      <RadioGroup title="Radio group" guidance="Radio selection" id-prefix="rg" v-model="radioValues"/>
     </BaseStyleLayout>
 
 
@@ -24,7 +24,6 @@ import Checkbox from "@/components/core/checkbox/Checkbox.vue";
 import CheckboxValue from "@/models/form/CheckboxValue";
 import CheckboxGroup from "@/components/core/checkbox/CheckboxGroup.vue";
 import RadioQuestion from "@/components/core/radio/RadioQuestions.vue";
-import Radio from "@/components/core/radio/Radio.vue";
 import RadioValue from "@/models/form/RadioValue";
 import RadioGroup from "@/components/core/radio/RadioGroup.vue";
 import RadioQuestions from "@/components/core/radio/RadioQuestions.vue";
@@ -36,7 +35,6 @@ import RadioQuestions from "@/components/core/radio/RadioQuestions.vue";
     CheckboxGroup,
     Checkbox,
     CheckboxQuestion,
-    Radio,
     RadioGroup,
     RadioQuestion,
     BaseStyleLayout,
