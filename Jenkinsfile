@@ -16,7 +16,6 @@ pipeline {
             docker {
               image 'openjdk:15.0.1-jdk'
             }
-
           }
           steps {
             dir(path: 'backend') {
@@ -31,7 +30,6 @@ pipeline {
             docker {
               image 'cypress/browsers:node12.18.3-chrome87-ff82'
             }
-
           }
           steps {
             sh 'export PATH="$(yarn global bin):$PATH"'
@@ -42,7 +40,6 @@ pipeline {
             }
           }
         }
-
       }
     }
 
