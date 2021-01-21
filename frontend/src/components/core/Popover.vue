@@ -1,3 +1,4 @@
+//TODO FS-59 create tests for this component
 <template>
   <div>
     <button name="popper-button" class="focus:outline-none" @click="togglePopper">
