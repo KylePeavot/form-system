@@ -2,16 +2,9 @@
   <div class="py-2">
     <BaseQuestion :level="level" :title="title" :guidance="guidance">
       <Popover>
-        <div slot-scope="{ showMenu, togglePopper, closePopper }" @focusout="closePopper" @click="togglePopper">
-          <button name="popper-button" class="focus:outline-none">
-            ...
-          </button>
-          <div name="popper-menu" v-show="showMenu" class="w-28 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-            <a href="#edit" @click="togglePopper" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">Edit</a>
-            <a href="#move" @click="togglePopper" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">Move</a>
-            <a href="#delete" @click="togglePopper" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">Delete</a>
-          </div>
-        </div>
+        <button class="popover-menu__item">Edit</button>
+        <button class="popover-menu__item">Move</button>
+        <button class="popover-menu__item--danger">Delete</button>
       </Popover>
     </BaseQuestion>
     <input class="question__text-field" type="text" name="fieldResponse" placeholder=" " v-model="textValue.value"/>

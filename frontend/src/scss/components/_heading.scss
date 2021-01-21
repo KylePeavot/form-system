@@ -1,3 +1,12 @@
-.question__title {
-  @apply pb-1;
+.question {
+  &__title-row {
+    @apply w-auto max-w-sm flex;
+  }
+  &__title {
+    @apply pb-1 w-auto max-w-sm flex-1;
+  }
+
+  &__popup {
+    @apply flex-none;
+  }
 }

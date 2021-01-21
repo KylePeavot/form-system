@@ -1,12 +1,10 @@
 <template>
   <div>
-    <div class="question__title-row w-auto max-w-sm" style="display: flex">
-      <div class="question__title" style="flex: 1">
-        <Heading class="question__title" :level="level">
-          {{ title }}
-        </Heading>
-      </div>
-      <div class="question__popup" style="flex: 0">
+    <div class="question__title-row">
+      <Heading class="question__title" :level="level">
+        {{ title }}
+      </Heading>
+      <div class="question__popup">
         <slot>
         </slot>
       </div>
