@@ -9,7 +9,7 @@ pipeline {
       }
     }
 
-    stage('Backend') {
+    stage('Tests') {
       parallel {
         stage('Backend') {
           agent {
