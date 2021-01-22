@@ -1,3 +1,11 @@
+/**
+ * Production produces CORS errors when live because the incoming requests are from the same origin.
+ * To fix this @Profile is used to ensure that CORS is only enabled when developing. (serve on :8080, app on :80)
+ *
+ * To load this security bean:
+ *  - In your run config set "development" as your active profile.
+ */
+
 package co600.weffs.application.internal.security;
 
 import org.springframework.context.annotation.Profile;
