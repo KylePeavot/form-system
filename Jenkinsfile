@@ -36,6 +36,7 @@ pipeline {
             sh 'yarn global add @vue/cli'
             dir(path: 'frontend') {
               sh 'yarn install'
+              sh 'cypress install'
               sh 'yarn test:ci'
             }
           }
