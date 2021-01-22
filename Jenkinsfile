@@ -35,7 +35,7 @@ pipeline {
             sh 'export PATH="$(yarn global bin):$PATH"'
             sh 'yarn global add @vue/cli'
             sh 'yarn global add cypress'
-            sh 'cypress install'
+            sh 'yarn cypress install'
             dir(path: 'frontend') {
               sh 'yarn install'
               sh 'yarn test:ci'
