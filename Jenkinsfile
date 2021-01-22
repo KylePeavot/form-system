@@ -2,7 +2,7 @@ pipeline {
   agent any
   stages {
 
-    stage("Notify BitBucket") {
+    stage("Notify BitBucket - Start") {
       agent none
       steps {
         bitbucketStatusNotify 'INPROGRESS'
@@ -44,12 +44,15 @@ pipeline {
       }
     }
 
+    stage("Notify BitBucket - Done") {
+      agent none
+      steps {
+        bitbucketStatusNotify 'SUCCESSFUL'
+      }
+    }
+
   }
   post {
-
-    success {
-        bitbucketStatusNotify 'SUCCESSFUL'
-    }
 
     failure {
       bitbucketStatusNotify 'FAILED'
