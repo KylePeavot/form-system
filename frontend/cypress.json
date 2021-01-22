@@ -1,0 +1,6 @@
+{
+  "pluginsFile": "tests/plugins/index.js",
+  "integrationFolder": "tests/integration/app",
+  "fixturesFolder": "tests/fixtures",
+  "supportFile": "tests/support/index.js"
+}

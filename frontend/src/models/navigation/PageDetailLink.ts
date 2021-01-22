@@ -1,12 +1,12 @@
-import IPageDetail from "@/models/navigation/IPageDetail";
+import PageDetail from "@/models/navigation/PageDetail";
 
 export default class PageDetailLink {
 
   private _parent: PageDetailLink | undefined;
   private readonly _children: PageDetailLink[];
-  private _route: IPageDetail;
+  private _route: PageDetail;
 
-  constructor(detail: IPageDetail, parent?: PageDetailLink) {
+  constructor(detail: PageDetail, parent?: PageDetailLink) {
     this._route = detail;
     this._parent = parent;
     this._children = [];
@@ -24,11 +24,11 @@ export default class PageDetailLink {
     this._children.push(link);
   }
 
-  get route(): IPageDetail {
+  get route(): PageDetail {
     return this._route;
   }
 
-  public findNestedChildRouteAsLink(detail: IPageDetail): PageDetailLink | undefined {
+  public findNestedChildRouteAsLink(detail: PageDetail): PageDetailLink | undefined {
     if (this.route === detail) {
       return this;
     }
