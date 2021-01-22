@@ -37,7 +37,6 @@ pipeline {
             sh 'yarn global add cypress'
             dir(path: 'frontend') {
               sh 'yarn install'
-              sh 'cypress install'
               sh 'yarn test:ci'
             }
           }
