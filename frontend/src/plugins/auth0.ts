@@ -92,11 +92,12 @@ export const useAuth0 = ({
     /** Use this lifecycle method to instantiate the SDK client */
     async created() {
       // Create a new instance of the SDK client using members of the given options object
-      this.auth0Client = await createAuth0Client({
+      const client = await createAuth0Client({
         ...options,
         client_id: options.clientId,
         redirect_uri: redirectUri
       });
+      this.auth0Client = client;
 
       try {
         // If the user is returning to the app after authentication..

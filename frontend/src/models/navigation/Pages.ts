@@ -50,8 +50,8 @@ export default class Pages {
                 url: "/account/login"
             },
             LOGOUT: {
-                name: "Login",
-                url: "/account/logout"
+                name: "Logout",
+                url: "/"
             }
         }
     }

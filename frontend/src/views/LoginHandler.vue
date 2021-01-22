@@ -29,6 +29,7 @@ import {Component, Vue} from "vue-property-decorator";
 import Pages from "../models/navigation/Pages";
 import BaseStyleLayout from "../components/layout/BaseStyleLayout.vue";
 import TwoColumnStyleLayout from "../components/layout/TwoColumnStyleLayout.vue";
+import AuthenticationUtils from "@/utils/AuthenticationUtils";
 
 @Component({
   components: {TwoColumnStyleLayout, BaseStyleLayout}
@@ -38,7 +39,14 @@ export default class LoginHandler extends Vue {
   private page = Pages.ROUTES.STATIC.LOGIN;
 
   login() {
-    this.$auth.loginWithRedirect();
+    if (AuthenticationUtils.isLoggedIn()) {
+      AuthenticationUtils.getContext().logout();
+    } else {
+      AuthenticationUtils.getContext().loginWithRedirect({
+        /* eslint-disable @typescript-eslint/camelcase */
+        redirect_uri: "http://localhost:8080/"
+      });
+    }
   }
 
 }

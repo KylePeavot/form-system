@@ -13,6 +13,7 @@ import Heading from "../components/core/Heading.vue";
 import BaseStyleLayout from "../components/layout/BaseStyleLayout.vue";
 import WebRequestUtils from "../utils/WebRequestUtils";
 import Pages from "../models/navigation/Pages";
+import AuthenticationUtils from "@/utils/AuthenticationUtils";
 
 @Component({
   components: {
@@ -30,6 +31,7 @@ export default class Dashboard extends Vue {
         .then(async value => {
           this.text = await value.text();
         });
+    AuthenticationUtils.getUser().then(u => console.log("User:", u));
   }
 
 }
