@@ -21,25 +21,28 @@ describe('TextArea.vue', () => {
         textValue: textValue
       }
     })
-  })
+  });
+
   afterEach(() => {
     wrapper.destroy();
-  })
-  it('contains the given question name, guidance, and input field', () => {
-    expect(wrapper.findAll("h2").at(0).text()).toMatch(title); //title
-    expect(wrapper.findAll("p").at(0).text()).toMatch(guidance); //guidance
-    expect(wrapper.findAll("textarea").length).toEqual(1);
+  });
 
-  })
+  it('contains the given question name, guidance, and input field', () => {
+    assert.equal(wrapper.find("h2").text(), title); //title
+    assert.equal(wrapper.find("p").text(), guidance); //guidance
+    assert.isDefined(wrapper.find("textarea"));
+  });
+
   it('text is updated when text entered in the input field',  () => {
     const testInput = "Test input";
 
-    expect(textValue.value).toEqual("");
-    expect((wrapper.find("textarea").element as HTMLInputElement).value).toEqual("");
+    assert.equal(textValue.value, "");
+    assert.equal((wrapper.find("textarea").element as HTMLInputElement).value, "");
 
     wrapper.find("textarea").setValue(testInput);
 
-    expect(textValue.value).toEqual(testInput);
-    expect((wrapper.find("textarea").element as HTMLInputElement).value).toMatch(testInput);
-  })
+    assert.equal(textValue.value, testInput);
+    assert.equal((wrapper.find("textarea").element as HTMLInputElement).value, testInput);
+  });
+
 })
