@@ -5,9 +5,11 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
-    "test:e2e": "vue-cli-service test:e2e",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "test:unit": "vue-cli-service test:e2e --config-file cypress-unit.json --headless",
+    "test:e2e": "vue-cli-service test:e2e --config-file cypress-e2e.json",
+    "test:e2e-all": "vue-cli-service test:e2e --config-file cypress-e2e.json --headless",
+    "test:ci": "vue-cli-service test:e2e --headless --config-file cypress.json"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -18,12 +20,10 @@
     "vuex": "^3.4.0"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.19",
-    "@types/mocha": "^8.0.1",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-e2e-webdriverio": "~4.5.10",
+    "@vue/cli-plugin-e2e-cypress": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-typescript": "~4.5.0",
@@ -34,8 +34,8 @@
     "@vue/eslint-config-typescript": "^5.0.2",
     "@vue/test-utils": "^1.0.3",
     "autoprefixer": "9",
-    "chromedriver": "^87.0.5",
     "css-loader": "^5.0.1",
+    "cypress": "^6.2.1",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "postcss": "7",
@@ -47,7 +47,9 @@
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "ts-node": "^8.10.2",
     "typescript": "~3.9.3",
-    "vue-template-compiler": "^2.6.11",
-    "wdio-chromedriver-service": "^6.0.4"
+    "vue-template-compiler": "^2.6.11"
+  },
+  "resolutions": {
+    "cypress": "6.2.1"
   }
 }
