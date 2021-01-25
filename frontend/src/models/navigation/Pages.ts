@@ -1,10 +1,10 @@
-import IPageDetail, {SubrouteType} from "@/models/navigation/IPageDetail";
+import PageDetail, {SubrouteType} from "@/models/navigation/PageDetail";
 import AuthenticationUtils from "../../utils/AuthenticationUtils";
 import PageDetailLink from "../../models/navigation/PageDetailLink";
 
 type PageRouteStructure = {
     [area: string]: {
-        [routeKey: string]: (() => IPageDetail) | IPageDetail;
+        [routeKey: string]: (() => PageDetail) | PageDetail;
     };
 };
 
@@ -38,7 +38,7 @@ export default class Pages {
             },
         },
         AUTHENTICATION: {
-            COMPUTED_LOGIN: function(): IPageDetail {
+            COMPUTED_LOGIN: function(): PageDetail {
                 const login = Pages.ROUTES.STATIC.LOGIN;
                 const logout = Pages.ROUTES.STATIC.LOGOUT;
                 if (AuthenticationUtils.isLoggedIn()) {
@@ -72,7 +72,7 @@ export default class Pages {
         const routes: PageDetailLink[] = [];
         for (const category of Object.values(Pages.ROUTES)) {
             for (const route of Object.values(category)) {
-                let detail: IPageDetail;
+                let detail: PageDetail;
                 if (typeof(route) === "function") {
                     detail = route();
                 } else {
@@ -89,7 +89,7 @@ export default class Pages {
      * @param detail
      * @param routes
      */
-    public static getPageDetailLinkForRoute(detail: IPageDetail, routes: PageDetailLink[]) {
+    public static getPageDetailLinkForRoute(detail: PageDetail, routes: PageDetailLink[]) {
         for (const route of routes) {
             if (route.findNestedChildRouteAsLink(detail)) {
                 return route;
@@ -104,8 +104,8 @@ export default class Pages {
      * @param parentLink    Attach as the parent of the created PageDetailLink. Is not added as a child.
      * @private
      */
-    private static getChildPageDetailLink(detail: IPageDetail | (() => IPageDetail), parentLink?: PageDetailLink): PageDetailLink {
-        let safeDetail: IPageDetail;
+    private static getChildPageDetailLink(detail: PageDetail | (() => PageDetail), parentLink?: PageDetailLink): PageDetailLink {
+        let safeDetail: PageDetail;
         if (typeof(detail) === "function") {
             safeDetail = detail();
         } else {

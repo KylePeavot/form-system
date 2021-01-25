@@ -6,7 +6,7 @@
 
 <style lang="scss">
 
-  @use "scss/all";
+  @use "src/scss/all";
   @tailwind base;
   @tailwind components;
   @tailwind screens;

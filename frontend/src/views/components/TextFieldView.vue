@@ -2,7 +2,7 @@
   <div>
     <BaseStyleLayout title="Text field demo" :selected-page="page">
       <TextField :level="2" title="Full name" guidance="Please enter your first name, surname, and any middle names" :text-value="textValueQ1"/>
-      <TextField :level="2" title="Mother's maiden name" guidance="Please enter your mother's maiden name for... security reasons" :text-value="textValueQ2"/>
+      <TextField :level="3" title="Mother's maiden name" guidance="Please enter your mother's maiden name for... security reasons" :text-value="textValueQ2"/>
     </BaseStyleLayout>
   </div>
 </template>

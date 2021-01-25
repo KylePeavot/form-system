@@ -21,13 +21,13 @@
 <script lang="ts">
 
 import {Component, Prop, Vue} from "vue-property-decorator";
-import IPageDetail, {SubrouteType} from "@/models/navigation/IPageDetail";
+import PageDetail, {SubrouteType} from "@/models/navigation/PageDetail";
 
   @Component
   export default class NavbarItem extends Vue {
 
     @Prop({default: {}, required: true})
-    private primaryRoute!: IPageDetail;
+    private primaryRoute!: PageDetail;
 
     @Prop({default: false})
     private isSelected!: boolean;
