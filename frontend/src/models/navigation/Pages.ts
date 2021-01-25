@@ -30,7 +30,11 @@ export default class Pages {
             },
             COMPONENTS: {
                 name: "Components",
-                url: "/components"
+                url: "/components",
+                subRoutes: {
+                    TEXT_FIELD: {name: "Text field", url: "/components/text-field"},
+                    TEXT_AREA: {name: "Large text field", url: "/components/text-area"}
+                }
             },
         },
         AUTHENTICATION: {
