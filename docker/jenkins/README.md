@@ -13,13 +13,14 @@ You may prefer to not use Docker, in which case you can run a local Windows-buil
 I have no idea how to set it up, although it should mostly be similar. Good luck.
 
 ## First launch
+Ensure Docker is installed. Jenkins will be installed by following the steps below:
+
 1. Run `start.bat`
     - Note that the first run will take a while.
     - Subsequent launches are extremely fast.
 2. Run `logs.bat`
-    - You'll need to find the secret key in your `jenkins-data` folder.
-    - If you miss this, you'll need to find where Docker stores your volumes.
-    - If using Docker + WSL2, path can be found here: `\\wsl$\docker-desktop\mnt\host\wsl\docker-desktop-data\version-pack-data\community\docker\volumes`
+    - Upon first launch this will appear in the logs.bat window.
+    - If you miss this, you'll need to find the secret key in your `jenkins-data` folder.
 3. Navigate to `http://localhost:8100`
 4. Enter the secret copied from step 2.
 5. Create your account
@@ -43,10 +44,11 @@ To do this:
 2. Go to `Manage Plugins`
 3. Install `Bitbucket Build Status Notifier Plugin`
    - Don't restart after installing. Jenkins is broken when doing this and so you'll have to stop the docker containers and run `start.bat` again.
-4. Upon restarting go to `Manage Jenkins`
+4. Stop all project docker containers. Restart them and navigate to `Manage Jenkins`
 5. Click `Configure System`
 6. At the bottom you'll see a `Bitbucket Build Status Notifier Plugin` section. Add global credentials.
    - Keep everything as default, but set the username to the OAuth key and the password to the value.
+   - The key and value can be retrieved from the project workspace on BitBucket under `Settings -> OAuth consumers`
 7. Save changes.
 
 ### Executors (optional)

@@ -14,6 +14,16 @@ const routes: Array<RouteConfig> = [
     path: Pages.ROUTES.STATIC.LOGIN.url,
     name: Pages.ROUTES.STATIC.LOGIN.name,
     component: () => import("../views/LoginHandler.vue")
+  },
+  {
+    path: Pages.ROUTES.SHOWN_IN_NAVBAR.COMPONENTS.subRoutes.TEXT_FIELD.url,
+    name: Pages.ROUTES.SHOWN_IN_NAVBAR.COMPONENTS.subRoutes.TEXT_FIELD.name,
+    component: () => import ("../views/components/TextFieldView.vue")
+  },
+  {
+    path: Pages.ROUTES.SHOWN_IN_NAVBAR.COMPONENTS.subRoutes.TEXT_AREA.url,
+    name: Pages.ROUTES.SHOWN_IN_NAVBAR.COMPONENTS.subRoutes.TEXT_AREA.name,
+    component: () => import ("../views/components/TextAreaView.vue")
   }
 ]
 

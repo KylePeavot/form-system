@@ -1,6 +1,6 @@
-type SubrouteType = {[key: string]: IPageDetail};
+type SubrouteType = {[key: string]: PageDetail};
 
-export default interface IPageDetail {
+export default interface PageDetail {
 
     name: string;
     url: string;

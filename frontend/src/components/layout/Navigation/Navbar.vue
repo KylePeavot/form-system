@@ -32,7 +32,7 @@
 <script lang="ts">
 
 import {Component, Prop, PropSync, Vue} from "vue-property-decorator";
-import IPageDetail from "../../../models/navigation/IPageDetail";
+import PageDetail from "../../../models/navigation/PageDetail";
 import Pages from "../../../models/navigation/Pages";
 import NavbarItem from "@/components/layout/Navigation/NavbarItem.vue";
 import Heading from "@/components/core/Heading.vue";
@@ -42,7 +42,7 @@ import Heading from "@/components/core/Heading.vue";
   export default class Navbar extends Vue {
 
     @Prop({required: true})
-    private selectedPage!: IPageDetail;
+    private selectedPage!: PageDetail;
 
     @Prop({default: ""})
     private componentClass!: string;
@@ -51,7 +51,7 @@ import Heading from "@/components/core/Heading.vue";
       return Pages.generatePageDetailLinks();
     }
 
-    isPageSelected(page: IPageDetail): boolean {
+    isPageSelected(page: PageDetail): boolean {
       if (page.url === this.selectedPage.url) {
         return true;
       }
@@ -62,7 +62,7 @@ import Heading from "@/components/core/Heading.vue";
       return link.findNestedChildRouteAsLink(this.selectedPage) !== undefined;
     }
 
-    get pages(): [string, IPageDetail][] {
+    get pages(): [string, PageDetail][] {
       return Object.entries(Pages.ROUTES.SHOWN_IN_NAVBAR);
     }
 
@@ -70,7 +70,7 @@ import Heading from "@/components/core/Heading.vue";
       return false;
     }
 
-    getAuthPageDetail(): IPageDetail {
+    getAuthPageDetail(): PageDetail {
       return Pages.ROUTES.AUTHENTICATION.COMPUTED_LOGIN();
     }
 

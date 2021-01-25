@@ -19,8 +19,7 @@
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
 import Heading from "@/components/core/Heading.vue";
-import Pages from "@/models/navigation/Pages";
-import IPageDetail from "@/models/navigation/IPageDetail";
+import PageDetail from "@/models/navigation/PageDetail";
 import Navbar from "@/components/layout/Navigation/Navbar.vue";
 
 @Component({
@@ -32,7 +31,7 @@ export default class SingleNavigationLayout extends Vue {
   private title!: string;
 
   @Prop({required: true})
-  private selectedPage!: IPageDetail;
+  private selectedPage!: PageDetail;
 
 }
 </script>
