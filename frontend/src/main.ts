@@ -10,10 +10,7 @@ import AuthenticationUtils from "@/utils/AuthenticationUtils";
 // Install the authentication plugin here
 Vue.use(Auth0Plugin, {
   domain,
-  clientId,
-  onRedirectCallback: (appState: any) => {
-    // router.push(window.location.pathname + Pages.ROUTES.STATIC.LOGIN);
-  }
+  clientId
 });
 
 AuthenticationUtils.bindAuth(getAuth0Instance());
