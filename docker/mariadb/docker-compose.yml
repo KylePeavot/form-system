@@ -1,9 +1,9 @@
 version: "3"
 
 services:
-  mysql:
+  mariadb:
     image: mariadb
-    container_name: mysql-weffs
+    container_name: mariadb-weffs
     volumes:
       - ./dbdata:/var/lib/mysql
     restart: always
