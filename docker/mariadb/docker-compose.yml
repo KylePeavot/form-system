@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  mysql:
+    image: mariadb
+    container_name: mysql-weffs
+    volumes:
+      - ./dbdata:/var/lib/mysql
+    restart: always
+    env_file: .env
+    ports:
+      - "3306:3306"
