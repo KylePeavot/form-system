@@ -6,10 +6,11 @@
 
 <style lang="scss">
 
-@tailwind base;
-@tailwind components;
-@tailwind screens;
-@tailwind utilities;
-@tailwind forms;
+  @use "src/scss/all";
+  @tailwind base;
+  @tailwind components;
+  @tailwind screens;
+  @tailwind utilities;
+  @tailwind forms;
 
 </style>
