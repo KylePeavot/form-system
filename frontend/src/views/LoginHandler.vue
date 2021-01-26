@@ -39,14 +39,20 @@ export default class LoginHandler extends Vue {
   private page = Pages.ROUTES.STATIC.LOGIN;
 
   login() {
-    if (AuthenticationUtils.isLoggedIn()) {
-      AuthenticationUtils.getContext().logout();
-    } else {
-      AuthenticationUtils.getContext().loginWithRedirect({
-        /* eslint-disable @typescript-eslint/camelcase */
-        redirect_uri: "http://localhost:8080/"
-      });
-    }
+    AuthenticationUtils.isLoggedIn().then(authenticated => {
+      if (authenticated) {
+        AuthenticationUtils.getContext().logout();
+      } else {
+        AuthenticationUtils.getContext().loginWithRedirect({
+          /* eslint-disable @typescript-eslint/camelcase */
+          redirect_uri: "http://localhost:8080/"
+        });
+      }
+    });
+  }
+
+  created() {
+    AuthenticationUtils.getUser().then(console.log);
   }
 
 }

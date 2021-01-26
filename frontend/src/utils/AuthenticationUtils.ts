@@ -4,8 +4,11 @@ export default class AuthenticationUtils {
 
   private static auth: any | undefined;
 
-  public static isLoggedIn(): boolean {
-    return this.auth.user !== undefined;
+  public static async isLoggedIn(): Promise<boolean> {
+    return this.getUser()
+      .then(async () => {
+        return await AuthenticationUtils.getContext()._data.isAuthenticated;
+      });
   }
 
   public static bindAuth(auth: any) {
@@ -14,16 +17,12 @@ export default class AuthenticationUtils {
 
   public static getUser(): Promise<any> {
     return new Promise(resolve => {
-      const interval = setInterval(() => {
-        if (this.auth._data != undefined && this.auth._data.auth0Client != undefined) {
-          if (this.auth._data.isAuthenticated) {
-            resolve(this.auth._data.user);
-          } else {
-            resolve(undefined);
-          }
+      const interval = setInterval(async () => {
+        if (!this.auth.loading) {
+          resolve(await this.auth.user);
           clearInterval(interval);
         }
-      }, 10);
+      }, 1);
     })
   }
 

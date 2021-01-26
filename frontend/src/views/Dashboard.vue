@@ -31,7 +31,6 @@ export default class Dashboard extends Vue {
         .then(async value => {
           this.text = await value.text();
         });
-    AuthenticationUtils.getUser().then(u => console.log("User:", u));
   }
 
 }
