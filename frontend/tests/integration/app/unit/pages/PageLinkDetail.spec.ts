@@ -34,18 +34,14 @@ describe("PageDetailLink Tests", () => {
 
   describe("Page Routes", () => {
 
-    let links: PageDetailLink[];
-
-    before(async () => {
-      links = await Pages.generatePageDetailLinks();
-    })
-
     it("Generates expected top-level route", async () => {
+      const links = await Pages.generatePageDetailLinks();
       const routeLink = await Pages.getPageDetailLinkForRoute(Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD, links);
       assert.isDefined(routeLink);
     });
 
     it("Contains an expected subroute", async () => {
+      const links = await Pages.generatePageDetailLinks();
       const routeLink = await Pages.getPageDetailLinkForRoute(Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS, links);
       assert.isDefined(routeLink);
       assert.isDefined(routeLink!.findNestedChildRouteAsLink(Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.MY_FORMS));
