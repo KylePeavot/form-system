@@ -1,7 +1,7 @@
 <template>
   <div>
     <BaseStyleLayout title="Page title" :selected-page="page">
-      <p>Response: {{ text }}</p>
+      <Heading :level="2">Response: {{ text }}</Heading>
     </BaseStyleLayout>
   </div>
 </template>
