@@ -4,7 +4,7 @@
     <p v-if="guidance.length > 0">{{ guidance }}</p>
     <div v-for="(radio, index) of value" :key="`${idPrefix}-${index}`">
       <div class="py-2">
-        <input :id="`${idPrefix}-${index}`" type="radio" :value="radio.label" class="border-2 border-gray-400 h-7 w-7 text-blue-600 mr-2" v-model="selected">
+        <input :id="`${idPrefix}-${index}`" class="checkbox" type="radio" :value="radio.label" v-model="selected">
         <label :for="`${idPrefix}-${index}`">{{radio.label}}</label>
       </div>
     </div>

@@ -2,10 +2,7 @@
   <div>
     <BaseStyleLayout title="Page title" :selected-page="page">
       <Heading :level="2">Response: {{ text }}</Heading>
-      <RadioGroup title="Radio group" guidance="Radio selection" id-prefix="rg" v-model="radioValues"/>
     </BaseStyleLayout>
-
-
   </div>
 </template>
 
@@ -19,25 +16,13 @@ import Pages from "../models/navigation/Pages";
 
 @Component({
   components: {
-    RadioQuestions,
-    CheckboxGroup,
-    Checkbox,
-    CheckboxQuestion,
-    RadioGroup,
-    RadioQuestion,
     BaseStyleLayout,
     Heading
   }
 })
 export default class Dashboard extends Vue {
 
-  private text = 'Test';
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD;
-  private radioValues = [
-      new RadioValue("Yes",false),
-      new RadioValue("No",false),
-      new RadioValue("Maybe",false)
-  ]
 
   mounted() {
     WebRequestUtils.get(`${process.env.VUE_APP_API_URL!}/api`)
