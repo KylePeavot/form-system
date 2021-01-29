@@ -1,10 +1,7 @@
 <template>
   <div>
     <BaseStyleLayout title="Page title" :selected-page="page">
-      <CheckboxQuestion id="checkboxQuestion1" :level="2" title="Checkbox question" guidance="Guidance" v-model="inputValue"/>
-      <br/>
-      <CheckboxGroup title="Checkbox group" guidance="Select all that apply" id-prefix="cg" v-model="groupValues"/>
-      <br/>
+      <Heading :level="2">Response: {{ text }}</Heading>
       <RadioGroup title="Radio group" guidance="Radio selection" id-prefix="rg" v-model="radioValues"/>
     </BaseStyleLayout>
 
@@ -17,17 +14,8 @@
 import {Component, Vue} from "vue-property-decorator";
 import Heading from "../components/core/Heading.vue";
 import BaseStyleLayout from "../components/layout/BaseStyleLayout.vue";
-import {CorePage} from "@/models/navigation/CorePage";
-import WebRequestUtils from "@/utils/WebRequestUtils";
-import CheckboxQuestion from "@/components/core/checkbox/CheckboxQuestion.vue";
-import Checkbox from "@/components/core/checkbox/Checkbox.vue";
-import CheckboxValue from "@/models/form/CheckboxValue";
-import CheckboxGroup from "@/components/core/checkbox/CheckboxGroup.vue";
-import RadioQuestion from "@/components/core/radio/RadioQuestions.vue";
-import RadioValue from "@/models/form/RadioValue";
-import RadioGroup from "@/components/core/radio/RadioGroup.vue";
-import RadioQuestions from "@/components/core/radio/RadioQuestions.vue";
-
+import WebRequestUtils from "../utils/WebRequestUtils";
+import Pages from "../models/navigation/Pages";
 
 @Component({
   components: {
@@ -44,13 +32,7 @@ import RadioQuestions from "@/components/core/radio/RadioQuestions.vue";
 export default class Dashboard extends Vue {
 
   private text = 'Test';
-  private page = CorePage.DASHBOARD;
-  private inputValue = new CheckboxValue("Checkbox question", true);
-  private groupValues = [
-      new CheckboxValue("Option 1", true),
-      new CheckboxValue("Option 2", true),
-      new CheckboxValue("Option 3", false)
-  ]
+  private page = Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD;
   private radioValues = [
       new RadioValue("Yes",false),
       new RadioValue("No",false),

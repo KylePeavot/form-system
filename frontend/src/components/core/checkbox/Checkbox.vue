@@ -1,6 +1,6 @@
 <template>
   <div class="py-2">
-    <input :id="id" type="checkbox" class="form-checkbox rounded border-2 border-gray-400 h-7 w-7 text-blue-600 mr-2" v-model="checkboxValue.value">
+    <input :id="id" type="checkbox" class="checkbox" v-model="checkboxValue.value">
     <label :for="id">{{ checkboxValue.label }}</label>
   </div>
 </template>

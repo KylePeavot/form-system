@@ -1,0 +1,9 @@
+.question{
+  &__title {
+    @apply pb-1;
+  }
+  &__guidance-text {
+    @apply text-gray-500 p-0 pb-2;
+  }
+}
+
