@@ -12,7 +12,7 @@
 
 import {Component, Vue} from "vue-property-decorator";
 import CheckboxQuestion from "../../components/core/checkbox/CheckboxQuestion.vue";
-import CheckboxValue from "../../models/form/CheckboxValue";
+import SelectionValue from "../../models/form/SelectionValue";
 import Pages from "@/models/navigation/Pages";
 import BaseStyleLayout from "@/components/layout/BaseStyleLayout.vue";
 
@@ -25,7 +25,7 @@ import BaseStyleLayout from "@/components/layout/BaseStyleLayout.vue";
 export default class SingleCheckboxView extends Vue {
 
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.COMPONENTS.subRoutes.SINGLE_CHECKBOX;
-  private inputValue = new CheckboxValue("I accept the terms and conditions", true);
+  private inputValue = new SelectionValue("I accept the terms and conditions", true);
 
 }
 

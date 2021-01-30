@@ -1,10 +1,9 @@
 <template>
   <div >
-    <Heading :level="2">{{ title }}</Heading>
-    <p v-if="guidance.length > 0">{{ guidance }}</p>
+    <BaseQuestion :level="level" :title="title" :guidance="guidance"/>
     <div v-for="(radio, index) of value" :key="`${idPrefix}-${index}`">
       <div class="py-2">
-        <input :id="`${idPrefix}-${index}`" class="checkbox" type="radio" :value="radio.label" v-model="selected">
+        <input :id="`${idPrefix}-${index}`" class="radio" type="radio" :value="radio.label" v-model="selected">
         <label :for="`${idPrefix}-${index}`">{{radio.label}}</label>
       </div>
     </div>
@@ -15,13 +14,18 @@
 
 import {Component, Model, Prop, Vue, Watch} from "vue-property-decorator";
 import Heading from "@/components/core/Heading.vue";
-import RadioValue from "@/models/form/RadioValue";
+import SelectionValue from "@/models/form/SelectionValue";
+import BaseQuestion from "@/components/core/BaseQuestion.vue";
+
 @Component({
-  components: {Heading}
+  components: {BaseQuestion, Heading}
 })
 export default class RadioGroup extends Vue {
 
   private selected = "";
+
+  @Prop({default: 2})
+  private level!: number;
 
   @Prop({required: true})
   private idPrefix!: string;
@@ -33,14 +37,13 @@ export default class RadioGroup extends Vue {
   private guidance!: string;
 
   @Model("input", {required: true})
-  private value!: RadioValue[];
+  private value!: SelectionValue[];
 
   @Watch("selected")
   selectUpdate(newValue: string) {
-    this.value.map(radioValue => {
-
-      console.log(radioValue,radioValue.label,newValue)
-      radioValue.value = (radioValue.label == newValue);
+    this.value.map(SelectionValue => {
+      console.log(SelectionValue,SelectionValue.label,newValue)
+      SelectionValue.value = (SelectionValue.label == newValue);
     });
     console.log(newValue,this.value);
   }

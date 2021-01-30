@@ -8,7 +8,7 @@
 <script lang="ts">
 
 import {Component, Prop, Vue} from "vue-property-decorator";
-import CheckboxValue from "@/models/form/CheckboxValue";
+import SelectionValue from "@/models/form/SelectionValue";
 
 @Component
 export default class Checkbox extends Vue {
@@ -17,7 +17,7 @@ export default class Checkbox extends Vue {
   private id!: string;
 
   @Prop({required: true})
-  private checkboxValue!: CheckboxValue;
+  private checkboxValue!: SelectionValue;
 
 }
 

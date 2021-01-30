@@ -12,14 +12,12 @@ import {Component, Vue} from "vue-property-decorator";
 import Pages from "@/models/navigation/Pages";
 import BaseStyleLayout from "@/components/layout/BaseStyleLayout.vue";
 import RadioGroup from "../../components/core/radio/RadioGroup.vue";
-import RadioQuestion from "../../components/core/radio/RadioQuestions.vue";
-import RadioValue from "@/models/form/RadioValue";
+import SelectionValue from "@/models/form/SelectionValue";
 
 
 @Component({
   components: {
     RadioGroup,
-    RadioQuestion,
     BaseStyleLayout,
   }
 })
@@ -27,8 +25,8 @@ export default class GroupedRadioView extends Vue {
 
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.COMPONENTS.subRoutes.GROUP_RADIO;
   private radioValues = [
-    new RadioValue("Yes",false),
-    new RadioValue("No",false),
+    new SelectionValue("Yes",false),
+    new SelectionValue("No",false),
   ]
 
 }

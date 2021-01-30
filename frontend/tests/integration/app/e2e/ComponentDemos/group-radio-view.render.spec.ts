@@ -8,31 +8,24 @@ describe("Radio checkbox view", () => {
     });
 
     it("All states are false", () => {
-        cy.get("input").each(input => expect((input.get()[0] as HTMLInputElement).checked).eq(false));
+        // Should be false
+        cy.get(':radio').first().should('be.not.checked');
+        // Should be false
+        cy.get(':radio').last().should('be.not.checked');
     });
 
     it("First option is selected", () => {
-        cy.get("input").eq(0).click();
-        cy.get("input").each((element, index) => {
-            if (index === 0) {
-                // Should be true
-                expect((element.get()[0] as HTMLInputElement).checked).eq(true);
-            } else {
-                // Should be false
-                expect((element.get()[0] as HTMLInputElement).checked).eq(false);
-            }
-        });
+        cy.get(':radio').first().click();
+        // Should be true
+        cy.get(':radio').first().should('be.checked');
+        // Should be false
+        cy.get(':radio').last().should('be.not.checked');
     });
 
     it("First one false second true", () => {
-        cy.get("input").eq(1).click();
-        cy.get("input").each((element, index) => {
-            if (index === 1) {
-                // Should be true
-                expect((element.get()[0] as HTMLInputElement).checked).eq(true);
-            } else {
-                // Should be false
-                expect((element.get()[0] as HTMLInputElement).checked).eq(false);
-            }
-        });
+        cy.get(':radio').last().click();
+        // Should be false
+        cy.get(':radio').first().should('be.not.checked');
+        // Should be true
+        cy.get(':radio').last().should('be.checked');
 })})

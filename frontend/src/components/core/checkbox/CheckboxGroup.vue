@@ -12,7 +12,7 @@
 import {Component, Model, Prop, Vue} from "vue-property-decorator";
 import Checkbox from "@/components/core/checkbox/Checkbox.vue";
 import Heading from "@/components/core/Heading.vue";
-import CheckboxValue from "@/models/form/CheckboxValue";
+import SelectionValue from "@/models/form/SelectionValue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
 @Component({
   components: {BaseQuestion, Heading, Checkbox}
@@ -32,7 +32,7 @@ export default class CheckboxGroup extends Vue {
   private level!: number;
 
   @Model("input", {required: true})
-  private value!: CheckboxValue[];
+  private value!: SelectionValue[];
 
 }
 
