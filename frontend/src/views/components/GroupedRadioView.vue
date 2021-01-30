@@ -26,9 +26,8 @@ export default class GroupedRadioView extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.COMPONENTS.subRoutes.GROUP_RADIO;
   private radioValues = [
     new SelectionValue("Yes",false),
-    new SelectionValue("No",false),
-  ]
-
+    new SelectionValue("No",false)
+  ];
 }
 
 </script>
