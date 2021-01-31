@@ -2,8 +2,8 @@
   <div >
     <BaseQuestion :level="level" :title="title" :guidance="guidance"/>
     <div v-for="(radio, index) of value" :key="`${idPrefix}-${index}`">
-      <div class="py-2">
-        <input :id="`${idPrefix}-${index}`" class="radio" type="radio" :value="radio.label" v-model="selected">
+      <div class="radio__container">
+        <input :id="`${idPrefix}-${index}`" class="radio__item" type="radio" :value="radio.label" v-model="selected">
         <label :for="`${idPrefix}-${index}`">{{radio.label}}</label>
       </div>
     </div>
