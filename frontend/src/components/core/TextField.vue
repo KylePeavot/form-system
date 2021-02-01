@@ -1,5 +1,5 @@
 <template>
-  <div name="text-field-container" class="py-2">
+  <div name="text-field-container" class="question__text-field-container">
     <BaseQuestion :level="level" :title="title" :guidance="guidance"/>
     <input class="question__text-field" type="text" name="fieldResponse" placeholder=" " v-model="textValue.value"/>
   </div>
