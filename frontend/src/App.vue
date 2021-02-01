@@ -7,9 +7,5 @@
 <style lang="scss">
 
   @use "src/scss/all";
-  @tailwind base;
-  @tailwind components;
-  @tailwind screens;
-  @tailwind utilities;
 
 </style>

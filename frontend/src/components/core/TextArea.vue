@@ -1,5 +1,5 @@
 <template>
-  <div name="text-area-container" class="py-2">
+  <div name="text-area-container" class="question__text-area-container">
     <BaseQuestion :level="level" :title="title" :guidance="guidance"/>
     <textarea class="question__text-area" name="fieldResponse" rows="4" v-model="textValue.value"/>
   </div>
