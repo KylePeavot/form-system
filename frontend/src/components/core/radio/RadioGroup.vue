@@ -42,10 +42,8 @@ export default class RadioGroup extends Vue {
   @Watch("selected")
   selectUpdate(newValue: string) {
     this.value.map(SelectionValue => {
-      console.log(SelectionValue,SelectionValue.label,newValue)
       SelectionValue.value = (SelectionValue.label == newValue);
     });
-    console.log(newValue,this.value);
   }
 }
 </script>

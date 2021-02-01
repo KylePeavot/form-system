@@ -46,8 +46,8 @@ export default class FormCreatorView extends Vue {
   addComponentToList(event: Event) {
     const userAction = (event.target as Element).getAttribute("name");
 
-    let componentType: string;
-    let componentProps: object;
+    let componentType = "";
+    let componentProps = {};
 
     const order = this.components.length * 100;
 
@@ -79,7 +79,7 @@ export default class FormCreatorView extends Vue {
           title: 'Question title',
           guidance: 'Question guidance',
           level: 2,
-          value: new SelectionValue("Add a checbox option here", false)
+          value: new SelectionValue("Add a checkbox option here", false)
         };
         break;
       }
@@ -92,7 +92,7 @@ export default class FormCreatorView extends Vue {
           level: 2,
           value: [
               new SelectionValue("Add a response here", false),
-              new SelectionValue("Add a response here", false)
+              new SelectionValue("Add a different response here", false)
           ]
         };
         break;
@@ -106,7 +106,7 @@ export default class FormCreatorView extends Vue {
           guidance: 'Question guidance',
           value: [
             new SelectionValue("Add a response here", false),
-            new SelectionValue("Add a response here", false)
+            new SelectionValue("Add a different response here", false)
           ]
         };
         break;
