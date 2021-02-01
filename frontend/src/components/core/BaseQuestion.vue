@@ -9,7 +9,7 @@
         </slot>
       </div>
     </div>
-    <div class="question__guidance">
+    <div class="question__guidance-container">
       <p v-if="guidance.length !== 0" class="question__guidance-text">
         {{ guidance }}
       </p>

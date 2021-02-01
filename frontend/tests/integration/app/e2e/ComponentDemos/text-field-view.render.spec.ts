@@ -30,7 +30,7 @@ describe("Text field demo page", () => {
         cy.get('button').eq(1).contains("Move")
         cy.get('button').eq(2).contains("Delete")
       });
-    })
+    });
   });
 
 })

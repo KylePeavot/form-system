@@ -1,13 +1,10 @@
-//TODO FS-59 create tests for this component
 <template>
   <div>
     <button name="popper-button" class="focus:outline-none" @click="togglePopper">
       <strong>...</strong>
     </button>
     <div name="popper-menu" v-show="showMenu" class="popover-menu__container">
-      <slot>
-
-      </slot>
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -53,6 +50,7 @@ export default class Popover extends Vue {
   }
 
   async closePopper() {
+    // sleep needed so that the browser has time to deal with button presses before closing the popper due to the @focusout event
     await this.sleep(100);
     this.showMenu = false;
   }
