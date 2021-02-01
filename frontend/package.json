@@ -12,6 +12,8 @@
     "test:ci": "vue-cli-service test:e2e --headless --config-file cypress.json"
   },
   "dependencies": {
+    "@auth0/auth0-spa-js": "^1.13.5",
+    "@socialtables/saml-protocol": "^0.3.6",
     "@tailwindcss/forms": "^0.2.1",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",

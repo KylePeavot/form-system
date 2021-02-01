@@ -4,7 +4,7 @@ import PageDetailLink from "../../models/navigation/PageDetailLink";
 
 type PageRouteStructure = {
     [area: string]: {
-        [routeKey: string]: (() => PageDetail) | PageDetail;
+        [routeKey: string]: (() => Promise<PageDetail>) | PageDetail;
     };
 };
 
@@ -41,14 +41,20 @@ export default class Pages {
             },
         },
         AUTHENTICATION: {
-            COMPUTED_LOGIN: function(): PageDetail {
-                const login = Pages.ROUTES.STATIC.LOGIN;
-                const logout = Pages.ROUTES.STATIC.LOGOUT;
-                if (AuthenticationUtils.isLoggedIn()) {
-                    return {name: logout.name, url: logout.url}
-                } else {
-                    return {name: login.name, url: login.url}
-                }
+            COMPUTED_LOGIN: async function(): Promise<PageDetail> {
+                return new Promise(resolve => {
+                    const login = Pages.ROUTES.STATIC.LOGIN;
+                    const logout = Pages.ROUTES.STATIC.LOGOUT;
+                    AuthenticationUtils.isLoggedIn().then(authenticated => {
+                        if (!authenticated) {
+                            resolve({name: login.name, url: login.url});
+                        } else {
+                            AuthenticationUtils.getUser().then(user => {
+                                resolve({name: `${logout.name} (${user.name})`, url: logout.url});
+                            });
+                        }
+                    });
+                });
             }
         },
         STATIC: {
@@ -57,8 +63,8 @@ export default class Pages {
                 url: "/account/login"
             },
             LOGOUT: {
-                name: "Login",
-                url: "/account/logout"
+                name: "Logout",
+                url: "/account/login"
             }
         }
     }
@@ -71,13 +77,13 @@ export default class Pages {
      * Generate a list of PageDetailLinks for building the structure of the ROUTES variable.
      * The value should be kept in a computed method or stored on created().
      */
-    public static generatePageDetailLinks(): PageDetailLink[] {
+    public static async generatePageDetailLinks(): Promise<PageDetailLink[]> {
         const routes: PageDetailLink[] = [];
         for (const category of Object.values(Pages.ROUTES)) {
             for (const route of Object.values(category)) {
                 let detail: PageDetail;
                 if (typeof(route) === "function") {
-                    detail = route();
+                    detail = await route();
                 } else {
                     detail = route;
                 }
