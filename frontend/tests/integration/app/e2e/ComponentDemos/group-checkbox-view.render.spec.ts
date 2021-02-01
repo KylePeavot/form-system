@@ -25,15 +25,11 @@ describe("Group checkbox view", () => {
 
   it("Now has one true state", () => {
     cy.get("input").each((element, index) => {
-      if (index === 1) {
-        // Should be true
-        cy.get("input").eq(1).should(currentSubject =>
-            currentSubject.is((index, element) => (element as HTMLInputElement).checked));
-      } else {
-        // Should be false
-        cy.get("input").eq(1).should(currentSubject =>
-            currentSubject.is((index, element) => !(element as HTMLInputElement).checked));
-      }
+      cy.get("input").eq(index).should(currentSubject =>
+          currentSubject.is((index, element) => {
+            const checked = (element as HTMLInputElement).checked;
+            return index == 1 ? checked : !checked;
+          }));
     });
     // Ensure this element exists as it shows the selection state.
     cy.get(`[id="likes-${colours[1]}"]`);
