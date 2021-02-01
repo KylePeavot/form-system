@@ -1,5 +1,5 @@
 <template>
-  <div name="text-field-container" class="py-2">
+  <div name="text-field-container" class="question__text-field-container">
     <BaseQuestion :level="level" :title="title" :guidance="guidance">
       <Popover>
         <button class="popover-menu__item">Edit</button>
