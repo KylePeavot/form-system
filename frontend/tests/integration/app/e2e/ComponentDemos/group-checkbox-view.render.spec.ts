@@ -27,10 +27,12 @@ describe("Group checkbox view", () => {
     cy.get("input").each((element, index) => {
       if (index === 1) {
         // Should be true
-        expect((element.get()[0] as HTMLInputElement).checked).eq(true);
+        cy.get("input").eq(1).should(currentSubject =>
+            currentSubject.is((index, element) => (element as HTMLInputElement).checked));
       } else {
         // Should be false
-        expect((element.get()[0] as HTMLInputElement).checked).eq(false);
+        cy.get("input").eq(1).should(currentSubject =>
+            currentSubject.is((index, element) => !(element as HTMLInputElement).checked));
       }
     });
     // Ensure this element exists as it shows the selection state.
