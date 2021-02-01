@@ -49,3 +49,5 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
+/frontend/cypress/screenshots/e2e/ComponentDemos/*
+/docker/jenkins/ran_before
