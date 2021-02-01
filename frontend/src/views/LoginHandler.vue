@@ -1,21 +1,19 @@
 <template>
   <TwoColumnStyleLayout title="Login" :selected-page="page">
-
     <template v-slot:sidebar>
-      <p class="px-4 py-2 font-bold">
+      <p class="sidebar-menu__title">
         Section
       </p>
-      <div class="ml-4 py-2 pb-8">
+      <div class="sidebar-menu__item-container">
         <ul>
-          <li class="px-4 py-1 hover:underline cursor-pointer">First entry</li>
-          <li class="px-4 py-1 hover:underline cursor-pointer">Second entry</li>
+          <li class="sidebar-menu__item-link">First entry</li>
+          <li class="sidebar-menu__item-link">Second entry</li>
         </ul>
       </div>
-      <p class="px-4 py-2 font-bold">
+      <p class="sidebar-menu__title">
         Other section
       </p>
     </template>
-
   </TwoColumnStyleLayout>
 </template>
 

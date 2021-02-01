@@ -9,15 +9,14 @@
 
 <script lang="ts">
 
-  import {Component, Vue} from "vue-property-decorator";
-  import Heading from "../../components/core/Heading.vue";
-  import BaseStyleLayout from "../../components/layout/BaseStyleLayout.vue";
-  import Pages from "../../models/navigation/Pages";
-  import AlternateStyleLayout from "../../components/layout/AlternateStyleLayout.vue";
-  import TextArea from "@/components/core/TextArea.vue";
-  import TextValue from "@/models/form/TextValue";
+import {Component, Vue} from "vue-property-decorator";
+import Heading from "../../components/core/Heading.vue";
+import BaseStyleLayout from "../../components/layout/BaseStyleLayout.vue";
+import Pages from "../../models/navigation/Pages";
+import TextArea from "@/components/core/TextArea.vue";
+import TextValue from "@/models/form/TextValue";
 
-  @Component({
+@Component({
     components: {
       BaseStyleLayout,
       Heading,

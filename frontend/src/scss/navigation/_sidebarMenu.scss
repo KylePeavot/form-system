@@ -1,0 +1,25 @@
+.sidebar-menu {
+  &__container {
+
+  }
+
+  &__title {
+    @apply px-4 py-2 pb-1 font-bold;
+  }
+
+  &__item-container {
+    @apply pb-8 w-full;
+  }
+
+  &__item-link {
+    @apply ml-8 py-1 hover:underline cursor-pointer;
+  }
+
+  &__item-button {
+    @apply w-full px-8 py-1 block hover:bg-gray-300 focus:outline-none text-left;
+  }
+  &__item-button::after {
+    content: "+";
+    @apply absolute right-3.5 text-gray-500;
+  }
+}

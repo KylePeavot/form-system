@@ -11,6 +11,11 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/Dashboard.vue")
   },
   {
+    path: Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.NEW_FORM.url,
+    name: Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.NEW_FORM.name,
+    component: () => import("../views/forms/FormCreatorView.vue")
+  },
+  {
     path: Pages.ROUTES.STATIC.LOGIN.url,
     name: Pages.ROUTES.STATIC.LOGIN.name,
     component: () => import("../views/LoginHandler.vue")
