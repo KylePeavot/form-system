@@ -15,11 +15,13 @@
       </aside>
 
       <div class="max-w-7xl mx-auto w-full flex flex-col px-4 py-3 flex-1 overflow-y-hidden">
-        <div class="py-6 px-4 bg-white lg:rounded-lg shadow min-h-screen-half overflow-y-hidden">
-          <Heading :level="1">{{title}}</Heading>
-          <slot>
-
-          </slot>
+        <div class="flex flex-col bg-white lg:rounded-lg shadow min-h-3/4 overflow-y-hidden">
+          <div class="py-2 px-4">
+            <Heading :level="1">{{title}}</Heading>
+          </div>
+          <div class="overflow-auto my-4 px-4">
+            <slot></slot>
+          </div>
         </div>
       </div>
 
