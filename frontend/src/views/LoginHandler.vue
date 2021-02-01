@@ -23,8 +23,6 @@
 
 <script lang="ts">
 
-// @ts-nocheck
-
 import {Component, Vue} from "vue-property-decorator";
 import Pages from "../models/navigation/Pages";
 import BaseStyleLayout from "../components/layout/BaseStyleLayout.vue";
