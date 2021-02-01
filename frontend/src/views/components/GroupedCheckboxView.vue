@@ -14,7 +14,7 @@
 
 import {Component, Vue} from "vue-property-decorator";
 import CheckboxQuestion from "../../components/core/checkbox/CheckboxQuestion.vue";
-import CheckboxValue from "../../models/form/CheckboxValue";
+import SelectionValue from "../../models/form/SelectionValue";
 import Pages from "@/models/navigation/Pages";
 import BaseStyleLayout from "@/components/layout/BaseStyleLayout.vue";
 import CheckboxGroup from "@/components/core/checkbox/CheckboxGroup.vue";
@@ -32,7 +32,7 @@ export default class GroupedCheckboxView extends Vue {
 
   private colours = ["red", "green", "blue"]
 
-  private inputValues = this.colours.map(colour => new CheckboxValue(`I like the colour ${colour}`, false));
+  private inputValues = this.colours.map(colour => new SelectionValue(`I like the colour ${colour}`, false));
 
 }
 

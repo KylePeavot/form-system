@@ -1,4 +1,4 @@
-export default class CheckboxValue {
+export default class SelectionValue {
 
   private _label: string;
   private _value: boolean;

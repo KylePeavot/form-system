@@ -1,3 +1,8 @@
 .checkbox {
-  @apply rounded border-2 border-gray-400 h-7 w-7 text-blue-600 mr-2;
+  &__item{
+    @apply rounded border-2 border-gray-400 h-7 w-7 text-blue-600 mr-2;
+  }
+  &__container {
+    @apply py-2;
+  }
 }

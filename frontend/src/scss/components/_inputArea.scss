@@ -1,6 +1,9 @@
 .question {
   &__text-area, &__text-field {
     @apply border-2 p-1 shadow-sm rounded focus:border-blue-700 focus:outline-none;
+    &-container {
+      @apply py-2;
+    }
   }
   &__text-area {
     @apply w-2/3;
