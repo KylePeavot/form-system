@@ -12,6 +12,7 @@
     "test:ci": "vue-cli-service test:e2e --headless --config-file cypress.json"
   },
   "dependencies": {
+    "@tailwindcss/forms": "^0.2.1",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",

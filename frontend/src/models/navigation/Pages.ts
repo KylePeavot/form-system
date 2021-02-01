@@ -33,7 +33,9 @@ export default class Pages {
                 url: "/components",
                 subRoutes: {
                     TEXT_FIELD: {name: "Text field", url: "/components/text-field"},
-                    TEXT_AREA: {name: "Large text field", url: "/components/text-area"}
+                    TEXT_AREA: {name: "Large text field", url: "/components/text-area"},
+                    SINGLE_CHECKBOX: {name: "Single checkbox", url: "/components/checkbox/single"},
+                    GROUP_CHECKBOX: {name: "Grouped checkbox", url: "/components/checkbox/group"},
                 }
             },
         },
