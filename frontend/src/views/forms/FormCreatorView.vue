@@ -3,12 +3,11 @@
     <TwoColumnStyleLayout title="Create a new form" :selected-page="page">
       <template v-slot:sidebar>
         <SidebarMenu title="Components">
-          <button name="addTextField" type="button" class="sidebar-menu__item-button" @click="addTextField">Text field</button>
-          <button name="addTextArea" type="button" class="sidebar-menu__item-button" @click="addTextArea">Large text field</button>
-        </SidebarMenu>
-        <SidebarMenu title="Test section">
-          <p class="sidebar-menu__item-link">Login</p>
-          <p class="sidebar-menu__item-link">Account settings</p>
+          <button name="addTextField" type="button" class="sidebar-menu__item-button" @click="addComponentToList">Text field</button>
+          <button name="addTextArea" type="button" class="sidebar-menu__item-button" @click="addComponentToList">Large text field</button>
+          <button name="addCheckboxSingle" type="button" class="sidebar-menu__item-button" @click="addComponentToList">Single checkbox</button>
+          <button name="addCheckboxGroup" type="button" class="sidebar-menu__item-button" @click="addComponentToList">Multiple checkboxes</button>
+          <button name="addRadioGroup" type="button" class="sidebar-menu__item-button" @click="addComponentToList">Radio group</button>
         </SidebarMenu>
       </template>
       <slot>
@@ -29,39 +28,96 @@ import TextValue from "@/models/form/TextValue";
 import FormCreationComponent from "@/models/form/FormCreationComponent";
 import TextArea from "@/components/core/TextArea.vue";
 import SidebarMenu from "@/components/layout/Navigation/SidebarMenu.vue";
+import CheckboxQuestion from "@/components/core/checkbox/CheckboxQuestion.vue";
+import CheckboxGroup from "@/components/core/checkbox/CheckboxGroup.vue";
+import SelectionValue from "@/models/form/SelectionValue";
+import RadioGroup from "@/components/core/radio/RadioGroup.vue";
 
 @Component({
-  components: {SidebarMenu, TextArea, TextField, TwoColumnStyleLayout}
+  components: {
+    RadioGroup,
+    CheckboxGroup,
+    CheckboxQuestion, SidebarMenu, TextArea, TextField, TwoColumnStyleLayout}
 })
 export default class FormCreatorView extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.NEW_FORM;
   private components: FormCreationComponent[] = new Array<FormCreationComponent>();
 
-  addTextField() {
+  addComponentToList(event: Event) {
+    const userAction = (event.target as Element).getAttribute("name");
+
+    let componentType: string;
+    let componentProps: object;
+
+    const order = this.components.length * 100;
+
+    switch (userAction) {
+      case "addTextField": {
+        componentType = "TextField";
+        componentProps = {
+          level: 2,
+          title: 'Question title',
+          guidance: 'Question guidance',
+          textValue: new TextValue("")
+        };
+        break;
+      }
+      case "addTextArea": {
+        componentType = "TextArea";
+        componentProps = {
+          level: 2,
+          title: 'Question title',
+          guidance: 'Question guidance',
+          textValue: new TextValue("")
+        };
+        break;
+      }
+      case "addCheckboxSingle": {
+        componentType = "CheckboxQuestion";
+        componentProps = {
+          id: 'cq',
+          title: 'Question title',
+          guidance: 'Question guidance',
+          level: 2,
+          value: new SelectionValue("Add a checbox option here", false)
+        };
+        break;
+      }
+      case "addCheckboxGroup": {
+        componentType = "CheckboxGroup";
+        componentProps = {
+          idPrefix: 'cg',
+          title: 'Question title',
+          guidance: 'Question guidance',
+          level: 2,
+          value: [
+              new SelectionValue("Add a response here", false),
+              new SelectionValue("Add a response here", false)
+          ]
+        };
+        break;
+      }
+      case "addRadioGroup": {
+        componentType = "RadioGroup";
+        componentProps = {
+          level: 2,
+          idPrefix: 'rg',
+          title: 'Question title',
+          guidance: 'Question guidance',
+          value: [
+            new SelectionValue("Add a response here", false),
+            new SelectionValue("Add a response here", false)
+          ]
+        };
+        break;
+      }
+    }
+
     this.components.push(new FormCreationComponent(
-      'TextField',
-        {
-            level: 2,
-            title: 'Title',
-            guidance: 'Guidance',
-            textValue: new TextValue("")
-        },
-        this.components.length * 100
+        componentType,
+        componentProps,
+        order
     ));
   }
-
-  addTextArea() {
-    this.components.push(new FormCreationComponent(
-      'TextArea',
-        {
-            level: 2,
-            title: 'Title',
-            guidance: 'Guidance',
-            textValue: new TextValue("")
-        },
-        this.components.length * 100
-    ));
-  }
-
 }
 </script>
