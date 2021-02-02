@@ -1,10 +1,8 @@
 <template>
-  <div class="sidebar-menu__container">
-    <Heading class="sidebar-menu__title" :level="2">{{ title }}</Heading>
-    <div class="sidebar-menu__item-container">
-      <slot>
-
-      </slot>
+  <div class="sidebar-group__container">
+    <Heading class="sidebar-group__title" :level="2">{{ title }}</Heading>
+    <div class="sidebar-group__item-container">
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -17,7 +15,7 @@ import Heading from "@/components/core/Heading.vue";
 @Component({
   components: {Heading}
 })
-export default class SidebarMenu extends Vue {
+export default class SidebarGroup extends Vue {
   @Prop({required: true})
   private title!: string;
 }

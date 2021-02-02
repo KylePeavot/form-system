@@ -1,16 +1,16 @@
 <template>
   <TwoColumnStyleLayout title="Login" :selected-page="page">
     <template v-slot:sidebar>
-      <p class="sidebar-menu__title">
+      <p class="sidebar-group__title">
         Section
       </p>
-      <div class="sidebar-menu__item-container">
+      <div class="sidebar-group__item-container">
         <ul>
-          <li class="sidebar-menu__item-link">First entry</li>
-          <li class="sidebar-menu__item-link">Second entry</li>
+          <li class="sidebar-group__item-link">First entry</li>
+          <li class="sidebar-group__item-link">Second entry</li>
         </ul>
       </div>
-      <p class="sidebar-menu__title">
+      <p class="sidebar-group__title">
         Other section
       </p>
     </template>
