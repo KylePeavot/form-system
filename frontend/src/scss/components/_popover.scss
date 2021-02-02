@@ -1,0 +1,12 @@
+.popover-menu {
+  &__container {
+    @apply w-24 flex flex-col rounded-md shadow-lg bg-white ring-1 ring-opacity-5;
+  }
+  &__item {
+    @apply block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100;
+
+    &--danger {
+      @apply block px-4 py-2 text-sm text-red-700 hover:bg-red-50;
+    }
+  }
+}
