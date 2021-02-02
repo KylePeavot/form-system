@@ -49,5 +49,7 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-/frontend/cypress/screenshots/e2e/ComponentDemos/*
+/docker/mariadb/.env
+/docker/mariadb/dbdata/
 /docker/jenkins/ran_before
+/frontend/cypress/screenshots/e2e/ComponentDemos/*
