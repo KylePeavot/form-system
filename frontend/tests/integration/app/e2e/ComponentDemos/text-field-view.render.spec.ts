@@ -21,4 +21,16 @@ describe("Text field demo page", () => {
     });
   });
 
+  it("has two three button popover's that are clickable and contain the correct menu items", () => {
+    cy.get('[name="text-field-container"]').eq(0).within(() => {
+      cy.get('[name="popper-menu"]').should('not.be.visible');
+      cy.get('[name="popper-button"]').click();
+      cy.get('[name="popper-menu"]').should('be.visible').within(() => {
+        cy.get('button').eq(0).contains("Edit")
+        cy.get('button').eq(1).contains("Move")
+        cy.get('button').eq(2).contains("Delete")
+      });
+    });
+  });
+
 })
