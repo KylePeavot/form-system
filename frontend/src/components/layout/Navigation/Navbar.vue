@@ -21,8 +21,10 @@
         </div>
       </div>
       <div class="flex flex-1 items-center justify-end h-16">
-        <template v-if="!isAuthenticated">
-          <a :href="getAuthPageDetail().url" class="px-3 py-2 rounded-md text-sm font-medium text-white">{{getAuthPageDetail().name}}</a>
+        <template v-if="authPageDetail !== null">
+          <router-link :to="authPageDetail.url">
+            <a class="px-3 py-2 rounded-md text-sm font-medium text-white">{{authPageDetail.name}}</a>
+          </router-link>
         </template>
       </div>
     </div>
@@ -36,6 +38,7 @@ import PageDetail from "../../../models/navigation/PageDetail";
 import Pages from "../../../models/navigation/Pages";
 import NavbarItem from "@/components/layout/Navigation/NavbarItem.vue";
 import Heading from "@/components/core/Heading.vue";
+import PageDetailLink from "@/models/navigation/PageDetailLink";
 @Component({
   components: {Heading, NavbarItem}
 })
@@ -47,9 +50,8 @@ import Heading from "@/components/core/Heading.vue";
     @Prop({default: ""})
     private componentClass!: string;
 
-    get routeLinks() {
-      return Pages.generatePageDetailLinks();
-    }
+    private routeLinks: PageDetailLink[] = [];
+    private authPageDetail: PageDetail | null = null;
 
     isPageSelected(page: PageDetail): boolean {
       if (page.url === this.selectedPage.url) {
@@ -70,8 +72,13 @@ import Heading from "@/components/core/Heading.vue";
       return false;
     }
 
-    getAuthPageDetail(): PageDetail {
-      return Pages.ROUTES.AUTHENTICATION.COMPUTED_LOGIN();
+    created() {
+      Pages.generatePageDetailLinks().then(v => {
+        this.routeLinks = v;
+      });
+      Pages.ROUTES.AUTHENTICATION.COMPUTED_LOGIN().then(v => {
+        this.authPageDetail = v;
+      })
     }
 
   }

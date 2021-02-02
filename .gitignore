@@ -49,4 +49,6 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-/frontend/yarn.lock
+/docker/mariadb/.env
+/docker/mariadb/dbdata/
+/docker/jenkins/ran_before
