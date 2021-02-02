@@ -2,13 +2,13 @@
   <div>
     <TwoColumnStyleLayout title="Create a new form" :selected-page="page">
       <template v-slot:sidebar>
-        <SidebarGrloup title="Components">
+        <SidebarGroup title="Components">
           <button name="addTextField" type="button" class="sidebar-group__item-button" @click="addComponentToList">Text field</button>
           <button name="addTextArea" type="button" class="sidebar-group__item-button" @click="addComponentToList">Large text field</button>
           <button name="addCheckboxSingle" type="button" class="sidebar-group__item-button" @click="addComponentToList">Single checkbox</button>
           <button name="addCheckboxGroup" type="button" class="sidebar-group__item-button" @click="addComponentToList">Multiple checkboxes</button>
           <button name="addRadioGroup" type="button" class="sidebar-group__item-button" @click="addComponentToList">Radio group</button>
-        </SidebarGrloup>
+        </SidebarGroup>
       </template>
       <slot>
         <div :v-if="components !== undefined" v-for="component in components" :key="component.order">
@@ -32,6 +32,7 @@ import CheckboxQuestion from "@/components/core/checkbox/CheckboxQuestion.vue";
 import CheckboxGroup from "@/components/core/checkbox/CheckboxGroup.vue";
 import SelectionValue from "@/models/form/SelectionValue";
 import RadioGroup from "@/components/core/radio/RadioGroup.vue";
+import {bus} from "@/main";
 
 @Component({
   components: {
@@ -43,18 +44,32 @@ export default class FormCreatorView extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.NEW_FORM;
   private components: FormCreationComponent[] = new Array<FormCreationComponent>();
 
+  created() {
+    bus.$on('deleteComponent', (data: string)  => {
+      this.components = this.components.filter(item => {
+        const currentId = Object(item.componentProps)["id"] === undefined
+            ? Object(item.componentProps)["idPrefix"]
+            : Object(item.componentProps)["id"];
+        return currentId !== data
+      });
+    })
+  }
+
   addComponentToList(event: Event) {
     const userAction = (event.target as Element).getAttribute("name");
 
     let componentType = "";
-    let componentProps = {};
+    let componentProps: any = {};
 
-    const order = (this.components.length + 1) * 100;
+    const order = this.components.length == 0
+        ? 100
+        : (Math.ceil(this.components[this.components.length - 1].order / 100) * 100) + 100;
 
     switch (userAction) {
       case "addTextField": {
         componentType = "TextField";
         componentProps = {
+          id: "tf-" + order,
           level: 2,
           title: 'Question title',
           guidance: 'Question guidance',
@@ -65,6 +80,7 @@ export default class FormCreatorView extends Vue {
       case "addTextArea": {
         componentType = "TextArea";
         componentProps = {
+          id: "ta-" + order,
           level: 2,
           title: 'Question title',
           guidance: 'Question guidance',
@@ -75,7 +91,7 @@ export default class FormCreatorView extends Vue {
       case "addCheckboxSingle": {
         componentType = "CheckboxQuestion";
         componentProps = {
-          id: 'cq',
+          id: 'cq-' + order,
           title: 'Question title',
           guidance: 'Question guidance',
           level: 2,
@@ -86,7 +102,7 @@ export default class FormCreatorView extends Vue {
       case "addCheckboxGroup": {
         componentType = "CheckboxGroup";
         componentProps = {
-          idPrefix: 'cg',
+          idPrefix: 'cg-' + order,
           title: 'Question title',
           guidance: 'Question guidance',
           level: 2,
@@ -101,7 +117,7 @@ export default class FormCreatorView extends Vue {
         componentType = "RadioGroup";
         componentProps = {
           level: 2,
-          idPrefix: 'rg',
+          idPrefix: 'rg-' + order,
           title: 'Question title',
           guidance: 'Question guidance',
           value: [
@@ -118,6 +134,8 @@ export default class FormCreatorView extends Vue {
         componentProps,
         order
     ));
+
+    console.log(this.components);
   }
 }
 </script>
