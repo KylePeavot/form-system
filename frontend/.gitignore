@@ -5,6 +5,7 @@ node_modules
 
 /tests/e2e/logs/
 /fontend/cypress
+/yarn.lock
 
 # local env files
 .env.local
