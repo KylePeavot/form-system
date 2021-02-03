@@ -23,10 +23,6 @@ import Popover from "@/components/core/Popover.vue";
     components: {Popover, BaseQuestion, Heading}
   })
   export default class TextArea extends Vue {
-
-    @Prop({required: true})
-    private id!: string;
-
     @Prop({required: true})
     private level!: number;
 

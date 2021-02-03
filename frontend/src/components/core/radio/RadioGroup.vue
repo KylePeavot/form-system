@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div name="radio-group-container">
     <BaseQuestion :level="level" :title="title" :guidance="guidance">
       <Popover>
         <button class="popover-menu__item">Edit</button>

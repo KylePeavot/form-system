@@ -1,5 +1,5 @@
 <template>
-  <div :id="id" name="text-field-container" class="question__text-field-container">
+  <div name="text-field-container" class="question__text-field-container">
     <BaseQuestion :level="level" :title="title" :guidance="guidance">
       <Popover>
         <button class="popover-menu__item">Edit</button>
@@ -23,10 +23,6 @@ import Popover from "@/components/core/Popover.vue";
     components: {Popover, BaseQuestion, Heading}
   })
   export default class TextField extends Vue {
-
-    @Prop({required: true})
-    private id!: string;
-
     @Prop({required: true})
     private level!: number;
 

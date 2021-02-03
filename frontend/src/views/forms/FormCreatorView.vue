@@ -57,7 +57,6 @@ export default class FormCreatorView extends Vue {
       case "addTextField": {
         componentType = "TextField";
         componentProps = {
-          id: "tf-" + order,
           level: 2,
           title: 'Question title',
           guidance: 'Question guidance',
@@ -68,7 +67,6 @@ export default class FormCreatorView extends Vue {
       case "addTextArea": {
         componentType = "TextArea";
         componentProps = {
-          id: "ta-" + order,
           level: 2,
           title: 'Question title',
           guidance: 'Question guidance',
