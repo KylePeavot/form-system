@@ -19,7 +19,7 @@
           <div class="py-2 px-4">
             <Heading :level="1">{{title}}</Heading>
           </div>
-          <div name="pageContent" class="overflow-auto my-4 px-4">
+          <div class="overflow-auto my-4 px-4">
             <slot></slot>
           </div>
         </div>
