@@ -1,7 +1,7 @@
 <template>
   <div>
     <button name="popper-button" class="focus:outline-none" @click="togglePopper">
-      <strong>...</strong>
+      <strong><i class="ph-dots-three-bold"></i></strong>
     </button>
     <div name="popper-menu" v-show="showMenu" class="popover-menu__container">
       <slot></slot>
