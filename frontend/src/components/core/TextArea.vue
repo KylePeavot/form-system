@@ -17,7 +17,6 @@ import {Component, Prop, Vue} from "vue-property-decorator";
 import Heading from "./Heading.vue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
 import TextValue from "@/models/form/TextValue";
-import {bus} from "@/main";
 import Popover from "@/components/core/Popover.vue";
 
 @Component({
@@ -41,7 +40,7 @@ import Popover from "@/components/core/Popover.vue";
     private textValue!: TextValue;
 
     deleteComponent() {
-      bus.$emit('deleteComponent', this.id);
+      this.$emit("delete-component");
     }
   }
 

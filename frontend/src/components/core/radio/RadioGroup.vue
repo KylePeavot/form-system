@@ -23,7 +23,6 @@ import Heading from "@/components/core/Heading.vue";
 import SelectionValue from "@/models/form/SelectionValue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
 import Popover from "@/components/core/Popover.vue";
-import {bus} from "@/main";
 
 @Component({
   components: {Popover, BaseQuestion, Heading}
@@ -55,8 +54,7 @@ export default class RadioGroup extends Vue {
   }
 
   deleteComponent() {
-    console.log("deleteComponent");
-    bus.$emit('deleteComponent', this.idPrefix);
+    this.$emit("delete-component");
   }
 }
 </script>

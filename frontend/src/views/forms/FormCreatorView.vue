@@ -11,8 +11,8 @@
         </SidebarGroup>
       </template>
       <slot>
-        <div :v-if="components !== undefined" v-for="component in components" :key="component.order">
-          <component :is="component.componentType" v-bind="component.componentProps" />
+        <div :v-if="components !== undefined" v-for="component in components" :key="component.order" >
+          <component :is="component.componentType" v-bind="component.componentProps" @delete-component="removeFromLayout(component)" />
         </div>
       </slot>
     </TwoColumnStyleLayout>
@@ -32,7 +32,6 @@ import CheckboxQuestion from "@/components/core/checkbox/CheckboxQuestion.vue";
 import CheckboxGroup from "@/components/core/checkbox/CheckboxGroup.vue";
 import SelectionValue from "@/models/form/SelectionValue";
 import RadioGroup from "@/components/core/radio/RadioGroup.vue";
-import {bus} from "@/main";
 
 @Component({
   components: {
@@ -43,17 +42,6 @@ import {bus} from "@/main";
 export default class FormCreatorView extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.NEW_FORM;
   private components: FormCreationComponent[] = new Array<FormCreationComponent>();
-
-  created() {
-    bus.$on('deleteComponent', (data: string)  => {
-      this.components = this.components.filter(item => {
-        const currentId = Object(item.componentProps)["id"] === undefined
-            ? Object(item.componentProps)["idPrefix"]
-            : Object(item.componentProps)["id"];
-        return currentId !== data
-      });
-    })
-  }
 
   addComponentToList(event: Event) {
     const userAction = (event.target as Element).getAttribute("name");
@@ -134,8 +122,13 @@ export default class FormCreatorView extends Vue {
         componentProps,
         order
     ));
+  }
 
-    console.log(this.components);
+
+  removeFromLayout(componentToDelete: FormCreationComponent) {
+    this.components = this.components.filter(item => {
+      return item !== componentToDelete;
+    })
   }
 }
 </script>

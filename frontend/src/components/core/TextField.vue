@@ -13,12 +13,11 @@
 
 <script lang="ts">
 
-import {Component, Prop, Vue, Watch} from "vue-property-decorator";
+import {Component, Prop, Vue} from "vue-property-decorator";
 import Heading from "./Heading.vue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
 import TextValue from "@/models/form/TextValue";
 import Popover from "@/components/core/Popover.vue";
-import {bus} from "@/main";
 
 @Component({
     components: {Popover, BaseQuestion, Heading}
@@ -41,8 +40,7 @@ import {bus} from "@/main";
     private textValue!: TextValue;
 
     deleteComponent() {
-      console.log("deleteComponent");
-      bus.$emit('deleteComponent', this.id);
+      this.$emit("delete-component");
     }
   }
 
