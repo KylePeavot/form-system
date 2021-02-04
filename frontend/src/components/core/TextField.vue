@@ -1,6 +1,6 @@
 <template>
   <div name="text-field-container" class="question__text-field-container">
-    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="finishEditing">
+    <BaseQuestion :base-question-props="baseQuestionProps">
       <Popover>
         <button class="popover-menu__item">Move</button>
         <button class="popover-menu__item--danger">Delete</button>
@@ -40,10 +40,6 @@ import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 
     created() {
       this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
-    }
-
-    finishEditing(data: BaseQuestionProps) {
-      this.$emit('finish-editing', data);
     }
   }
 

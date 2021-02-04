@@ -32,6 +32,7 @@ import CheckboxQuestion from "@/components/core/checkbox/CheckboxQuestion.vue";
 import CheckboxGroup from "@/components/core/checkbox/CheckboxGroup.vue";
 import SelectionValue from "@/models/form/SelectionValue";
 import RadioGroup from "@/components/core/radio/RadioGroup.vue";
+import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 
 @Component({
   components: {
