@@ -1,6 +1,6 @@
 <template>
   <div name="text-area-container" class="question__text-area-container">
-    <BaseQuestion :level="level" :title="title" :guidance="guidance"/>
+    <BaseQuestion :base-question-props="baseQuestionProps" />
     <textarea class="question__text-area" name="fieldResponse" rows="4" v-model="textValue.value"/>
   </div>
 </template>
@@ -11,6 +11,7 @@ import {Component, Prop, Vue} from "vue-property-decorator";
 import Heading from "./Heading.vue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
 import TextValue from "@/models/form/TextValue";
+import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 
 @Component({
     components: {BaseQuestion, Heading}
@@ -28,6 +29,13 @@ import TextValue from "@/models/form/TextValue";
 
     @Prop({required: true})
     private textValue!: TextValue;
+
+    private baseQuestionProps: BaseQuestionProps | undefined;
+
+    created() {
+      this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
+    }
+
   }
 
 </script>
