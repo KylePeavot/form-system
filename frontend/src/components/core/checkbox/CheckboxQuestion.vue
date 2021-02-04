@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BaseQuestion :level="level" :title="title" :guidance="guidance"/>
+    <BaseQuestion :base-question-props="baseQuestionProps"/>
     <Checkbox :id="id" :checkbox-value="value"/>
   </div>
 </template>
@@ -12,6 +12,7 @@ import Checkbox from "@/components/core/checkbox/Checkbox.vue";
 import Heading from "@/components/core/Heading.vue";
 import SelectionValue from "@/models/form/SelectionValue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
+import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 @Component({
   components: {BaseQuestion, Heading, Checkbox}
 })
@@ -31,6 +32,12 @@ import BaseQuestion from "@/components/core/BaseQuestion.vue";
 
     @Model("input", {required: true})
     private value!: SelectionValue;
+
+    private baseQuestionProps: BaseQuestionProps | undefined;
+
+    created() {
+      this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
+    }
 
   }
 
