@@ -1,8 +1,7 @@
 <template>
   <div name="text-field-container" class="question__text-field-container">
-    <BaseQuestion :level="level" :title="title" :guidance="guidance">
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="finishEditing">
       <Popover>
-        <button class="popover-menu__item">Edit</button>
         <button class="popover-menu__item">Move</button>
         <button class="popover-menu__item--danger">Delete</button>
       </Popover>
@@ -18,6 +17,7 @@ import Heading from "./Heading.vue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
 import TextValue from "@/models/form/TextValue";
 import Popover from "@/components/core/Popover.vue";
+import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 
 @Component({
     components: {Popover, BaseQuestion, Heading}
@@ -35,6 +35,16 @@ import Popover from "@/components/core/Popover.vue";
 
     @Prop({required: true})
     private textValue!: TextValue;
+
+    private baseQuestionProps: BaseQuestionProps | undefined;
+
+    created() {
+      this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
+    }
+
+    finishEditing(data: BaseQuestionProps) {
+      this.$emit('finish-editing', data);
+    }
   }
 
 </script>

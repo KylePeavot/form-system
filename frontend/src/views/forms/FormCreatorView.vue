@@ -2,13 +2,13 @@
   <div>
     <TwoColumnStyleLayout title="Create a new form" :selected-page="page">
       <template v-slot:sidebar>
-        <SidebarGrloup title="Components">
+        <SidebarGroup title="Components">
           <button name="addTextField" type="button" class="sidebar-group__item-button" @click="addComponentToList">Text field</button>
           <button name="addTextArea" type="button" class="sidebar-group__item-button" @click="addComponentToList">Large text field</button>
           <button name="addCheckboxSingle" type="button" class="sidebar-group__item-button" @click="addComponentToList">Single checkbox</button>
           <button name="addCheckboxGroup" type="button" class="sidebar-group__item-button" @click="addComponentToList">Multiple checkboxes</button>
           <button name="addRadioGroup" type="button" class="sidebar-group__item-button" @click="addComponentToList">Radio group</button>
-        </SidebarGrloup>
+        </SidebarGroup>
       </template>
       <slot>
         <div :v-if="components !== undefined" v-for="component in components" :key="component.order">
