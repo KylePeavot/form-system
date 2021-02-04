@@ -1,0 +1,11 @@
+.navbar-group {
+  @apply relative bg-blue-800 shadow-md inset-y-1 w-full px-3 py-2 rounded-b-md rounded-tr-md;
+
+  &--item {
+    @apply px-3 py-2 text-sm font-medium text-white;
+
+    &:hover, &:focus-within {
+      @apply underline
+    }
+  }
+}
