@@ -21,4 +21,9 @@ public class AuthorizationTestController {
     );
   }
 
+  @GetMapping("/s")
+  public String shouldBeFine() {
+    return "it's ok";
+  }
+
 }

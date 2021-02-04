@@ -3,13 +3,17 @@ package co600.weffs.application.internal.security.jwt;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-@Service
+/**
+ * When a request has been made, intercept it and find the method to be used.
+ * If the method has a {@link MustBeAuthorized} annotation then validate JWT token passed via SPA.
+ */
 public class JwtValidationInterceptor extends HandlerInterceptorAdapter {
 
   private static String ISSUER = "https://weffs.eu.auth0.com/";
@@ -17,8 +21,6 @@ public class JwtValidationInterceptor extends HandlerInterceptorAdapter {
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
       throws Exception {
-
-    System.out.println();
 
     if (handler instanceof HandlerMethod) {
       var handlerMethod = (HandlerMethod) handler;
