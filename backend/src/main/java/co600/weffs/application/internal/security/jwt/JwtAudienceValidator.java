@@ -5,6 +5,9 @@ import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;
 
+/**
+ * Used to ensure the audience header received is the same as the one sent in the JWT.
+ */
 public class JwtAudienceValidator implements OAuth2TokenValidator<Jwt> {
 
   private String audience;

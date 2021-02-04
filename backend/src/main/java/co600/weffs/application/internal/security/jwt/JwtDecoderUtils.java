@@ -8,6 +8,9 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtValidators;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 
+/**
+ * Used to abstract decode-specific tasks outside of interceptor.
+ */
 public class JwtDecoderUtils {
 
   public static void decode(NimbusJwtDecoder decoder, String audience, String issuer) {
