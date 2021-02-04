@@ -1,6 +1,6 @@
 <template>
   <div >
-    <BaseQuestion :level="level" :title="title" :guidance="guidance"/>
+    <BaseQuestion :base-question-props="baseQuestionProps"/>
     <div v-for="(radio, index) of value" :key="`${idPrefix}-${index}`">
       <div class="radio__container">
         <input :id="`${idPrefix}-${index}`" class="radio__item" type="radio" :value="radio.label" v-model="selected">
@@ -16,6 +16,7 @@ import {Component, Model, Prop, Vue, Watch} from "vue-property-decorator";
 import Heading from "@/components/core/Heading.vue";
 import SelectionValue from "@/models/form/SelectionValue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
+import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 
 @Component({
   components: {BaseQuestion, Heading}
@@ -38,6 +39,12 @@ export default class RadioGroup extends Vue {
 
   @Model("input", {required: true})
   private value!: SelectionValue[];
+
+  private baseQuestionProps: BaseQuestionProps | undefined;
+
+  created() {
+    this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
+  }
 
   @Watch("selected")
   selectUpdate(newValue: string) {
