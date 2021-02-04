@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FormDetailService {
-    private FormDetailRepository formDetailRepository;
+    private final FormDetailRepository formDetailRepository;
 
     @Autowired
     public FormDetailService (FormDetailRepository formDetailRepository){

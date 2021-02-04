@@ -37,6 +37,10 @@ public class FormCreationService {
         formDetail.setStatusControl(true);
         formDetailService.save(formDetail);
 
+        frontendForm.get_componentList().forEach(frontendComponent -> createQuestion(appUser,frontendComponent,formDetail));
+    }
+    private void createQuestion(AppUser appUser, FrontendComponent frontendComponent, FormDetail formDetail){
+
         var question = new Question();
         question.setCreatedBy(appUser.getUsername());
         question.setCreatedTimestamp(Instant.now());
@@ -44,16 +48,17 @@ public class FormCreationService {
         questionService.save(question);
 
         var questionDetail = new QuestionDetail();
-//        questionDetail.setGuidance();
+        questionDetail.setGuidance((String) frontendComponent.get_componentProps().get("guidance"));
         questionDetail.setLastUpdatedBy(appUser.getUsername());
         questionDetail.setLastUpdatedTimestamp(Instant.now());
-//        questionDetail.setOrder();
+        questionDetail.setOrder(frontendComponent.get_order());
 //        questionDetail.setParentQuestion();
         questionDetail.setQuestion(question);
-//        questionDetail.setQuestionType();
+        questionDetail.setQuestionType(frontendComponent.get_componentType());
         questionDetail.setStatusControl(true);
-//        questionDetail.setTitle();
-    }
+        questionDetail.setTitle((String) frontendComponent.get_componentProps().get("title"));
+        questionDetailService.save(questionDetail);
 
+    }
 
 }

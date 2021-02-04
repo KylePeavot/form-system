@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class QuestionDetailService {
-    private QuestionDetailRepository questionDetailRepository;
+    private final QuestionDetailRepository questionDetailRepository;
 
     @Autowired
     public QuestionDetailService(QuestionDetailRepository questionDetailRepository) {

@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "form")
+@Table(schema = "app",name = "form")
 @Data
 public class Form {
 
