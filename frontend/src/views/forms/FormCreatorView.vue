@@ -2,19 +2,20 @@
   <div>
     <TwoColumnStyleLayout title="Create a new form" :selected-page="page">
       <template v-slot:sidebar>
-        <SidebarGrloup title="Components">
+        <SidebarGroup title="Components">
           <button name="addTextField" type="button" class="sidebar-group__item-button" @click="addComponentToList">Text field</button>
           <button name="addTextArea" type="button" class="sidebar-group__item-button" @click="addComponentToList">Large text field</button>
           <button name="addCheckboxSingle" type="button" class="sidebar-group__item-button" @click="addComponentToList">Single checkbox</button>
           <button name="addCheckboxGroup" type="button" class="sidebar-group__item-button" @click="addComponentToList">Multiple checkboxes</button>
           <button name="addRadioGroup" type="button" class="sidebar-group__item-button" @click="addComponentToList">Radio group</button>
-        </SidebarGrloup>
+        </SidebarGroup>
       </template>
       <slot>
         <div :v-if="components !== undefined" v-for="component in components" :key="component.order">
           <component :is="component.componentType" v-bind="component.componentProps" />
         </div>
       </slot>
+      <button class="button button--primary" @click="saveForm">Save Form</button>
     </TwoColumnStyleLayout>
   </div>
 </template>
@@ -32,6 +33,8 @@ import CheckboxQuestion from "@/components/core/checkbox/CheckboxQuestion.vue";
 import CheckboxGroup from "@/components/core/checkbox/CheckboxGroup.vue";
 import SelectionValue from "@/models/form/SelectionValue";
 import RadioGroup from "@/components/core/radio/RadioGroup.vue";
+import Form from "@/models/form/Form";
+import WebRequestUtils from "@/utils/WebRequestUtils";
 
 @Component({
   components: {
@@ -42,6 +45,11 @@ import RadioGroup from "@/components/core/radio/RadioGroup.vue";
 export default class FormCreatorView extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.NEW_FORM;
   private components: FormCreationComponent[] = new Array<FormCreationComponent>();
+
+  saveForm(){
+    const form = new Form("Form",this.components);
+    WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form/save`,form);
+  }
 
   addComponentToList(event: Event) {
     const userAction = (event.target as Element).getAttribute("name");

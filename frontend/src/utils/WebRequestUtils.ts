@@ -28,5 +28,14 @@ export default class WebRequestUtils {
         }
         return fetch(input, init);
     }
+    public static async post(input: RequestInfo, data: object, init?: RequestInit) {
+        init = init ?? {};
+        init.body = JSON.stringify(data);
+        init.method = "POST";
+        init.headers = init.headers || {};
+        // @ts-expect-error
+        init.headers["Content-Type"] = "application/json";
+        return this.get(input, true, init);
+    }
 
 }
