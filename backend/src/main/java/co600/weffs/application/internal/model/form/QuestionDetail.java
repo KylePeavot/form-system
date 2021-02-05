@@ -26,7 +26,7 @@ public class QuestionDetail {
     @JoinColumn(name = "parent_question_id")
     private Question parentQuestion;
 
-    private Integer order;
+    private Integer orderNumber;
     private Instant lastUpdatedTimestamp;
     private String lastUpdatedBy;
     private Boolean statusControl;

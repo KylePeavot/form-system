@@ -51,7 +51,7 @@ public class FormCreationService {
         questionDetail.setGuidance((String) frontendComponent.get_componentProps().get("guidance"));
         questionDetail.setLastUpdatedBy(appUser.getUsername());
         questionDetail.setLastUpdatedTimestamp(Instant.now());
-        questionDetail.setOrder(frontendComponent.get_order());
+        questionDetail.setOrderNumber(frontendComponent.get_order());
 //        questionDetail.setParentQuestion();
         questionDetail.setQuestion(question);
         questionDetail.setQuestionType(frontendComponent.get_componentType());
