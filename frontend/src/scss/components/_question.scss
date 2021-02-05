@@ -1,11 +1,11 @@
 .question {
 
   &__title-row {
-    @apply w-auto max-w-sm flex;
+    @apply w-auto flex;
   }
 
   &__title {
-    @apply pb-1 w-auto max-w-sm flex-1;
+    @apply pb-1 w-auto flex-1;
   }
 
   &__guidance-container {
