@@ -1,4 +1,4 @@
-package co600.weffs.application.internal.repository;
+package co600.weffs.application.internal.repository.form;
 
 import co600.weffs.application.internal.model.form.Question;
 import org.springframework.data.repository.CrudRepository;

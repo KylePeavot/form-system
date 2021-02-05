@@ -1,8 +1,8 @@
-package co600.weffs.application.internal.services;
+package co600.weffs.application.internal.services.form;
 
 import co600.weffs.application.internal.model.error.EntityNotFoundException;
 import co600.weffs.application.internal.model.form.QuestionDetail;
-import co600.weffs.application.internal.repository.QuestionDetailRepository;
+import co600.weffs.application.internal.repository.form.QuestionDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

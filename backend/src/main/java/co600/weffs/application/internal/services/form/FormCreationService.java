@@ -1,4 +1,4 @@
-package co600.weffs.application.internal.services;
+package co600.weffs.application.internal.services.form;
 
 import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.form.*;
