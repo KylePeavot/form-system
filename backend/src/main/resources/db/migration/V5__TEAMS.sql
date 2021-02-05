@@ -22,6 +22,8 @@ CREATE TABLE team_member (
     id INT AUTO_INCREMENT PRIMARY KEY,
     team_detail_id INT NOT NULL REFERENCES team_detail(id),
     username VARCHAR(4000) NOT NULL,
+    can_modify_forms BOOLEAN NOT NULL,
+    can_manage_team BOOLEAN NOT NULL,
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     created_by VARCHAR(4000) NOT NULL,
     status_control BOOLEAN DEFAULT FALSE NOT NULL
