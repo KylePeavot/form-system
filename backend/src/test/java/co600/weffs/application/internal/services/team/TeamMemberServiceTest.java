@@ -1,7 +1,6 @@
 package co600.weffs.application.internal.services.team;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -72,8 +71,11 @@ class TeamMemberServiceTest extends MockitoTest {
     var result = teamMemberService.getTeamViewForUsername(nonAdminUser.getUsername());
     assertThat(result).isEmpty();
 
-    verify(teamMemberRepository, times(1)).findAllByUsernameAndStatusControlIsTrue(any());
-    verify(teamMemberRepository, times(1)).findAllByTeamDetailInAndStatusControlIsTrue(any());
+    verify(teamMemberRepository, times(1))
+        .findAllByUsernameAndStatusControlIsTrue(nonAdminUser.getUsername());
+
+    verify(teamMemberRepository, times(1))
+        .findAllByTeamDetailInAndStatusControlIsTrue(Set.of());
   }
 
   @Test
@@ -83,8 +85,12 @@ class TeamMemberServiceTest extends MockitoTest {
     var result = teamMemberService.getTeamViewForUsername(nonAdminUser.getUsername());
     assertThat(result).extracting(TeamView::getTeamDetail)
         .containsExactly(nonAdminTeam);
-    verify(teamMemberRepository, times(1)).findAllByUsernameAndStatusControlIsTrue(any());
-    verify(teamMemberRepository, times(1)).findAllByTeamDetailInAndStatusControlIsTrue(any());
+
+    verify(teamMemberRepository, times(1))
+        .findAllByUsernameAndStatusControlIsTrue(nonAdminUser.getUsername());
+
+    verify(teamMemberRepository, times(1))
+        .findAllByTeamDetailInAndStatusControlIsTrue(Set.of(nonAdminTeam));
   }
 
   @Test
@@ -98,5 +104,13 @@ class TeamMemberServiceTest extends MockitoTest {
     var result = teamMemberService.getTeamViewForUsername(adminUser.getUsername());
     assertThat(result).extracting(TeamView::getTeamDetail)
         .containsExactlyInAnyOrder(adminTeam, nonAdminTeam);
+
+    verify(teamMemberRepository, times(1))
+        .findAllByUsernameAndStatusControlIsTrue(adminUser.getUsername());
+
+    verify(teamMemberRepository, times(1))
+        .findAllByTeamDetailInAndStatusControlIsTrue(eq(Set.of(adminTeam, nonAdminTeam)));
+
+    verify(teamMemberRepository, times(1)).findAll();
   }
 }
