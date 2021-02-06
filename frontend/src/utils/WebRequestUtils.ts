@@ -22,9 +22,7 @@ export default class WebRequestUtils {
                 throw new Error("User is not authenticated");
             }
             // @ts-expect-error
-            init.headers["X-Once-Token"] = (await AuthenticationUtils.getContext().getIdTokenClaims()).__raw;
-            // @ts-expect-error
-            init.headers["X-Once-Aud"] = (await AuthenticationUtils.getContext().getIdTokenClaims()).aud;
+            init.headers["X-Once-Token"] = await AuthenticationUtils.getContext().getTokenSilently();
         }
         return fetch(input, init);
     }
