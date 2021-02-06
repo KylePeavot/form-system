@@ -1,6 +1,9 @@
 <template>
-  <div>
-    <BaseQuestion :base-question-props="baseQuestionProps"/>
+  <div name="checkbox-group-container">
+    <BaseQuestion :base-question-props="baseQuestionProps">
+      <button class="popover-menu__item">Move</button>
+      <button class="popover-menu__item--danger" @click="deleteComponent">Delete</button>
+    </BaseQuestion>
     <div v-for="(checkbox, index) of value" :key="`${idPrefix}-${index}`">
       <Checkbox :id="`${idPrefix}-${index}`" :checkbox-value="checkbox"/>
     </div>
@@ -16,7 +19,7 @@ import SelectionValue from "@/models/form/SelectionValue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
 import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 @Component({
-  components: {BaseQuestion, Heading, Checkbox}
+  components: {Popover, BaseQuestion, Heading, Checkbox}
 })
 export default class CheckboxGroup extends Vue {
 
@@ -41,6 +44,9 @@ export default class CheckboxGroup extends Vue {
     this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
   }
 
+  deleteComponent() {
+    this.$emit("delete-component");
+  }
 }
 
 </script>

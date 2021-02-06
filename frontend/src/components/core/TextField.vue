@@ -2,7 +2,7 @@
   <div name="text-field-container" class="question__text-field-container">
     <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="finishEditing">
       <button class="popover-menu__item">Move</button>
-      <button class="popover-menu__item popover-menu__item--danger">Delete</button>
+      <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
     <input class="question__text-field" type="text" name="fieldResponse" placeholder=" " v-model="textValue.value"/>
   </div>
@@ -21,7 +21,6 @@ import BaseQuestionProps from "@/models/form/BaseQuestionProps";
     components: {Popover, BaseQuestion, Heading}
   })
   export default class TextField extends Vue {
-
     @Prop({required: true})
     private level!: number;
 
@@ -36,15 +35,13 @@ import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 
     private baseQuestionProps: BaseQuestionProps | undefined;
 
-
     created() {
       this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
     }
 
-
-
-
-
+    deleteComponent() {
+      this.$emit("delete-component");
+    }
   }
 
 </script>

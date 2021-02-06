@@ -11,8 +11,8 @@
         </SidebarGroup>
       </template>
       <slot>
-        <div :v-if="components !== undefined" v-for="component in components" :key="component.order">
-          <component :is="component.componentType" v-bind="component.componentProps" />
+        <div :v-if="components !== undefined" v-for="component in components" :key="component.order" >
+          <component :is="component.componentType" v-bind="component.componentProps" @delete-component="removeFromLayout(component)" />
         </div>
       </slot>
     </TwoColumnStyleLayout>
@@ -48,9 +48,11 @@ export default class FormCreatorView extends Vue {
     const userAction = (event.target as Element).getAttribute("name");
 
     let componentType = "";
-    let componentProps = {};
+    let componentProps: any = {};
 
-    const order = (this.components.length + 1) * 100;
+    const order = this.components.length == 0
+        ? 100
+        : (Math.ceil(this.components[this.components.length - 1].order / 100) * 100) + 100;
 
     switch (userAction) {
       case "addTextField": {
@@ -76,7 +78,7 @@ export default class FormCreatorView extends Vue {
       case "addCheckboxSingle": {
         componentType = "CheckboxQuestion";
         componentProps = {
-          id: 'cq',
+          id: 'cq-' + order,
           title: 'Question title',
           guidance: 'Question guidance',
           level: 2,
@@ -87,7 +89,7 @@ export default class FormCreatorView extends Vue {
       case "addCheckboxGroup": {
         componentType = "CheckboxGroup";
         componentProps = {
-          idPrefix: 'cg',
+          idPrefix: 'cg-' + order,
           title: 'Question title',
           guidance: 'Question guidance',
           level: 2,
@@ -102,7 +104,7 @@ export default class FormCreatorView extends Vue {
         componentType = "RadioGroup";
         componentProps = {
           level: 2,
-          idPrefix: 'rg',
+          idPrefix: 'rg-' + order,
           title: 'Question title',
           guidance: 'Question guidance',
           value: [
@@ -119,6 +121,13 @@ export default class FormCreatorView extends Vue {
         componentProps,
         order
     ));
+  }
+
+
+  removeFromLayout(componentToDelete: FormCreationComponent) {
+    this.components = this.components.filter(item => {
+      return item !== componentToDelete;
+    })
   }
 }
 </script>

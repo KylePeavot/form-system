@@ -1,6 +1,9 @@
 <template>
   <div name="text-area-container" class="question__text-area-container">
-    <BaseQuestion :base-question-props="baseQuestionProps" />
+    <BaseQuestion :base-question-props="baseQuestionProps" >
+      <button class="popover-menu__item">Move</button>
+      <button class="popover-menu__item--danger" @click="deleteComponent">Delete</button>
+    </BaseQuestion>
     <textarea class="question__text-area" name="fieldResponse" rows="4" v-model="textValue.value"/>
   </div>
 </template>
@@ -17,7 +20,6 @@ import BaseQuestionProps from "@/models/form/BaseQuestionProps";
     components: {BaseQuestion, Heading}
   })
   export default class TextArea extends Vue {
-
     @Prop({required: true})
     private level!: number;
 
@@ -36,6 +38,10 @@ import BaseQuestionProps from "@/models/form/BaseQuestionProps";
       this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
     }
 
+
+    deleteComponent() {
+      this.$emit("delete-component");
+    }
   }
 
 </script>
