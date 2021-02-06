@@ -1,6 +1,6 @@
 <template>
   <div name="text-field-container" class="question__text-field-container">
-    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="finishEditing">
+    <BaseQuestion :base-question-props="baseQuestionProps">
       <button class="popover-menu__item">Move</button>
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
