@@ -1,10 +1,10 @@
 <template>
-  <BaseStyleLayout selected-page="page" title="Logout">
+  <BaseStyleLayout :selected-page="page" title="Logout">
     <Heading :level="2">
       Current user: {{ username }}
     </Heading>
     <br/>
-    <button class="button button--danger" @click="logout">Logout</button>
+    <button class="button button--primary" @click="logout">Logout</button>
   </BaseStyleLayout>
 </template>
 

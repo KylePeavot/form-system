@@ -7,21 +7,18 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 
 import co600.weffs.application.TestableController;
 import co600.weffs.application.internal.model.auth.AppUser;
-import co600.weffs.application.utils.ValueMapUtils;
 import co600.weffs.application.utils.UserTestUtils;
+import co600.weffs.application.utils.ValueMapUtils;
 import co600.weffs.application.utils.routes.Router;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * A dummy implementation of a test showing authentication.
  */
 
-@RunWith(SpringRunner.class)
 class AuthorizationTestControllerTest extends TestableController {
 
   @SneakyThrows

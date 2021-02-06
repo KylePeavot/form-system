@@ -3,10 +3,8 @@ package co600.weffs.application.internal.security.jwt;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.stereotype.Service;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -28,8 +26,7 @@ public class JwtValidationInterceptor extends HandlerInterceptorAdapter {
         var token = Optional.ofNullable(request.getHeader("X-Once-Token"));
         var aud = Optional.ofNullable(request.getHeader("X-Once-Aud"));
         if (token.isPresent() && aud.isPresent()) {
-          NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder)
-              JwtDecoders.fromOidcIssuerLocation(ISSUER);
+          var jwtDecoder = (NimbusJwtDecoder) JwtDecoders.fromOidcIssuerLocation(ISSUER);
           JwtDecoderUtils.decode(jwtDecoder, aud.get(), ISSUER);
           var user = JwtDecoderUtils.createAppUserFromDecoder(jwtDecoder, token.get());
           request.setAttribute("User", user);
