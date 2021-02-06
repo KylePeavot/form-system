@@ -9,11 +9,15 @@
         <button class="question__edit-pencil ph-pencil" @click="editTitle" />
       </div>
       <div class="question__popup">
-        <slot></slot>
+          <Popover>
+            <button class="popover-menu__item" v-show="!guidanceTextExists" @click="addGuidance">Add guidance</button>
+            <button class="popover-menu__item" v-show="guidanceTextExists" @click="removeGuidance">Remove guidance</button>
+            <slot></slot>
+          </Popover>
       </div>
     </div>
-    <div class="question__guidance-container">
-      <p v-if="baseQuestionProps.guidance.length !== 0" v-show="!editingGuidance" class="question__guidance-text">
+    <div v-if="baseQuestionProps.guidance.length !== 0" class="question__guidance-container">
+      <p v-show="!editingGuidance" class="question__guidance-text">
         {{ baseQuestionProps.guidance }}
       </p>
       <input ref="guidanceInput" type="text" class="question__guidance-text question__guidance-text--edit" v-show="editingGuidance" v-model="baseQuestionProps.guidance" @focusout="finishEditing" @keypress.enter="finishEditing" />
@@ -27,9 +31,10 @@
 import {Component, Prop, Vue} from "vue-property-decorator";
 import Heading from "@/components/core/Heading.vue";
 import BaseQuestionProps from "@/models/form/BaseQuestionProps";
+import Popover from "@/components/core/Popover.vue";
 
 @Component({
-  components: {Heading}
+  components: {Popover, Heading}
 })
 export default class BaseQuestion extends Vue {
 
@@ -39,6 +44,8 @@ export default class BaseQuestion extends Vue {
   private editingTitle = false;
 
   private editingGuidance = false;
+
+  private guidanceTextExists = this.baseQuestionProps.guidance.length !== 0;
 
   editTitle() {
     this.editingGuidance = false;
@@ -61,7 +68,22 @@ export default class BaseQuestion extends Vue {
   finishEditing() {
     this.editingTitle = false;
     this.editingGuidance = false;
+
+    if (this.baseQuestionProps?.guidance.length === 0) { //if the user has deleted the guidance text completely
+      this.guidanceTextExists = false;
+    }
+
     this.$emit("finish-editing", this.baseQuestionProps);
+  }
+
+  addGuidance() {
+    this.baseQuestionProps!.guidance = "Guidance text";
+    this.guidanceTextExists = true;
+  }
+
+  removeGuidance() {
+    this.baseQuestionProps!.guidance = "";
+    this.guidanceTextExists = false
   }
 
 }

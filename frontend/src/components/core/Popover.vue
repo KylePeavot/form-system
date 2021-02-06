@@ -53,6 +53,7 @@ export default class Popover extends Vue {
     // sleep needed so that the browser has time to deal with button presses before closing the popper due to the @focusout event
     await this.sleep(100);
     this.showMenu = false;
+    this.popper = null;
   }
 
   togglePopper() {
