@@ -2,7 +2,7 @@
   <div name="text-area-container" class="question__text-area-container">
     <BaseQuestion :base-question-props="baseQuestionProps" >
       <button class="popover-menu__item">Move</button>
-      <button class="popover-menu__item--danger" @click="deleteComponent">Delete</button>
+      <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
     <textarea class="question__text-area" name="fieldResponse" rows="4" v-model="textValue.value"/>
   </div>

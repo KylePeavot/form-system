@@ -2,7 +2,7 @@
   <div name="checkbox-question-container">
     <BaseQuestion :base-question-props="baseQuestionProps">
       <button class="popover-menu__item">Move</button>
-      <button class="popover-menu__item--danger" @click="deleteComponent">Delete</button>
+      <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
     <Checkbox :id="id" :checkbox-value="value"/>
   </div>

@@ -2,7 +2,7 @@
   <div name="checkbox-group-container">
     <BaseQuestion :base-question-props="baseQuestionProps">
       <button class="popover-menu__item">Move</button>
-      <button class="popover-menu__item--danger" @click="deleteComponent">Delete</button>
+      <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
     <div v-for="(checkbox, index) of value" :key="`${idPrefix}-${index}`">
       <Checkbox :id="`${idPrefix}-${index}`" :checkbox-value="checkbox"/>
@@ -19,7 +19,7 @@ import SelectionValue from "@/models/form/SelectionValue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
 import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 @Component({
-  components: {Popover, BaseQuestion, Heading, Checkbox}
+  components: {BaseQuestion, Heading, Checkbox}
 })
 export default class CheckboxGroup extends Vue {
 

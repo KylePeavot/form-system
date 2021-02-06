@@ -2,7 +2,7 @@
   <div name="radio-group-container">
     <BaseQuestion :base-question-props="baseQuestionProps">
       <button class="popover-menu__item">Move</button>
-      <button class="popover-menu__item--danger" @click="deleteComponent">Delete</button>
+      <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
     <div v-for="(radio, index) of value" :key="`${idPrefix}-${index}`">
       <div class="radio__container">
