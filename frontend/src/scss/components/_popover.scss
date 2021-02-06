@@ -1,6 +1,6 @@
 .popover-menu {
   &__container {
-    @apply w-auto sm:w-min flex flex-col rounded-md shadow-lg bg-white ring-1 ring-opacity-5;
+    @apply w-auto flex flex-col rounded-md shadow-lg bg-white ring-1 ring-opacity-5;
   }
   &__item {
     @apply block px-4 p-1 text-sm text-gray-700 hover:bg-gray-100 text-left;

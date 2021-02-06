@@ -41,6 +41,10 @@
     }
   }
 
+  &__edit {
+    @apply rounded-md p-0 focus:border-blue-700
+  }
+
   &__popup {
     @apply flex-none;
   }

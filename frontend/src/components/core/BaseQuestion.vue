@@ -2,26 +2,26 @@
   <div class="question">
     <div class="question__title-row">
       <div class="flex flex-1">
-        <Heading class="question__title" :level="baseQuestionProps.level" v-show="!editingTitle">
-          {{ baseQuestionProps.title }}
-        </Heading>
-        <input ref="titleInput" type="text" class="question__title question__title--edit" v-show="editingTitle" v-model="baseQuestionProps.title" @focusout="finishEditing" @keypress.enter="finishEditing" />
-        <button class="question__edit-pencil ph-pencil" @click="editTitle" />
+        <EditableComponent edit-component-css="question__title question__edit text-2xl" v-model="baseQuestionProps.title" @finish-editing="editTitle">
+          <Heading class="question__title" :level="baseQuestionProps.level">
+            {{ baseQuestionProps.title }}
+          </Heading>
+        </EditableComponent>
       </div>
       <div class="question__popup">
-          <Popover>
-            <button class="popover-menu__item" v-show="!guidanceTextExists" @click="addGuidance">Add guidance</button>
-            <button class="popover-menu__item" v-show="guidanceTextExists" @click="removeGuidance">Remove guidance</button>
-            <slot></slot>
-          </Popover>
+        <Popover>
+          <button class="popover-menu__item" v-show="!guidanceTextExists" @click="addGuidance">Add guidance</button>
+          <button class="popover-menu__item" v-show="guidanceTextExists" @click="removeGuidance">Remove guidance</button>
+          <slot></slot>
+        </Popover>
       </div>
     </div>
     <div v-if="baseQuestionProps.guidance.length !== 0" class="question__guidance-container">
-      <p v-show="!editingGuidance" class="question__guidance-text">
-        {{ baseQuestionProps.guidance }}
-      </p>
-      <input ref="guidanceInput" type="text" class="question__guidance-text question__guidance-text--edit" v-show="editingGuidance" v-model="baseQuestionProps.guidance" @focusout="finishEditing" @keypress.enter="finishEditing" />
-      <button class="question__edit-pencil ph-pencil" @click="editGuidance" />
+      <EditableComponent edit-component-css="question__guidance-text question__edit" v-model="baseQuestionProps.guidance" @finish-editing="editGuidance">
+        <p class="question__guidance-text">
+          {{ baseQuestionProps.guidance }}
+        </p>
+      </EditableComponent>
     </div>
   </div>
 </template>
@@ -29,46 +29,34 @@
 <script lang="ts">
 
 import {Component, Prop, Vue} from "vue-property-decorator";
-import Heading from "@/components/core/Heading.vue";
+import Heading from "@/components/core/componentExtras/Heading.vue";
 import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 import Popover from "@/components/core/Popover.vue";
+import EditableComponent from "@/components/core/componentExtras/EditableComponent.vue";
 
 @Component({
-  components: {Popover, Heading}
+  components: {EditableComponent, Popover, Heading}
 })
 export default class BaseQuestion extends Vue {
 
   @Prop({required: true})
   private baseQuestionProps!: BaseQuestionProps;
 
-  private editingTitle = false;
-
-  private editingGuidance = false;
-
   private guidanceTextExists = this.baseQuestionProps.guidance.length !== 0;
 
-  editTitle() {
-    this.editingGuidance = false;
-    this.editingTitle = true;
 
-    Vue.nextTick(() => {
-      (this.$refs.titleInput as HTMLElement).focus();
-    });
+  editTitle(newTitle: string) {
+    this.baseQuestionProps.title = newTitle;
+    this.finishEditing();
   }
 
-  editGuidance() {
-    this.editingTitle = false;
-    this.editingGuidance = true;
-
-    Vue.nextTick(() => {
-      (this.$refs.guidanceInput as HTMLElement).focus();
-    });
+  editGuidance(newGuidance: string) {
+    this.baseQuestionProps.guidance = newGuidance;
+    this.finishEditing();
   }
 
   finishEditing() {
-    this.editingTitle = false;
-    this.editingGuidance = false;
-
+    this.$forceUpdate();
     if (this.baseQuestionProps?.guidance.length === 0) { //if the user has deleted the guidance text completely
       this.guidanceTextExists = false;
     }

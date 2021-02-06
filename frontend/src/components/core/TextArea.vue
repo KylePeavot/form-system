@@ -8,7 +8,7 @@
 <script lang="ts">
 
 import {Component, Prop, Vue} from "vue-property-decorator";
-import Heading from "./Heading.vue";
+import Heading from "./componentExtras/Heading.vue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
 import TextValue from "@/models/form/TextValue";
 import BaseQuestionProps from "@/models/form/BaseQuestionProps";
