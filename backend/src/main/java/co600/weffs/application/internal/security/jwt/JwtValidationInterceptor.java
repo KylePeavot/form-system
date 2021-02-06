@@ -11,7 +11,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.method.HandlerMethod;
@@ -46,9 +45,8 @@ public class JwtValidationInterceptor extends HandlerInterceptorAdapter {
 
   private AppUser getUserFromToken(String token) throws IOException {
     var payload = verifyToken(token);
-    var payloadAsString = payload.lines().collect(Collectors.joining());
     var mapper = new ObjectMapper();
-    var tokenResponse = mapper.readValue(payloadAsString, TokenResponse.class);
+    var tokenResponse = mapper.readValue(payload, TokenResponse.class);
     var role = SamlRole.getFromSamlReference(tokenResponse.getFamily_name());
     return new AppUser(tokenResponse.getName(), tokenResponse.getEmail(), role);
   }
