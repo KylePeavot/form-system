@@ -43,7 +43,7 @@ export default class Dashboard extends Vue {
         })
         .then(() => {
           this.text = `Proved authentication in ${new Date().getUTCMilliseconds() - validateAuthStartTime}ms`
-        })
+        });
       } else {
         WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/test-auth`, false)
         .then(value => value.json())
