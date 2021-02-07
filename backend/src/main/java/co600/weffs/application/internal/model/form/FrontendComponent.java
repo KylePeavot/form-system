@@ -7,8 +7,8 @@ import java.util.Map;
 @Data
 public class FrontendComponent {
 
-    private String _componentType ;
-    private Map<String,?> _componentProps ;
-    private Integer _order ;
+    private String _componentType;
+    private Map<String,?> _componentProps;
+    private Integer _order;
 
 }
