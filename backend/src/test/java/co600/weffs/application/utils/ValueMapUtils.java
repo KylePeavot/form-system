@@ -12,8 +12,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
  */
 public class ValueMapUtils<T> {
 
-  public T mapResponse(MockHttpServletResponse response)
-      throws IOException {
+  public T mapResponse(MockHttpServletResponse response) throws IOException {
     ObjectMapper mapper = new ObjectMapper();
     return (T) mapper.readValue(response.getContentAsByteArray(), Object.class);
   }
