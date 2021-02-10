@@ -24,7 +24,7 @@ public class FormCreationService {
     }
 
     @Transactional
-    public void createForm(AppUser appUser, FrontendForm frontendForm){
+    public void createForm(AppUser appUser, FrontendForm frontendForm) {
         var form = new Form();
         form.setCreatedBy(appUser.getUsername());
         form.setCreatedTimestamp(Instant.now());
@@ -37,9 +37,10 @@ public class FormCreationService {
         formDetail.setStatusControl(true);
         formDetailService.save(formDetail);
 
-        frontendForm.get_componentList().forEach(frontendComponent -> createQuestion(appUser,frontendComponent,formDetail));
+        frontendForm.get_componentList().forEach(frontendComponent -> createQuestion(appUser, frontendComponent, formDetail));
     }
-    private void createQuestion(AppUser appUser, FrontendComponent frontendComponent, FormDetail formDetail){
+
+    void createQuestion(AppUser appUser, FrontendComponent frontendComponent, FormDetail formDetail) {
 
         var question = new Question();
         question.setCreatedBy(appUser.getUsername());
@@ -58,7 +59,6 @@ public class FormCreationService {
         questionDetail.setStatusControl(true);
         questionDetail.setTitle((String) frontendComponent.get_componentProps().get("title"));
         questionDetailService.save(questionDetail);
-
     }
 
 }
