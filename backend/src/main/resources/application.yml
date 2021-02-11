@@ -4,10 +4,3 @@ server:
 spring:
   flyway:
     enabled: false
-
-  datasource:
-    driverClassName: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/app
-  jpa:
-    hibernate:
-      ddl-auto: none
