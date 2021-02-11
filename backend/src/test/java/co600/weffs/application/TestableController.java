@@ -1,10 +1,9 @@
 package co600.weffs.application;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -17,18 +16,20 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * By default uses {test} ActiveProfile. Shouldn't be any reason to modify this.
  */
 @RunWith(SpringRunner.class)
-@WebMvcTest(excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 @ActiveProfiles({"test"})
 public class TestableController {
 
   @Autowired
   protected MockMvc mockMvc;
 
+  protected ObjectMapper jacksonMapper;
+
   protected static MockHttpServletRequest requestServlet;
   protected static ServletRequestAttributes requestAttributes;
 
   @BeforeEach
   void testableControllerSetUp() {
+    jacksonMapper = new ObjectMapper();
     requestServlet = new MockHttpServletRequest();
     requestAttributes = new ServletRequestAttributes(requestServlet);
     RequestContextHolder.setRequestAttributes(requestAttributes);
