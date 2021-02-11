@@ -4,3 +4,7 @@ server:
 spring:
   flyway:
     enabled: false
+
+  jpa:
+    hibernate:
+      ddl-auto: none
