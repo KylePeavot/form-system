@@ -2,17 +2,17 @@
   <div>
     <TwoColumnStyleLayout title="Create a new form" :selected-page="page">
       <template v-slot:sidebar>
-        <SidebarGrloup title="Components">
+        <SidebarGroup title="Components">
           <button name="addTextField" type="button" class="sidebar-group__item-button" @click="addComponentToList">Text field</button>
           <button name="addTextArea" type="button" class="sidebar-group__item-button" @click="addComponentToList">Large text field</button>
           <button name="addCheckboxSingle" type="button" class="sidebar-group__item-button" @click="addComponentToList">Single checkbox</button>
           <button name="addCheckboxGroup" type="button" class="sidebar-group__item-button" @click="addComponentToList">Multiple checkboxes</button>
           <button name="addRadioGroup" type="button" class="sidebar-group__item-button" @click="addComponentToList">Radio group</button>
-        </SidebarGrloup>
+        </SidebarGroup>
       </template>
       <slot>
-        <div :v-if="components !== undefined" v-for="component in components" :key="component.order">
-          <component :is="component.componentType" v-bind="component.componentProps" />
+        <div :v-if="components !== undefined" v-for="component in components" :key="component.order" >
+          <component :is="component.componentType" v-bind="component.componentProps" @delete-component="removeFromLayout(component)" />
         </div>
       </slot>
     </TwoColumnStyleLayout>
@@ -42,12 +42,17 @@ import RadioGroup from "@/components/core/radio/RadioGroup.vue";
 export default class FormCreatorView extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.NEW_FORM;
   private components: FormCreationComponent[] = new Array<FormCreationComponent>();
+  private nextComponentId = 1;
 
   addComponentToList(event: Event) {
     const userAction = (event.target as Element).getAttribute("name");
 
     let componentType = "";
-    let componentProps = {};
+    let componentProps: any = {};
+
+    for (let i = 0; i < this.components.length; i++) {
+      this.components[i].order = (i + 1) * 100;
+    }
 
     const order = (this.components.length + 1) * 100;
 
@@ -75,7 +80,7 @@ export default class FormCreatorView extends Vue {
       case "addCheckboxSingle": {
         componentType = "CheckboxQuestion";
         componentProps = {
-          id: 'cq',
+          id: 'cq-' + this.nextComponentId,
           title: 'Question title',
           guidance: 'Question guidance',
           level: 2,
@@ -86,7 +91,7 @@ export default class FormCreatorView extends Vue {
       case "addCheckboxGroup": {
         componentType = "CheckboxGroup";
         componentProps = {
-          idPrefix: 'cg',
+          idPrefix: 'cg-' + this.nextComponentId,
           title: 'Question title',
           guidance: 'Question guidance',
           level: 2,
@@ -101,7 +106,7 @@ export default class FormCreatorView extends Vue {
         componentType = "RadioGroup";
         componentProps = {
           level: 2,
-          idPrefix: 'rg',
+          idPrefix: 'rg-' + this.nextComponentId,
           title: 'Question title',
           guidance: 'Question guidance',
           value: [
@@ -118,6 +123,13 @@ export default class FormCreatorView extends Vue {
         componentProps,
         order
     ));
+  }
+
+
+  removeFromLayout(componentToDelete: FormCreationComponent) {
+    this.components = this.components.filter(item => {
+      return item !== componentToDelete;
+    })
   }
 }
 </script>
