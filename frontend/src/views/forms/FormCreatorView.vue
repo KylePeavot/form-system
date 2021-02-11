@@ -42,6 +42,7 @@ import RadioGroup from "@/components/core/radio/RadioGroup.vue";
 export default class FormCreatorView extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.NEW_FORM;
   private components: FormCreationComponent[] = new Array<FormCreationComponent>();
+  private nextComponentId = 1;
 
   addComponentToList(event: Event) {
     const userAction = (event.target as Element).getAttribute("name");
@@ -49,9 +50,11 @@ export default class FormCreatorView extends Vue {
     let componentType = "";
     let componentProps: any = {};
 
-    const order = this.components.length == 0
-        ? 100
-        : (Math.ceil(this.components[this.components.length - 1].order / 100) * 100) + 100;
+    for (let i = 0; i < this.components.length; i++) {
+      this.components[i].order = (i + 1) * 100;
+    }
+
+    const order = (this.components.length + 1) * 100;
 
     switch (userAction) {
       case "addTextField": {
@@ -77,7 +80,7 @@ export default class FormCreatorView extends Vue {
       case "addCheckboxSingle": {
         componentType = "CheckboxQuestion";
         componentProps = {
-          id: 'cq-' + order,
+          id: 'cq-' + this.nextComponentId,
           title: 'Question title',
           guidance: 'Question guidance',
           level: 2,
@@ -88,7 +91,7 @@ export default class FormCreatorView extends Vue {
       case "addCheckboxGroup": {
         componentType = "CheckboxGroup";
         componentProps = {
-          idPrefix: 'cg-' + order,
+          idPrefix: 'cg-' + this.nextComponentId,
           title: 'Question title',
           guidance: 'Question guidance',
           level: 2,
@@ -103,7 +106,7 @@ export default class FormCreatorView extends Vue {
         componentType = "RadioGroup";
         componentProps = {
           level: 2,
-          idPrefix: 'rg-' + order,
+          idPrefix: 'rg-' + this.nextComponentId,
           title: 'Question title',
           guidance: 'Question guidance',
           value: [
