@@ -30,21 +30,15 @@ class FormControllerTest extends TestableController {
     @MockBean
     private FormCreationService formCreationService;
 
-    private FrontendForm frontendForm;
-
     @SneakyThrows
     @Test
     void testFormSaving() {
         var user = UserTestUtils.createDefaultUndergraduateAppUser();
         var frontendForm = new FrontendForm();
         var response = mockMvc.perform(
-                // Send a POST request to the URL mapping on Controller::Method
                 post(Router.determineRoute(on(FormController.class).saveForm(null, null)))
-                        // Data is sent as JSON
                         .contentType(MediaType.APPLICATION_JSON)
-                        // Convert object to JSON and set as request body.
                         .content(jacksonMapper.writeValueAsString(frontendForm))
-                        // Stub fake user for authentication
                         .with(mockHttpServletRequest -> {
                             mockHttpServletRequest.setAttribute("User", user);
                             return mockHttpServletRequest;
