@@ -20,7 +20,7 @@ pipeline {
           steps {
             dir(path: 'backend') {
               sh 'chmod +x ./mvnw'
-              sh './mvnw -B verify --file pom.xml'
+              sh './mvnw -B verify --file pom.xml -Dspring-boot.run.profiles=test'
             }
           }
         }
