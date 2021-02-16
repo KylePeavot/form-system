@@ -36,7 +36,7 @@ export default class UserSelector extends Vue {
     this.trackValue = this.value;
     AuthenticationUtils.isLoggedIn().then(v => {
       if (v) {
-        WebRequestUtils.getWithoutHeaders(`http://raptor.kent.ac.uk/~ca469/weffs/users/`)
+        WebRequestUtils.getWithoutHeaders(`${WebRequestUtils.BASE_URL}/api/kent/users`, true)
         .then(response => response.json())
         .then(values => values.map((x: string) => KentUser.createUserFromResponseString(x)))
         .then(userArray => this.users = userArray);

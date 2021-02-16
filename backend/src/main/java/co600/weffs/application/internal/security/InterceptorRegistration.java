@@ -1,6 +1,6 @@
 package co600.weffs.application.internal.security;
 
-import co600.weffs.application.internal.security.jwt.JwtValidationInterceptor;
+import co600.weffs.application.internal.security.jwt.UserInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -17,6 +17,6 @@ public class InterceptorRegistration implements WebMvcConfigurer {
 
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(new JwtValidationInterceptor());
+    registry.addInterceptor(new UserInterceptor());
   }
 }
