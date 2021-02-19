@@ -4,7 +4,7 @@
       <Popover>
         <button class="popover-menu__item">Edit</button>
         <button class="popover-menu__item">Move</button>
-        <button class="popover-menu__item--danger">Delete</button>
+        <button class="popover-menu__item--danger" @click="deleteComponent">Delete</button>
       </Popover>
     </BaseQuestion>
     <input class="question__text-field" type="text" name="fieldResponse" placeholder=" " v-model="textValue.value"/>
@@ -23,7 +23,6 @@ import Popover from "@/components/core/Popover.vue";
     components: {Popover, BaseQuestion, Heading}
   })
   export default class TextField extends Vue {
-
     @Prop({required: true})
     private level!: number;
 
@@ -35,6 +34,10 @@ import Popover from "@/components/core/Popover.vue";
 
     @Prop({required: true})
     private textValue!: TextValue;
+
+    deleteComponent() {
+      this.$emit("delete-component");
+    }
   }
 
 </script>
