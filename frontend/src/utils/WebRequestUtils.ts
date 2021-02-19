@@ -17,14 +17,19 @@ export default class WebRequestUtils {
         // @ts-expect-error
         // Ignore warning because Access-Control-Allow-Origin is not a recognised property.
         init.headers["Access-Control-Allow-Origin"] = "*";
+        return WebRequestUtils.getWithoutHeaders(input, authenticated, init);
+    }
+
+    public static async getWithoutHeaders(input: RequestInfo, authenticated?: boolean, init?: RequestInit): Promise<Response> {
+        init = init ?? {};
+        init.mode = init.mode || "cors";
+        init.headers = init.headers || {};
         if (authenticated) {
             if (!await AuthenticationUtils.isLoggedIn()) {
                 throw new Error("User is not authenticated");
             }
             // @ts-expect-error
-            init.headers["X-Once-Token"] = (await AuthenticationUtils.getContext().getIdTokenClaims()).__raw;
-            // @ts-expect-error
-            init.headers["X-Once-Aud"] = (await AuthenticationUtils.getContext().getIdTokenClaims()).aud;
+            init.headers["X-Once-Token"] = await AuthenticationUtils.getContext().getTokenSilently();
         }
         return fetch(input, init);
     }
