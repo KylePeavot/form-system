@@ -1,5 +1,6 @@
 package co600.weffs.application.internal.controller.users;
 
+import co600.weffs.application.internal.model.FormView;
 import co600.weffs.application.internal.services.KentUserRestService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,16 @@ public class UserController {
 
   @GetMapping
   public List<?> getKentUsers() {
-    return kentUserRestService.getKentUsersAsStringList();
+    var list = kentUserRestService.getKentUsersAsStringList();
+    return list;
+  }
+
+  @GetMapping("/forms")
+  public List<?> getForms() {
+    return List.of(
+        new FormView(1, "Example form"),
+        new FormView(2, "Another form")
+    );
   }
 
 }

@@ -1,11 +1,13 @@
 export default class KentUser {
 
-  private _id: string;
-  private _name: string;
+  private readonly _id: string;
+  private readonly _name: string;
+  private readonly _displayName: string;
 
-  private constructor(id: string, name: string) {
+  public constructor(id: string, name: string) {
     this._id = id;
-    this._name = `${id} (${name})`;
+    this._name = name;
+    this._displayName = `${id} (${name})`;
   }
 
   public static createUserFromResponseString(responseString: string): KentUser {
@@ -22,6 +24,10 @@ export default class KentUser {
 
   get id(): string {
     return this._id;
+  }
+
+  get displayName(): string {
+    return this._displayName;
   }
 
   get name(): string {

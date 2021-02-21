@@ -1,5 +1,5 @@
 <template>
-  <VueSelect label="_name" :options="users" v-model="trackValue" :multiple="multiple"></VueSelect>
+  <VueSelect label="_displayName" :options="users" v-model="trackValue" :multiple="multiple"></VueSelect>
 </template>
 
 <script lang="ts">
