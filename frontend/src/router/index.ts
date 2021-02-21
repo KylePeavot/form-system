@@ -38,6 +38,14 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
+    path: Pages.ROUTES.SHOWN_IN_NAVBAR.TEAMS.subRoutes.CREATE_TEAM.url,
+    name: Pages.ROUTES.SHOWN_IN_NAVBAR.TEAMS.subRoutes.CREATE_TEAM.name,
+    component: () => import("../views/teams/TeamCreationScreen.vue"),
+    meta: {
+      loginRequired: true
+    }
+  },
+  {
     path: Pages.ROUTES.SHOWN_IN_NAVBAR.COMPONENTS.subRoutes.TEXT_FIELD.url,
     name: Pages.ROUTES.SHOWN_IN_NAVBAR.COMPONENTS.subRoutes.TEXT_FIELD.name,
     component: () => import("../views/components/TextFieldView.vue")

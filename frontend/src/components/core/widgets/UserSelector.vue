@@ -1,5 +1,5 @@
 <template>
-  <VueSelect label="_displayName" :options="users" v-model="trackValue" :multiple="multiple"></VueSelect>
+  <VueSelect label="_displayName" :options="users" :value="value" @input="emitInput" :multiple="multiple"></VueSelect>
 </template>
 
 <script lang="ts">
@@ -19,8 +19,6 @@ export default class UserSelector extends Vue {
 
   private users: KentUser[] = [];
 
-  private trackValue: KentUser | KentUser[] | null = null;
-
   @Watch("trackValue")
   trackUpdate(newValue: any) {
     this.$emit("input", newValue);
@@ -32,8 +30,11 @@ export default class UserSelector extends Vue {
   @Model("input", {required: true})
   private value!: KentUser | KentUser[] | null;
 
+  emitInput(event: any) {
+    this.$emit("input", event);
+  }
+
   mounted() {
-    this.trackValue = this.value;
     AuthenticationUtils.isLoggedIn().then(v => {
       if (v) {
         WebRequestUtils.getWithoutHeaders(`${WebRequestUtils.BASE_URL}/api/kent/users`, true)

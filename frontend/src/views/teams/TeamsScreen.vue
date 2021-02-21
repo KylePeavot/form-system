@@ -6,7 +6,9 @@
     </Banner>
     <p><strong>All team members can send forms to others</strong></p>
     <br/>
-    <button class="button button--primary">Create new team</button>
+    <router-link :to="createTeamUrl">
+      <a class="button button--primary">Create new team</a>
+    </router-link>
     <br/><br/>
     <hr/>
     <div class="my-2">
@@ -32,41 +34,11 @@
               </div>
             </div>
             <div class="team__members">
-              <div class="mb-1 mr-2 p-2 bg-gray-200 inline-block rounded-md"
-                   v-for="member of team.teamMembers"
-                   :key="`member-${member.username}-form-${team.teamDetail.id}`">
-                <p>{{ member.username }}</p>
-                <template v-if="selfCanManageTeam(team.teamMembers)">
-                  <div class="text-sm text-gray-700">
-                    <input :id="`member-${member.username}-form-${team.teamDetail.id}-cmf`"
-                           class="checkbox"
-                           type="checkbox"
-                           v-model="member.canModifyForms"/>
-                    <label :for="`member-${member.username}-form-${team.teamDetail.id}-cmf`">
-                      Modify forms
-                    </label>
-                  </div>
-                  <div class="text-sm text-gray-700">
-                    <input :id="`member-${member.username}-form-${team.teamDetail.id}-cmt`"
-                           class="checkbox"
-                           type="checkbox"
-                           v-model="member.canManageTeam"/>
-                    <label :for="`member-${member.username}-form-${team.teamDetail.id}-cmt`">
-                      Manage team
-                    </label>
-                  </div>
-                </template>
-                <template v-else>
-                  <div class="text-sm text-gray-700">
-                    <CheckOrCrossIcon :value="member.canModifyForms"/>
-                    <span>Modify forms</span>
-                  </div>
-                  <div class="text-sm text-gray-700">
-                    <CheckOrCrossIcon :value="member.canManageTeam"/>
-                    <span>Manage team</span>
-                  </div>
-                </template>
-              </div>
+              <TeamAccessCard
+                  v-for="member of team.teamMembers"
+                  :key="`member-${member.username}-form-${team.teamDetail.id}`"
+                  :editable="selfCanManageTeam(team.teamMembers)"
+                  :member="member"/>
             </div>
           </div>
         </div>
@@ -94,9 +66,11 @@ import KentUser from "@/models/external/users/KentUser";
 import AuthenticationUtils from "@/utils/AuthenticationUtils";
 import TeamMember from "@/models/team/TeamMember";
 import UserSelector from "@/components/core/widgets/UserSelector.vue";
+import TeamAccessCard from "@/components/widgets/teams/TeamAccessCard.vue";
 
 @Component({
   components: {
+    TeamAccessCard,
     CheckOrCrossIcon,
     Heading,
     Banner,
@@ -111,6 +85,7 @@ export default class TeamsScreen extends Vue {
   private retrievedTeams = false;
   private retrieveError: Error | null = null;
   private user: KentUser | null = null;
+  private createTeamUrl = Pages.ROUTES.SHOWN_IN_NAVBAR.TEAMS.subRoutes.CREATE_TEAM.url;
 
   mounted() {
     WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/teams`, true)
