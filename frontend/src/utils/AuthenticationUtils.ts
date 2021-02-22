@@ -26,7 +26,7 @@ export default class AuthenticationUtils {
     })
   }
 
-  public static getContext() {
+  public static getContext(): any {
     return this.auth;
   }
 
