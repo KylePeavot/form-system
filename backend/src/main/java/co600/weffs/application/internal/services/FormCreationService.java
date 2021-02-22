@@ -53,6 +53,7 @@ public class FormCreationService {
         questionDetail.setLastUpdatedBy(appUser.getUsername());
         questionDetail.setLastUpdatedTimestamp(Instant.now());
         questionDetail.setOrderNumber(frontendComponent.get_order());
+        //TODO FS-38 make possible to reveal more questions depending on checkbox/radio state
 //        questionDetail.setParentQuestion();
         questionDetail.setQuestion(question);
         questionDetail.setQuestionType(frontendComponent.get_componentType());
