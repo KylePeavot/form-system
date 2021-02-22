@@ -15,6 +15,7 @@
           <component :is="component.componentType" v-bind="component.componentProps" @delete-component="removeFromLayout(component)" />
         </div>
       </slot>
+      <button class="button button--primary" @click="saveForm">Save Form</button>
     </TwoColumnStyleLayout>
   </div>
 </template>
@@ -32,6 +33,8 @@ import CheckboxQuestion from "@/components/core/checkbox/CheckboxQuestion.vue";
 import CheckboxGroup from "@/components/core/checkbox/CheckboxGroup.vue";
 import SelectionValue from "@/models/form/SelectionValue";
 import RadioGroup from "@/components/core/radio/RadioGroup.vue";
+import Form from "@/models/form/Form";
+import WebRequestUtils from "@/utils/WebRequestUtils";
 
 @Component({
   components: {
@@ -43,6 +46,11 @@ export default class FormCreatorView extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.NEW_FORM;
   private components: FormCreationComponent[] = new Array<FormCreationComponent>();
   private nextComponentId = 1;
+
+  saveForm(){
+    const form = new Form("Form",this.components);
+    WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form/save`,form);
+  }
 
   addComponentToList(event: Event) {
     const userAction = (event.target as Element).getAttribute("name");
