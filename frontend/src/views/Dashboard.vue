@@ -2,6 +2,9 @@
   <div>
     <BaseStyleLayout title="Page title" :selected-page="page">
       <Heading :level="2">Response: {{ text }}</Heading>
+
+      <button @click="assignForm">Assign form to user (me)</button>
+
     </BaseStyleLayout>
   </div>
 </template>
@@ -31,6 +34,18 @@ export default class Dashboard extends Vue {
         .then(async value => {
           this.text = await value.text();
         });
+  }
+
+  assignForm() {
+    // const requestOptions = {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ title: "Vue POST Request Example" })
+    // };
+    //
+    // fetch(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/start`, requestOptions);
+
+    WebRequestUtils.get(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/start`);
   }
 
 }
