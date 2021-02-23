@@ -1,0 +1,23 @@
+.button {
+  @apply inline-block p-2 mr-1 rounded-md;
+
+  &--danger {
+    @apply text-white bg-red-700;
+    &:focus, &:hover {
+      @apply bg-red-900;
+    }
+    &:focus {
+      @apply outline-black;
+    }
+  }
+
+  &--primary {
+    @apply text-white bg-blue-500;
+    &:focus, &:hover {
+      @apply bg-blue-600;
+    }
+    &:focus {
+      @apply outline-black;
+    }
+  }
+}

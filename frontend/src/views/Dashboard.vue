@@ -30,10 +30,32 @@ export default class Dashboard extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD;
 
   mounted() {
-    WebRequestUtils.get(`${process.env.VUE_APP_API_URL!}/api`)
+    WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api`)
         .then(async value => {
           this.text = await value.text();
         });
+
+    AuthenticationUtils.isLoggedIn().then(v => {
+      if (v) {
+        const validateAuthStartTime = new Date().getUTCMilliseconds();
+        WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/test-auth`, true)
+        .then(value => value.json())
+        .then(JSON.stringify)
+        .then(value => {
+          console.log("Expect successful AuthReq:", value);
+        })
+        .then(() => {
+          this.text = `Proved authentication in ${new Date().getUTCMilliseconds() - validateAuthStartTime}ms`
+        });
+      } else {
+        WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/test-auth`, false)
+        .then(value => value.json())
+        .then(JSON.stringify)
+        .then(value => {
+          console.log("Expect successful AuthReq:", value);
+        });
+      }
+    });
   }
 
   assignForm() {
