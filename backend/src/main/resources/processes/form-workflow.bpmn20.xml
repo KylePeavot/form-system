@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef">
+  <process id="formWorkflow" name="Workflow for requesting user to fill in a form" isExecutable="true">
+    <startEvent id="start"/>
+    <userTask id="assignFormToFormFiller" name="Assign form to form filler"/>
+    <userTask id="fillingForm" name="Filling form"/>
+    <userTask id="formSubmitted" name="Form submitted"/>
+    <sequenceFlow id="fillingFormToFormSubmitted" sourceRef="fillingForm" targetRef="formSubmitted"/>
+    <sequenceFlow id="startToAssignFormToFormFiller" sourceRef="start" targetRef="assignFormToFormFiller"/>
+    <userTask id="reviewingForm" name="Reviewing form"/>
+    <userTask id="completeReview" name="Complete review"/>
+    <sequenceFlow id="reviewingFormToCompleteReview" sourceRef="reviewingForm" targetRef="completeReview"/>
+    <exclusiveGateway id="reviewConclusion" name="Review conclusion"/>
+    <sequenceFlow id="formApproved" sourceRef="reviewConclusion" targetRef="formResponseSubmitted" name="Form approved">
+      <conditionExpression xsi:type="tFormalExpression"/>
+    </sequenceFlow>
+    <sequenceFlow id="completeReviewToReviewConclusion" sourceRef="completeReview" targetRef="reviewConclusion"/>
+    <serviceTask id="formReturnedToFiller" flowable:exclusive="true" name="Form returned to form filler" flowable:class="co600.weffs.application.internal.service.flowable.delegates.ReturnFormService"/>
+    <serviceTask id="formResponseSubmitted" flowable:exclusive="true" name="Form response submitted" flowable:class="co600.weffs.application.internal.service.flowable.delegates.ResponseSubmittedService"/>
+    <endEvent id="successfulSubmission" name="Successful submission"/>
+    <sequenceFlow id="formResponseSubmittedToSuccessfulSubmission" sourceRef="formResponseSubmitted" targetRef="successfulSubmission"/>
+    <sequenceFlow id="formRejected" sourceRef="reviewConclusion" targetRef="formReturnedToFiller" name="Form rejected">
+      <conditionExpression xsi:type="tFormalExpression"/>
+    </sequenceFlow>
+    <userTask id="deleteForm" name="Delete form "/>
+    <endEvent id="formDeleted" name="Form deleted"/>
+    <sequenceFlow id="deleteFormToFormDeleted" sourceRef="deleteForm" targetRef="formDeleted"/>
+    <userTask id="withdrawForm" name="Withdraw form "/>
+    <endEvent id="formWithdrawn" name="Form withdrawn"/>
+    <sequenceFlow id="withdrawFormToFormWithdrawn" sourceRef="withdrawForm" targetRef="formWithdrawn"/>
+    <sequenceFlow id="reviewingFormToWithdrawForm" sourceRef="reviewingForm" targetRef="withdrawForm"/>
+    <sequenceFlow id="assignFormToFormFillerToFillingForm" sourceRef="assignFormToFormFiller" targetRef="fillingForm"/>
+    <sequenceFlow id="formSubmittedToReviewingForm" sourceRef="formSubmitted" targetRef="reviewingForm"/>
+    <sequenceFlow id="fillingFormToDeleteForm" sourceRef="fillingForm" targetRef="deleteForm"/>
+    <sequenceFlow id="formReturnedToFillerToFillingForm" sourceRef="formReturnedToFiller" targetRef="fillingForm"/>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_form-workflow">
+    <bpmndi:BPMNPlane bpmnElement="form-workflow" id="BPMNPlane_form-workflow">
+      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-6a0d81bb-8844-4a1e-b259-787c23be41af" bpmnElement="start">
+        <omgdc:Bounds x="140.59999" y="217.0" width="30.0" height="30.0"/>
+      </bpmdi:BPMNShape>
+      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-93c9184d-7f26-42d0-b89b-bddccc85fa74" bpmnElement="assignFormToFormFiller">
+        <omgdc:Bounds x="196.59999" y="192.0" width="100.0" height="80.0"/>
+      </bpmdi:BPMNShape>
+      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-f128f596-15bb-4525-9953-24c36e244deb" bpmnElement="fillingForm">
+        <omgdc:Bounds x="196.6" y="344.00003" width="100.0" height="80.0"/>
+      </bpmdi:BPMNShape>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-d6c5f89b-43fa-484e-9455-964ab312c181" bpmnElement="sid-69de0af3-af4a-46f9-afa5-ac1b5a181c07">
+        <omgdi:waypoint x="165.0" y="272.0"/>
+        <omgdi:waypoint x="165.0" y="344.0"/>
+      </bpmdi:BPMNEdge>
+      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-084e23a6-0ba0-4807-bbfe-1659523a4493" bpmnElement="formSubmitted">
+        <omgdc:Bounds x="409.0" y="344.0" width="100.0" height="80.0"/>
+      </bpmdi:BPMNShape>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-c5a39ca1-bb2c-44ce-ad1f-e8ea3be4a367" bpmnElement="fillingFormToFormSubmitted">
+        <omgdi:waypoint x="296.6" y="384.00003"/>
+        <omgdi:waypoint x="409.0" y="384.0"/>
+      </bpmdi:BPMNEdge>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-1fdc611f-0826-4bc8-9bc5-a00de6907a8d" bpmnElement="sid-a718de3c-ca59-4b55-8721-03c573045e32">
+        <omgdi:waypoint x="459.0" y="344.0"/>
+        <omgdi:waypoint x="459.0" y="272.0"/>
+      </bpmdi:BPMNEdge>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-201526bc-068f-41cb-b7fe-8079b1a14c1b" bpmnElement="startToAssignFormToFormFiller">
+        <omgdi:waypoint x="170.59999" y="232.0"/>
+        <omgdi:waypoint x="196.59999" y="232.0"/>
+      </bpmdi:BPMNEdge>
+      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-e46e4e40-4b0d-43ae-82c6-5b37da7d4742" bpmnElement="reviewingForm">
+        <omgdc:Bounds x="409.0" y="191.99998" width="100.0" height="80.0"/>
+      </bpmdi:BPMNShape>
+      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-ae7cd579-d08e-499f-b2be-04c2763ba90f" bpmnElement="completeReview">
+        <omgdc:Bounds x="592.8" y="191.99998" width="100.0" height="80.0"/>
+      </bpmdi:BPMNShape>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-fc6e9025-a639-4025-96c8-84d28584d353" bpmnElement="reviewingFormToCompleteReview">
+        <omgdi:waypoint x="509.0" y="231.99998"/>
+        <omgdi:waypoint x="592.8" y="231.99998"/>
+      </bpmdi:BPMNEdge>
+      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-b08eea94-38fc-4762-874a-abbe815286d7" bpmnElement="reviewConclusion">
+        <omgdc:Bounds x="737.8" y="211.99998" width="40.0" height="40.0"/>
+      </bpmdi:BPMNShape>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-6dfad6e7-14fe-4667-8912-4423620b53b9" bpmnElement="formApproved">
+        <omgdi:waypoint x="777.8" y="231.99998"/>
+        <omgdi:waypoint x="883.8" y="231.99997"/>
+      </bpmdi:BPMNEdge>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-e8f231a8-7ba2-47be-9b8d-36b5af75809b" bpmnElement="completeReviewToReviewConclusion">
+        <omgdi:waypoint x="692.8" y="231.99998"/>
+        <omgdi:waypoint x="737.8" y="231.99998"/>
+      </bpmdi:BPMNEdge>
+      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-2b4ccb7f-2927-4236-9b4d-4be14e779a08" bpmnElement="formReturnedToFiller">
+        <omgdc:Bounds x="707.8" y="344.0" width="100.0" height="80.0"/>
+      </bpmdi:BPMNShape>
+      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-435af6a6-c5ea-408f-98a2-ca960239eb6f" bpmnElement="formResponseSubmitted">
+        <omgdc:Bounds x="883.8" y="191.99998" width="100.0" height="80.0"/>
+      </bpmdi:BPMNShape>
+      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-299ec918-0697-4ddc-9fe0-7321e334ee7c" bpmnElement="successfulSubmission">
+        <omgdc:Bounds x="1029.8" y="216.99998" width="30.0" height="30.0"/>
+      </bpmdi:BPMNShape>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-10ecbc48-626f-4815-8ce2-7886667dd918" bpmnElement="formResponseSubmittedToSuccessfulSubmission">
+        <omgdi:waypoint x="983.8" y="231.99998"/>
+        <omgdi:waypoint x="1029.8" y="231.99998"/>
+      </bpmdi:BPMNEdge>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-dc0d9565-4a31-4e9c-bdab-82e046da81fe" bpmnElement="formRejected">
+        <omgdi:waypoint x="757.8" y="251.99998"/>
+        <omgdi:waypoint x="757.8" y="344.0"/>
+      </bpmdi:BPMNEdge>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-c357e15b-dd95-400d-b0ed-cf32c5824a72" bpmnElement="sid-a9b249d0-9708-4412-a4e2-0a0ee35f921b">
+        <omgdi:waypoint x="849.0" y="424.0"/>
+        <omgdi:waypoint x="849.0" y="576.5"/>
+        <omgdi:waypoint x="503.0" y="576.5"/>
+        <omgdi:waypoint x="74.0" y="576.5"/>
+        <omgdi:waypoint x="74.0" y="383.99997"/>
+        <omgdi:waypoint x="115.0" y="383.99997"/>
+      </bpmdi:BPMNEdge>
+      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-dbed3f01-ea75-46a3-99da-b6d2e99d27b6" bpmnElement="deleteForm">
+        <omgdc:Bounds x="56.60002" y="344.00006" width="100.0" height="80.0"/>
+      </bpmdi:BPMNShape>
+      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-0b193d2d-90ec-4f8c-9289-123509fba4c8" bpmnElement="formDeleted">
+        <omgdc:Bounds x="91.600006" y="462.77786" width="30.0" height="30.0"/>
+      </bpmdi:BPMNShape>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-c499098c-284d-4230-9183-3f62f8267a8a" bpmnElement="deleteFormToFormDeleted">
+        <omgdi:waypoint x="106.60002" y="424.00006"/>
+        <omgdi:waypoint x="106.600006" y="462.77783"/>
+      </bpmdi:BPMNEdge>
+      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-53cbaebb-43a4-4755-b6fe-3255953b22d0" bpmnElement="withdrawForm">
+        <omgdc:Bounds x="408.99997" y="85.3779" width="100.0" height="80.0"/>
+      </bpmdi:BPMNShape>
+      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-219ddf1c-eed0-4673-82c1-c0ceeded44b5" bpmnElement="formWithdrawn">
+        <omgdc:Bounds x="443.99997" y="15.777908" width="30.0" height="30.0"/>
+      </bpmdi:BPMNShape>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-ced2bf6f-df8b-4689-8b4c-b22846a60716" bpmnElement="withdrawFormToFormWithdrawn">
+        <omgdi:waypoint x="458.99997" y="85.3779"/>
+        <omgdi:waypoint x="458.99997" y="45.77791"/>
+      </bpmdi:BPMNEdge>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-4b4ef0f6-6f3b-4a12-b262-33115ffaf3ac" bpmnElement="sid-cf725561-86e6-4365-8de8-7c77f56ca2ce">
+        <omgdi:waypoint x="165.00002" y="424.0"/>
+        <omgdi:waypoint x="165.00003" y="514.7779"/>
+        <omgdi:waypoint x="256.0" y="514.7779"/>
+      </bpmdi:BPMNEdge>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-f867c78d-a158-4f84-ba4b-a26b543312a2" bpmnElement="reviewingFormToWithdrawForm">
+        <omgdi:waypoint x="459.0" y="191.99998"/>
+        <omgdi:waypoint x="458.99997" y="165.3779"/>
+      </bpmdi:BPMNEdge>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-31fb41a0-56c5-4fde-a4a7-9b73f7bd0d60" bpmnElement="assignFormToFormFillerToFillingForm">
+        <omgdi:waypoint x="246.59999" y="272.0"/>
+        <omgdi:waypoint x="246.60002" y="309.19998"/>
+        <omgdi:waypoint x="246.6" y="344.00003"/>
+      </bpmdi:BPMNEdge>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-a5011341-d028-4c2e-9c79-30be69fb880f" bpmnElement="formSubmittedToReviewingForm">
+        <omgdi:waypoint x="459.0" y="343.99997"/>
+        <omgdi:waypoint x="459.00003" y="309.19995"/>
+        <omgdi:waypoint x="459.0" y="272.0"/>
+      </bpmdi:BPMNEdge>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-cb3e3baa-6371-4144-8eba-5cf26a705565" bpmnElement="fillingFormToDeleteForm">
+        <omgdi:waypoint x="196.6" y="384.00006"/>
+        <omgdi:waypoint x="156.60002" y="384.00006"/>
+      </bpmdi:BPMNEdge>
+      <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-052ec059-6572-4b39-af41-36fdba5d1a5b" bpmnElement="formReturnedToFillerToFillingForm">
+        <omgdi:waypoint x="757.80005" y="424.0"/>
+        <omgdi:waypoint x="757.80005" y="470.27783"/>
+        <omgdi:waypoint x="271.59998" y="470.27783"/>
+        <omgdi:waypoint x="246.6" y="470.27783"/>
+        <omgdi:waypoint x="246.6" y="424.0"/>
+      </bpmdi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

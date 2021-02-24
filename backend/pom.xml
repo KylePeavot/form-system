@@ -110,6 +110,11 @@
 			<version>6.6.0</version>
 		</dependency>
 		<dependency>
+			<groupId>org.flowable</groupId>
+			<artifactId>flowable-content-spring-configurator</artifactId>
+			<version>6.6.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>

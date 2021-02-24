@@ -30,7 +30,8 @@ export default class Dashboard extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD;
 
   mounted() {
-    WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api`)
+    //get all assigned tasks
+    WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/assigned-tasks`, true)
         .then(async value => {
           this.text = await value.text();
         });
@@ -67,7 +68,7 @@ export default class Dashboard extends Vue {
     //
     // fetch(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/start`, requestOptions);
 
-    WebRequestUtils.get(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/start`);
+    WebRequestUtils.post(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/start`, {test: "test"});
   }
 
 }
