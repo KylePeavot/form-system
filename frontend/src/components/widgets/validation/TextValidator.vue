@@ -2,7 +2,7 @@
   <div>
     <div :class="{'bg-red-50 border-red-600 border-l-8 p-2 mb-1 rounded-md': getValidationErrorMessage() !== null}">
       <p v-if="getValidationErrorMessage() !== null" class="mb-2">{{ getValidationErrorMessage() }}</p>
-      <input :type="type" :value="wrapper.value" @input="emitInput" class="question__text-field" />
+      <input :id="id" :type="type" :value="wrapper.value" @input="emitInput" class="question__text-field" />
     </div>
   </div>
 </template>
@@ -25,6 +25,9 @@ export default class TextValidator extends Vue {
   }
 
   private internalShowErrors = false;
+
+  @Prop({required: true})
+  private id!: string;
 
   @Prop({default: "text"})
   private type!: string;

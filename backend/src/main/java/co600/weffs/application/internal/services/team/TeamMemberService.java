@@ -53,4 +53,8 @@ public class TeamMemberService {
         .stream()
         .collect(Collectors.groupingBy(TeamMember::getTeamDetail));
   }
+
+  public void saveAll(List<TeamMember> teamMembers) {
+    teamMemberRepository.saveAll(teamMembers);
+  }
 }
