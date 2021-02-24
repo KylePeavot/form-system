@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 class TeamCreationValidatorTest {
 
-  private TeamCreationValidator validator = new TeamCreationValidator();
+  private final TeamCreationValidator validator = new TeamCreationValidator();
 
   @Test
   void validate_noMembers() {
