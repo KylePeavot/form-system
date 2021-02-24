@@ -2,7 +2,7 @@
   <BaseStyleLayout :selected-page="page" title="Create new team">
     <Heading :level="2">Team name</Heading>
     <div class="question__text-area-container">
-      <input class="question__text-field" type="text" name="fieldResponse" placeholder=" " v-model="teamName"/>
+      <TextValidator v-model="teamNameWrapper" :force-show-errors="forceShownTeamNameErrors"/>
     </div>
     <div class="my-2">
       <hr/>
@@ -44,9 +44,13 @@ import AuthenticationUtils from "@/utils/AuthenticationUtils";
 import TeamMember from "@/models/team/TeamMember";
 import CheckOrCrossIcon from "@/components/widgets/CheckOrCrossIcon.vue";
 import TeamAccessCard from "@/components/widgets/teams/TeamAccessCard.vue";
+import TextValidator from "@/components/widgets/validation/TextValidator.vue";
+import ValidationWrapper from "@/models/validation/ValidationWrapper";
+import SensibleNameValidator from "@/validators/SensibleNameValidator";
 
 @Component({
   components: {
+    TextValidator,
     Heading,
     TextField,
     BaseStyleLayout,
@@ -58,7 +62,10 @@ import TeamAccessCard from "@/components/widgets/teams/TeamAccessCard.vue";
 export default class TeamCreationScreen extends Vue {
 
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.TEAMS.subRoutes.CREATE_TEAM;
-  private teamName = "";
+
+  private teamNameWrapper = new ValidationWrapper("", [new SensibleNameValidator()]);
+  private forceShownTeamNameErrors = false;
+
   private memberToAdd: KentUser | null = null;
   private members: TeamMember[] = [];
   private loggedInUser: unknown | null = null;
