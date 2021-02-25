@@ -10,6 +10,10 @@
       <button @click="submitForm">Submit form for review</button>
       <br />
       <button @click="withdrawForm">Withdraw form from review</button>
+      <br />
+      <button @click="completeReviewApproved">Approve review</button>
+      <br />
+      <button @click="completeReviewRejected">Reject review (return to filler)</button>
 
       <p>Items: {{ response }}</p>
 
@@ -91,6 +95,16 @@ export default class Dashboard extends Vue {
 
   async withdrawForm() {
     await WebRequestUtils.post(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/withdraw-form`, {test: "test"});
+    this.getDashboardContents();
+  }
+
+  async completeReviewApproved() {
+    await WebRequestUtils.post(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/complete-review-approved`, {test: "test"});
+    this.getDashboardContents();
+  }
+
+  async completeReviewRejected() {
+    await WebRequestUtils.post(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/complete-review-rejected`, {test: "test"});
     this.getDashboardContents();
   }
 

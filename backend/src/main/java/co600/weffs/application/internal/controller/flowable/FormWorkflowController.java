@@ -1,6 +1,7 @@
 package co600.weffs.application.internal.controller.flowable;
 
 import co600.weffs.application.internal.model.auth.AppUser;
+import co600.weffs.application.internal.model.flowable.FormReviewDecision;
 import co600.weffs.application.internal.security.jwt.MustBeAuthorized;
 import co600.weffs.application.internal.service.flowable.FormWorkflowService;
 import co600.weffs.application.internal.services.FormService;
@@ -63,8 +64,17 @@ public class FormWorkflowController {
 
 //    Complete review -> Approved or rejected -> end process or go back to form received to be filled in.
   @MustBeAuthorized
-  @PostMapping("complete-review")
-  public void completeReview(@RequestAttribute("User") AppUser appUser) {
-    System.out.println("completeReview");
+  @PostMapping("complete-review-approved")
+  public void completeReviewApproved(@RequestAttribute("User") AppUser appUser) {
+    System.out.println("completeReviewApproved");
+    formWorkflowService.completeReview(appUser, formService.getFormById(1), FormReviewDecision.APPROVED);
+  }
+
+  //    Complete review -> Approved or rejected -> end process or go back to form received to be filled in.
+  @MustBeAuthorized
+  @PostMapping("complete-review-rejected")
+  public void completeReviewRejected(@RequestAttribute("User") AppUser appUser) {
+    System.out.println("completeReviewRejected");
+    formWorkflowService.completeReview(appUser, formService.getFormById(1), FormReviewDecision.REJECTED);
   }
 }

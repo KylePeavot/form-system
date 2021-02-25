@@ -3,6 +3,7 @@ package co600.weffs.application.internal.service.flowable;
 import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.error.WorkflowTaskNotFound;
 import co600.weffs.application.internal.model.flowable.FormInTask;
+import co600.weffs.application.internal.model.flowable.FormReviewDecision;
 import co600.weffs.application.internal.model.flowable.WorkflowTask;
 import co600.weffs.application.internal.model.form.Form;
 import co600.weffs.application.internal.services.FormService;
@@ -89,8 +90,18 @@ public class FormWorkflowService {
     }
   }
 
-  public void completeReview() {
+  public void completeReview(AppUser user, Form formToProcess, FormReviewDecision formReviewDecision) {
+    Task task = getAssignedTaskForForm(user.getUsername(), formToProcess.getId());
 
+    Map<String, Object> variables = Map.of("nextStage",
+      formReviewDecision.equals(FormReviewDecision.APPROVED)
+        ? WorkflowTask.FORM_APPROVED.getTaskName()
+        : WorkflowTask.FORM_RETURNED_TO_FORM_FILLER.getTaskName()
+    );
+
+    if(task != null && task.getName().equals(WorkflowTask.REVIEWING_FORM.getTaskName())) {
+      taskService.complete(task.getId(), variables);
+    }
   }
 
 
