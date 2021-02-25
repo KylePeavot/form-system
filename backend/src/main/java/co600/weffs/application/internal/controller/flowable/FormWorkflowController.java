@@ -37,39 +37,34 @@ public class FormWorkflowController {
     formWorkflowService.assignFormToFormFiller(appUser, appUser, formService.getFormById(1));
   }
 
-//    Open form -> Filling form
-  @PostMapping("open-form")
-  public void openForm() {
-    System.out.println("openForm");
-  }
-
   //    Delete form
-  @PostMapping("delete-form")
-  public void deleteForm() {
+  @MustBeAuthorized
+  @PostMapping("/delete-form")
+  public void deleteForm(@RequestAttribute("User") AppUser appUser) {
     System.out.println("deleteForm");
+    formWorkflowService.deleteForm(appUser, formService.getFormById(1));
   }
 
 //    Submit form -> Form submitted -> Form received to review
+  @MustBeAuthorized
   @PostMapping("submit-form")
-  public void submitForm() {
+  public void submitForm(@RequestAttribute("User") AppUser appUser) {
     System.out.println("submitForm");
-  }
-
-//    Open review -> Reviewing form
-  @PostMapping("open-review")
-  public void openReview() {
-    System.out.println("openReview");
+    formWorkflowService.submitFormForReview(appUser, formService.getFormById(1));
   }
 
 //    Withdraw form
+  @MustBeAuthorized
   @PostMapping("withdraw-form")
-  public void withdrawForm() {
+  public void withdrawForm(@RequestAttribute("User") AppUser appUser) {
     System.out.println("withdrawForm");
+    formWorkflowService.withdrawForm(appUser, formService.getFormById(1));
   }
 
 //    Complete review -> Approved or rejected -> end process or go back to form received to be filled in.
+  @MustBeAuthorized
   @PostMapping("complete-review")
-  public void completeReview() {
+  public void completeReview(@RequestAttribute("User") AppUser appUser) {
     System.out.println("completeReview");
   }
 }

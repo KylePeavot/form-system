@@ -1,9 +1,17 @@
 <template>
   <div>
     <BaseStyleLayout title="Page title" :selected-page="page">
-      <Heading :level="2">Response: {{ text }}</Heading>
+      <Heading :level="2">Your dashboard</Heading>
 
       <button @click="assignForm">Assign form to user (me)</button>
+      <br />
+      <button @click="deleteForm">Delete form</button>
+      <br />
+      <button @click="submitForm">Submit form for review</button>
+      <br />
+      <button @click="withdrawForm">Withdraw form from review</button>
+
+      <p>Items: {{ response }}</p>
 
     </BaseStyleLayout>
   </div>
@@ -26,15 +34,13 @@ import AuthenticationUtils from "@/utils/AuthenticationUtils";
 })
 export default class Dashboard extends Vue {
 
-  private text = 'Test';
+  private text = 'test';
+  private response = "Awaiting dashboard items";
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD;
 
   mounted() {
     //get all assigned tasks
-    WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/assigned-tasks`, true)
-        .then(async value => {
-          this.text = await value.text();
-        });
+    this.getDashboardContents();
 
     AuthenticationUtils.isLoggedIn().then(v => {
       if (v) {
@@ -59,17 +65,36 @@ export default class Dashboard extends Vue {
     });
   }
 
-  assignForm() {
-    // const requestOptions = {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ title: "Vue POST Request Example" })
-    // };
-    //
-    // fetch(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/start`, requestOptions);
-
-    WebRequestUtils.post(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/start`, {test: "test"});
+  getDashboardContents() {
+    //get all assigned tasks
+    WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/assigned-tasks`, true)
+    .then(async value => {
+      this.response = await value.text();
+    });
+    this.$forceUpdate();
   }
+
+  assignForm() {
+    WebRequestUtils.post(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/start`, {test: "test"});
+    this.getDashboardContents();
+  }
+
+  deleteForm() {
+    WebRequestUtils.post(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/delete-form`, {test: "test"});
+    this.getDashboardContents();
+  }
+
+  submitForm() {
+    WebRequestUtils.post(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/submit-form`, {test: "test"});
+    this.getDashboardContents();
+  }
+
+  withdrawForm() {
+    WebRequestUtils.post(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/withdraw-form`, {test: "test"});
+    this.getDashboardContents();
+  }
+
+
 
 }
 
