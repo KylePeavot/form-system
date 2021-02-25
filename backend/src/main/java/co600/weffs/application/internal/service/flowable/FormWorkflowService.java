@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.flowable.engine.delegate.DelegateExecution;
 import org.flowable.task.api.Task;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
@@ -102,8 +103,9 @@ public class FormWorkflowService {
     if(task != null && task.getName().equals(WorkflowTask.REVIEWING_FORM.getTaskName())) {
       taskService.complete(task.getId(), variables);
     }
-  }
 
+    //TODO implement review stuff FS-76
+  }
 
   public Task getAssignedTaskForForm(String assignee, int formId) {
     return taskService.createTaskQuery().list().stream()
@@ -122,12 +124,12 @@ public class FormWorkflowService {
   }
 
   public List<FormInTask> getAllFormInTaskForAssignee(String assignee) {
+    //TODO Possible bug where the assignee is also the filler so short term fix where we strip out duplicates FS-77
     return getAllAssignedTasksForAssignee(assignee).stream()
       .map(task -> new FormInTask(
           formService.getFormById((Integer) taskService.getVariables(task.getId()).get("formId")),
           WorkflowTask.getWorkflowTaskFromTaskName(task.getName())))
       .collect(Collectors.toList());
-
   }
 
   public boolean isFormAssignedToUser(String assignee, int formId) {

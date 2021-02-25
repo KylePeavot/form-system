@@ -19,4 +19,13 @@ public class FormInTask {
   public WorkflowTask getWorkflowTask() {
     return workflowTask;
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof FormInTask) {
+      FormInTask formInTaskToCompare = (FormInTask) obj;
+      return this.form.equals(formInTaskToCompare.getForm()) && this.workflowTask == formInTaskToCompare.getWorkflowTask();
+    }
+    return false;
+  }
 }
