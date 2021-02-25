@@ -3,11 +3,11 @@
   <process id="formWorkflow" name="Workflow for requesting user to fill in a form" isExecutable="true">
     <startEvent id="start" />
     <userTask id="assignFormToFormFiller" name="Assign form to form filler" flowable:assignee="${assigner}"/>
-    <userTask id="fillingForm" name="Filling form">
+    <userTask id="fillingForm" name="Filling form" flowable:assignee="${filler}">
       <outgoing>Flow_0ujdavn</outgoing>
     </userTask>
     <sequenceFlow id="startToAssignFormToFormFiller" sourceRef="start" targetRef="assignFormToFormFiller" />
-    <userTask id="reviewingForm" name="Reviewing form">
+    <userTask id="reviewingForm" name="Reviewing form" flowable:assignee="${assigner}">
       <incoming>Flow_12bh3rb</incoming>
       <outgoing>Flow_13xl70e</outgoing>
     </userTask>
@@ -16,14 +16,14 @@
       <outgoing>Flow_09i5mgk</outgoing>
     </exclusiveGateway>
     <sequenceFlow id="formApproved" name="Form approved" sourceRef="reviewConclusion" targetRef="formResponseSubmitted">
-      <conditionExpression xsi:type="tFormalExpression">${nextStage == 'Form response submitted'}}</conditionExpression>
+      <conditionExpression>${nextStage == 'Form response submitted'}</conditionExpression>
     </sequenceFlow>
-    <serviceTask id="formReturnedToFiller" name="Form returned to form filler" flowable:exclusive="true" flowable:class="co600.weffs.application.internal.service.flowable.delegates.ReturnFormService" />
-    <serviceTask id="formResponseSubmitted" name="Form response submitted" flowable:exclusive="true" flowable:class="co600.weffs.application.internal.service.flowable.delegates.ResponseSubmittedService" />
+    <serviceTask id="formReturnedToFiller" name="Form returned to form filler" flowable:exclusive="true" flowable:class="co600.weffs.application.internal.service.flowable.delegates.ReturnFormService" flowable:assignee="${filler}"/>
+    <serviceTask id="formResponseSubmitted" name="Form response submitted" flowable:exclusive="true" flowable:class="co600.weffs.application.internal.service.flowable.delegates.ResponseSubmittedService" flowable:assignee="${assigner}" />
     <endEvent id="successfulSubmission" name="Successful submission" />
     <sequenceFlow id="formResponseSubmittedToSuccessfulSubmission" sourceRef="formResponseSubmitted" targetRef="successfulSubmission" />
     <sequenceFlow id="formRejected" name="Form rejected" sourceRef="reviewConclusion" targetRef="formReturnedToFiller">
-      <conditionExpression xsi:type="tFormalExpression">${nextStage == 'Form returned to form filler'}}</conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression">${nextStage == 'Form returned to form filler'}</conditionExpression>
     </sequenceFlow>
     <endEvent id="formDeleted" name="Form deleted">
       <incoming>Flow_0d0uvkk</incoming>
@@ -47,7 +47,7 @@
       <conditionExpression>${nextStage == 'Delete form'}</conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="Flow_09i5mgk" sourceRef="reviewConclusion" targetRef="formWithdrawn">
-      <conditionExpression xsi:type="tFormalExpression">${nextStage == 'Withdraw form'}}</conditionExpression>
+      <conditionExpression>${nextStage == 'Withdraw form'}</conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="Flow_13xl70e" sourceRef="reviewingForm" targetRef="reviewConclusion" />
   </process>

@@ -50,8 +50,6 @@ public class FormWorkflowService {
     //Find the task that has been created
     Task task = getAssignedTaskForForm(assigner.getUsername(), form.getId());
 
-    //Set the assignee to be the form filler
-    task.setAssignee(filler.getUsername());
     //transition the task to the next task
     taskService.complete(task.getId());
   }
@@ -77,7 +75,6 @@ public class FormWorkflowService {
     Map<String, Object> variables = Map.of("nextStage", WorkflowTask.REVIEWING_FORM.getTaskName());
 
     if(task != null && task.getName().equals(WorkflowTask.FILL_FORM.getTaskName())) {
-      task.setAssignee((String) taskService.getVariables(task.getId()).get("assigner"));
       taskService.complete(task.getId(), variables);
     }
   }

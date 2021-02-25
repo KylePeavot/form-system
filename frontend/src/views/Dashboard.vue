@@ -42,27 +42,27 @@ export default class Dashboard extends Vue {
     //get all assigned tasks
     this.getDashboardContents();
 
-    AuthenticationUtils.isLoggedIn().then(v => {
-      if (v) {
-        const validateAuthStartTime = new Date().getUTCMilliseconds();
-        WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/test-auth`, true)
-        .then(value => value.json())
-        .then(JSON.stringify)
-        .then(value => {
-          console.log("Expect successful AuthReq:", value);
-        })
-        .then(() => {
-          this.text = `Proved authentication in ${new Date().getUTCMilliseconds() - validateAuthStartTime}ms`
-        });
-      } else {
-        WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/test-auth`, false)
-        .then(value => value.json())
-        .then(JSON.stringify)
-        .then(value => {
-          console.log("Expect successful AuthReq:", value);
-        });
-      }
-    });
+    // AuthenticationUtils.isLoggedIn().then(v => {
+    //   if (v) {
+    //     const validateAuthStartTime = new Date().getUTCMilliseconds();
+    //     WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/test-auth`, true)
+    //     .then(value => value.json())
+    //     .then(JSON.stringify)
+    //     .then(value => {
+    //       console.log("Expect successful AuthReq:", value);
+    //     })
+    //     .then(() => {
+    //       this.text = `Proved authentication in ${new Date().getUTCMilliseconds() - validateAuthStartTime}ms`
+    //     });
+    //   } else {
+    //     WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/test-auth`, false)
+    //     .then(value => value.json())
+    //     .then(JSON.stringify)
+    //     .then(value => {
+    //       console.log("Expect successful AuthReq:", value);
+    //     });
+    //   }
+    // });
   }
 
   getDashboardContents() {
@@ -74,23 +74,23 @@ export default class Dashboard extends Vue {
     this.$forceUpdate();
   }
 
-  assignForm() {
-    WebRequestUtils.post(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/start`, {test: "test"});
+  async assignForm() {
+    await WebRequestUtils.post(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/start`, {test: "test"});
     this.getDashboardContents();
   }
 
-  deleteForm() {
-    WebRequestUtils.post(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/delete-form`, {test: "test"});
+  async deleteForm() {
+    await WebRequestUtils.post(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/delete-form`, {test: "test"});
     this.getDashboardContents();
   }
 
-  submitForm() {
-    WebRequestUtils.post(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/submit-form`, {test: "test"});
+  async submitForm() {
+    await WebRequestUtils.post(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/submit-form`, {test: "test"});
     this.getDashboardContents();
   }
 
-  withdrawForm() {
-    WebRequestUtils.post(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/withdraw-form`, {test: "test"});
+  async withdrawForm() {
+    await WebRequestUtils.post(`${process.env.VUE_APP_API_URL!}/api/flowable/workflow/withdraw-form`, {test: "test"});
     this.getDashboardContents();
   }
 
