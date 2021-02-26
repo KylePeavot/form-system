@@ -9,7 +9,6 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 
 import co600.weffs.application.TestableController;
 import co600.weffs.application.internal.model.auth.AppUser;
-import co600.weffs.application.internal.model.team.TeamDetail;
 import co600.weffs.application.internal.model.team.TeamMember;
 import co600.weffs.application.internal.model.team.frontend.FrontendTeamCreation;
 import co600.weffs.application.internal.services.team.TeamCreationService;
@@ -58,9 +57,8 @@ class TeamControllerTest extends TestableController {
   @SneakyThrows
   @Test
   void getAvailableTeams() {
-    var teamDetail = new TeamDetail();
     var teamMember = new TeamMember();
-    var teamView = new TeamView(teamDetail, List.of(teamMember));
+    var teamView = new TeamView(1, "test_team", List.of(teamMember));
     when(teamMemberService.getTeamViewForUsername(user.getUsername()))
         .thenReturn(List.of(teamView));
 
@@ -84,9 +82,8 @@ class TeamControllerTest extends TestableController {
   @SneakyThrows
   @Test
   void getAvailableTeams_unauthenticated() {
-    var teamDetail = new TeamDetail();
     var teamMember = new TeamMember();
-    var teamView = new TeamView(teamDetail, List.of(teamMember));
+    var teamView = new TeamView(1, "test_team", List.of(teamMember));
     when(teamMemberService.getTeamViewForUsername(user.getUsername()))
         .thenReturn(List.of(teamView));
 

@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +45,45 @@ public class TeamCreationService {
     teamDetail.setTeam(team);
     teamDetailService.save(teamDetail);
 
-    List<TeamMember> members = Arrays.stream(teamCreation.getMembers())
+    List<TeamMember> members = createMembersFromFrontendCreation(appUser, teamDetail, teamCreation);
+
+    teamMemberService.saveAll(members);
+  }
+
+  @Transactional
+  public void updateTeam(AppUser appUser, Integer teamId, FrontendTeamCreation teamCreation) {
+
+    var oldTeamDetail = teamDetailService.getActiveTeamDetailByTeamId(teamId);
+    oldTeamDetail.setStatusControl(false);
+
+    var team = oldTeamDetail.getTeam();
+
+    var teamDetail = new TeamDetail();
+    teamDetail.setName(teamCreation.getName());
+    teamDetail.setCreatedBy(appUser.getUsername());
+    teamDetail.setCreatedTimestamp(Instant.now());
+    teamDetail.setStatusControl(true);
+    teamDetail.setTeam(team);
+
+    teamDetailService.saveAll(List.of(oldTeamDetail, teamDetail));
+
+    List<TeamMember> members = createMembersFromFrontendCreation(appUser, teamDetail, teamCreation);
+    List<TeamMember> oldMembers = teamMemberService.getMembersInTeamDetail(oldTeamDetail);
+    oldMembers.forEach(member -> member.setStatusControl(false));
+
+    // Create a list containing both new and old members.
+    // Combine two streams in to one using flatmap.
+    List<TeamMember> joinedMembers = Stream.of(members.stream(), oldMembers.stream())
+        .flatMap(teamMemberStream -> teamMemberStream)
+        .collect(Collectors.toList());
+
+    teamMemberService.saveAll(joinedMembers);
+
+  }
+
+  @Transactional
+  protected List<TeamMember> createMembersFromFrontendCreation(AppUser appUser, TeamDetail teamDetail, FrontendTeamCreation teamCreation) {
+    return Arrays.stream(teamCreation.getMembers())
         .map(frontendTeamMember -> {
           var teamMember = new TeamMember();
           teamMember.setTeamDetail(teamDetail);
@@ -57,7 +96,5 @@ public class TeamCreationService {
           return teamMember;
         })
         .collect(Collectors.toList());
-
-    teamMemberService.saveAll(members);
   }
 }

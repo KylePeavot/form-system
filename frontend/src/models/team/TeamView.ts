@@ -3,7 +3,8 @@ import TeamMember from "@/models/team/TeamMember";
 
 export default interface TeamView {
 
-  teamDetail: Team;
+  teamName: string;
   teamMembers: TeamMember[];
+  teamId: number;
 
 }

@@ -44,10 +44,12 @@ class TeamMemberServiceTest extends MockitoTest {
     adminUser = UserTestUtils.createAppUser("admin", SamlRole.STAFF);
 
     nonAdminTeam = new TeamDetail();
+    nonAdminTeam.setId(1);
     nonAdminTeam.setName("Non Admin");
 
     adminTeam = new TeamDetail();
     adminTeam.setName("Admin");
+    adminTeam.setId(2);
 
     nonAdminMember = new TeamMember();
     nonAdminMember.setTeamDetail(nonAdminTeam);
@@ -83,8 +85,8 @@ class TeamMemberServiceTest extends MockitoTest {
     when(teamMemberRepository.findAllByUsernameAndStatusControlIsTrue(nonAdminUser.getUsername()))
         .thenReturn(List.of(nonAdminMember));
     var result = teamMemberService.getTeamViewForUsername(nonAdminUser.getUsername());
-    assertThat(result).extracting(TeamView::getTeamDetail)
-        .containsExactly(nonAdminTeam);
+    assertThat(result).extracting(TeamView::getTeamId)
+        .containsExactly(nonAdminTeam.getId());
 
     verify(teamMemberRepository, times(1))
         .findAllByUsernameAndStatusControlIsTrue(nonAdminUser.getUsername());
@@ -102,8 +104,8 @@ class TeamMemberServiceTest extends MockitoTest {
         .thenReturn(List.of(nonAdminMember, adminMember));
 
     var result = teamMemberService.getTeamViewForUsername(adminUser.getUsername());
-    assertThat(result).extracting(TeamView::getTeamDetail)
-        .containsExactlyInAnyOrder(adminTeam, nonAdminTeam);
+    assertThat(result).extracting(TeamView::getTeamId)
+        .containsExactlyInAnyOrder(adminTeam.getId(), nonAdminTeam.getId());
 
     verify(teamMemberRepository, times(1))
         .findAllByUsernameAndStatusControlIsTrue(adminUser.getUsername());

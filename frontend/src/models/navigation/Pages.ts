@@ -68,6 +68,10 @@ export default class Pages {
             LOGOUT: {
                 name: "Logout",
                 url: "/account/logout"
+            },
+            EDIT_TEAM: {
+                name: "Edit team",
+                url: "/teams/edit/:id"
             }
         }
     }

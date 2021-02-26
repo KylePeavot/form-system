@@ -15,30 +15,28 @@
       <Heading :level="2">Your teams</Heading>
     </div>
     <template v-if="retrievedTeams">
-      <div v-for="team of teams" :key="`team-${team.teamDetail.id}`">
+      <div v-for="team of teams" :key="`team-${team.teamId}`">
         <div class="team">
           <div class="team__title my-2">
             <Heading :level="3">
-              {{ team.teamDetail.name }}
+              {{ team.teamName }}
+              <template v-if="selfCanManageTeam(team.teamMembers)">
+                <router-link :to="`${getEditUrl(team)}`">
+                  <button class="inline-block flex-none">
+                    <i class="ph-pencil-bold"></i>
+                  </button>
+                </router-link>
+              </template>
             </Heading>
           </div>
           <div class="team__body">
-            <div v-if="selfCanManageTeam(team.teamMembers)" class="my-2">
-              <div class="flex">
-                <div class="flex-1 max-w-sm">
-                  <UserSelector :value="teamAndUserMap.get(team)"/>
-                </div>
-                <div>
-                  <button class="button ml-2">Add member</button>
-                </div>
-              </div>
-            </div>
             <div class="team__members">
               <TeamAccessCard
                   v-for="member of team.teamMembers"
-                  :key="`member-${member.username}-form-${team.teamDetail.id}`"
-                  :editable="selfCanManageTeam(team.teamMembers)"
-                  :member="member"/>
+                  :key="`member-${member.username}-form-${team.teamId}`"
+                  :editable="false"
+                  :member="member">
+              </TeamAccessCard>
             </div>
           </div>
         </div>
@@ -81,7 +79,7 @@ import TeamAccessCard from "@/components/widgets/teams/TeamAccessCard.vue";
 export default class TeamsScreen extends Vue {
 
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.TEAMS;
-  private teamAndUserMap: Map<TeamView, KentUser | null> = new Map<TeamView, KentUser | null>();
+  private teams: TeamView[] = [];
   private retrievedTeams = false;
   private retrieveError: Error | null = null;
   private user: KentUser | null = null;
@@ -91,27 +89,15 @@ export default class TeamsScreen extends Vue {
     WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/teams`, true)
     .then(value => value.json() as unknown as TeamView[])
     .then(value => {
-      this.teamAndUserMap = new Map<TeamView, KentUser | null>();
-      value.forEach(team => {
-        this.teamAndUserMap.set(team, null);
-      });
+      this.teams = value;
     })
     .then(() => this.retrievedTeams = true)
-    .then(() => console.log(this.teamAndUserMap))
     .catch(e => {
       this.retrieveError = e;
     });
     AuthenticationUtils.getUser().then(self => {
       this.user = new KentUser(self.name, self.name);
     });
-  }
-
-  get teams() {
-    const list: TeamView[] = [];
-    this.teamAndUserMap.forEach((value, key) => {
-      list.push(key);
-    });
-    return list;
   }
 
   selfCanManageTeam(team: TeamMember[]) {
@@ -123,6 +109,10 @@ export default class TeamsScreen extends Vue {
       return userInTeam.canManageTeam;
     }
     return false;
+  }
+
+  getEditUrl(team: TeamView): string {
+    return Pages.ROUTES.STATIC.EDIT_TEAM.url.replace(":id", team.teamId.toString());
   }
 
 }

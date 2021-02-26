@@ -27,23 +27,25 @@
       </div>
     </div>
     <br/>
-    <div class="team__members">
+    <div class="team__members" v-if="loggedInUser !== null">
         <TeamAccessCard
             v-for="member of members"
             :key="`${member.username}-new-form`"
             :editable="member.username !== loggedInUser.name"
-            :member="member"/>
+            :member="member"
+            @remove-member="removeMember"/>
     </div>
     <div class="my-2">
       <hr/>
     </div>
-    <button class="button button--primary" @click="createForm">Create form</button>
+    <button class="button button--primary" @click="createForm" v-if="mode === 'CREATE'">Create team</button>
+    <button class="button button--primary" @click="updateForm" v-if="mode === 'EDIT'">Update team</button>
   </BaseStyleLayout>
 </template>
 
 <script lang="ts">
 
-import {Component, Vue} from "vue-property-decorator";
+import {Component, Prop, Vue} from "vue-property-decorator";
 import BaseStyleLayout from "../../components/layout/BaseStyleLayout.vue";
 import Pages from "../../models/navigation/Pages";
 import TextField from "@/components/core/TextField.vue";
@@ -59,6 +61,7 @@ import ValidationWrapper from "@/models/validation/ValidationWrapper";
 import SensibleNameValidator from "@/validators/SensibleNameValidator";
 import WebRequestUtils from "@/utils/WebRequestUtils";
 import FormError from "@/models/form/FormError";
+import TeamView from "@/models/team/TeamView";
 
 @Component({
   components: {
@@ -73,6 +76,12 @@ import FormError from "@/models/form/FormError";
 })
 export default class TeamCreationScreen extends Vue {
 
+  @Prop({required: true})
+  private mode!: "CREATE" | "EDIT";
+
+  @Prop({default: 0})
+  private teamId!: number;
+
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.TEAMS.subRoutes.CREATE_TEAM;
 
   private teamNameWrapper = new ValidationWrapper("", [new SensibleNameValidator()]);
@@ -85,14 +94,27 @@ export default class TeamCreationScreen extends Vue {
   private submissionError: FormError[] = [];
 
   created() {
-    AuthenticationUtils.getUser().then(user => {
-      this.loggedInUser = user;
-      this.members.push({
-        canManageTeam: true,
-        canModifyForms: true,
-        username: user.name
+    if (this.mode === "CREATE") {
+      AuthenticationUtils.getUser().then(user => {
+        this.loggedInUser = user;
+        this.members.push({
+          canManageTeam: true,
+          canModifyForms: true,
+          username: user.name
+        });
       });
-    })
+    } else if (this.mode === "EDIT") {
+      AuthenticationUtils.getUser().then(user => {
+        this.loggedInUser = user;
+        WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/teams/${this.teamId}`, true)
+        .then(response => response.json())
+        .then(value => value as TeamView)
+        .then(value => {
+          this.members = value.teamMembers;
+          this.teamNameWrapper.value = value.teamName
+        });
+      });
+    }
   }
 
   addMember() {
@@ -108,25 +130,70 @@ export default class TeamCreationScreen extends Vue {
     });
   }
 
+  removeMember(member: TeamMember) {
+    this.members = this.members.filter(value => value.username !== member.username);
+  }
+
   createForm() {
+    if (this.validateForm()) {
+      WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/teams/new`, {
+        members: this.members,
+        name: this.teamNameWrapper.value
+      });
+    }
+  }
+
+  updateForm() {
+    if (this.validateForm()) {
+      WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/teams/${this.teamId}`, {
+        members: this.members,
+        name: this.teamNameWrapper.value
+      });
+    }
+  }
+
+  // Handle all validation scenarios client-side.
+  // Validation is repeated on the server, but this offers runtime safety.
+  private validateForm(): boolean {
     this.forceShownTeamNameErrors = true;
     this.submissionError = [];
-    if (this.members.length === 0) {
+    if (this.members.length == 0) {
       const err = new Error("Team must have at least one member");
       this.submissionError.push(new FormError(err, "members"));
-      return;
+      return false;
     }
     for (const validator of this.teamNameWrapper.validators) {
       if (!validator.isValid(this.teamNameWrapper)) {
         const err = new Error(validator.getMessage(this.teamNameWrapper));
         this.submissionError.push(new FormError(err, "teamName"));
-        return;
+        return false;
       }
     }
-    WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/teams/new`, {
-      members: this.members,
-      name: this.teamNameWrapper.value
-    });
+    let atLeastOneCanManageTeam = false;
+    for (const member of this.members) {
+      if (member.canManageTeam) {
+        atLeastOneCanManageTeam = true;
+        break;
+      }
+    }
+    if (!atLeastOneCanManageTeam) {
+      const err = new Error("At least one member must be able to manage the team");
+      this.submissionError.push(new FormError(err, "members"));
+      return false;
+    }
+    let atLeastOneCanModifyForms = false;
+    for (const member of this.members) {
+      if (member.canModifyForms) {
+        atLeastOneCanModifyForms = true;
+        break;
+      }
+    }
+    if (!atLeastOneCanModifyForms) {
+      const err = new Error("At least one member must be able to modify forms");
+      this.submissionError.push(new FormError(err, "members"));
+      return false;
+    }
+    return true;
   }
 
 }
