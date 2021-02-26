@@ -21,7 +21,7 @@
     </exclusiveGateway>
     <sequenceFlow id="Flow_0ujdavn" sourceRef="fillingForm" targetRef="progressForm" />
     <sequenceFlow id="Flow_12bh3rb" sourceRef="progressForm" targetRef="successfulSubmission">
-      <conditionExpression>${nextStage == 'Reviewing form'}</conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression">${nextStage == 'Form submitted'}</conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="Flow_0d0uvkk" sourceRef="progressForm" targetRef="formDeleted">
       <conditionExpression>${nextStage == 'Delete form'}</conditionExpression>
@@ -35,7 +35,8 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_12bh3rb_di" bpmnElement="Flow_12bh3rb">
         <omgdi:waypoint x="420" y="249" />
-        <omgdi:waypoint x="420" y="137" />
+        <omgdi:waypoint x="420" y="122" />
+        <omgdi:waypoint x="524" y="122" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0ujdavn_di" bpmnElement="Flow_0ujdavn">
         <omgdi:waypoint x="316" y="274" />
@@ -72,9 +73,9 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-299ec918-0697-4ddc-9fe0-7321e334ee7c" bpmnElement="successfulSubmission">
-        <omgdc:Bounds x="405" y="107" width="30" height="30" />
+        <omgdc:Bounds x="524" y="107" width="30" height="30" />
         <bpmdi:BPMNLabel>
-          <omgdc:Bounds x="392" y="69.5" width="56" height="27" />
+          <omgdc:Bounds x="511" y="69.5" width="56" height="27" />
         </bpmdi:BPMNLabel>
       </bpmdi:BPMNShape>
     </bpmndi:BPMNPlane>

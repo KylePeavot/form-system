@@ -28,28 +28,22 @@ public class FormWorkflowController {
     this.formService = formService;
   }
 
-  //    Assign form -> starting process (which should auto go to assign form to form filler which should then go to Form received to be filled in)
-
   @MustBeAuthorized
   @PostMapping("/start")
-  public void assignFormToUser(@RequestAttribute("User") AppUser appUser) {
-    System.out.println("assignFormToUser");
-    formWorkflowService.assignFormToFormFiller(appUser, appUser, formService.getFormById(1));
+  public void assignFormToUser(@RequestAttribute("User") AppUser appUser, @RequestAttribute("filler") AppUser filler, @RequestAttribute("formId") int formId) {
+    formWorkflowService.assignFormToFormFiller(appUser, filler, formService.getFormById(formId));
   }
 
   //    Delete form
   @MustBeAuthorized
   @PostMapping("/delete-form")
-  public void deleteForm(@RequestAttribute("User") AppUser appUser) {
-    System.out.println("deleteForm");
-    formWorkflowService.deleteForm(appUser, formService.getFormById(1));
+  public void deleteForm(@RequestAttribute("User") AppUser appUser, @RequestAttribute("formId") int formId) {
+    formWorkflowService.deleteForm(appUser, formService.getFormById(formId));
   }
 
-  //    Submit form -> Form submitted -> Form received to review
   @MustBeAuthorized
   @PostMapping("submit-form")
-  public void submitForm(@RequestAttribute("User") AppUser appUser) {
-    System.out.println("submitForm");
-    formWorkflowService.submitForm(appUser, formService.getFormById(1));
+  public void submitForm(@RequestAttribute("User") AppUser appUser, @RequestAttribute("formId") int formId) {
+    formWorkflowService.submitForm(appUser, formService.getFormById(formId));
   }
 }

@@ -56,16 +56,14 @@ public class FormWorkflowService {
     taskService.complete(task.getId());
   }
 
-  //when form is in a filler's dashboard, and they hit delete, the form is transitioned to delete
   public void deleteForm(AppUser user, Form formToDelete) {
     //get task for the user with the formToDelete
-    //check that the task is in the "fillingForm" stage
-    //if it is, transition it with variables
-
     Task task = getAssignedTaskForForm(user.getUsername(), formToDelete.getId());
 
     Map<String, Object> variables = Map.of("nextStage", WorkflowTask.DELETE_FORM.getTaskName());
 
+    //check that the task is in the "fillingForm" stage
+    //if it is, transition it with variables
     if(task != null && task.getName().equals(WorkflowTask.FILL_FORM.getTaskName())) {
       taskService.complete(task.getId(), variables);
     }
@@ -74,7 +72,7 @@ public class FormWorkflowService {
   public void submitForm(AppUser user, Form formToSubmit) {
     Task task = getAssignedTaskForForm(user.getUsername(), formToSubmit.getId());
 
-    Map<String, Object> variables = Map.of("nextStage", WorkflowTask.REVIEWING_FORM.getTaskName());
+    Map<String, Object> variables = Map.of("nextStage", WorkflowTask.FORM_SUBMITTED.getTaskName());
 
     if(task != null && task.getName().equals(WorkflowTask.FILL_FORM.getTaskName())) {
       taskService.complete(task.getId(), variables);

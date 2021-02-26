@@ -22,14 +22,4 @@ public class AssignedFormView {
   public WorkflowTask getWorkflowTask() {
     return workflowTask;
   }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (obj instanceof AssignedFormView) {
-      AssignedFormView assignedFormViewToCompare = (AssignedFormView) obj;
-      return this.form.equals(assignedFormViewToCompare.getForm()) && this.workflowTask == assignedFormViewToCompare
-          .getWorkflowTask();
-    }
-    return false;
-  }
 }

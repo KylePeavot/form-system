@@ -4,12 +4,7 @@ public enum WorkflowTask {
   ASSIGN_FORM_TO_FORM_FILLER("Assign form to form filler"),
   FILL_FORM("Filling form"),
   DELETE_FORM("Delete form"),
-  FORM_SUBMITTED("Form submitted"),
-  REVIEWING_FORM("Reviewing form"),
-  WITHDRAW_FORM("Withdraw form"),
-  COMPLETE_REVIEW("Complete review"),
-  FORM_RETURNED_TO_FORM_FILLER("Form returned to form filler"),
-  FORM_APPROVED("Form response submitted");
+  FORM_SUBMITTED("Form submitted");
 
 
   private final String taskName;
