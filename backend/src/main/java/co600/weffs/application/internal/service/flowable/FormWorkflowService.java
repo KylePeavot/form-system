@@ -1,17 +1,15 @@
 package co600.weffs.application.internal.service.flowable;
 
 import co600.weffs.application.internal.model.auth.AppUser;
-import co600.weffs.application.internal.model.error.WorkflowTaskNotFound;
-import co600.weffs.application.internal.model.flowable.FormInTask;
-import co600.weffs.application.internal.model.flowable.FormReviewDecision;
+import co600.weffs.application.internal.model.flowable.AssignedFormView;
 import co600.weffs.application.internal.model.flowable.WorkflowTask;
 import co600.weffs.application.internal.model.form.Form;
+import co600.weffs.application.internal.services.FormDetailService;
 import co600.weffs.application.internal.services.FormService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.flowable.engine.delegate.DelegateExecution;
 import org.flowable.task.api.Task;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
@@ -29,10 +27,12 @@ public class FormWorkflowService {
 
   @Autowired
   private FormService formService;
+  private FormDetailService formDetailService;
 
-  public FormWorkflowService(RuntimeService runtimeService, TaskService taskService) {
+  public FormWorkflowService(RuntimeService runtimeService, TaskService taskService, FormDetailService formDetailService) {
     this.runtimeService = runtimeService;
     this.taskService = taskService;
+    this.formDetailService = formDetailService;
   }
 
   public void assignFormToFormFiller(AppUser assigner, AppUser filler, Form form) {
@@ -71,7 +71,7 @@ public class FormWorkflowService {
     }
   }
 
-  public void submitFormForReview(AppUser user, Form formToSubmit) {
+  public void submitForm(AppUser user, Form formToSubmit) {
     Task task = getAssignedTaskForForm(user.getUsername(), formToSubmit.getId());
 
     Map<String, Object> variables = Map.of("nextStage", WorkflowTask.REVIEWING_FORM.getTaskName());
@@ -79,32 +79,6 @@ public class FormWorkflowService {
     if(task != null && task.getName().equals(WorkflowTask.FILL_FORM.getTaskName())) {
       taskService.complete(task.getId(), variables);
     }
-  }
-
-  public void withdrawForm(AppUser user, Form formToWithdraw) {
-    Task task = getAssignedTaskForForm(user.getUsername(), formToWithdraw.getId());
-
-    Map<String, Object> variables = Map.of("nextStage", WorkflowTask.WITHDRAW_FORM.getTaskName());
-
-    if(task != null && task.getName().equals(WorkflowTask.REVIEWING_FORM.getTaskName())) {
-      taskService.complete(task.getId(), variables);
-    }
-  }
-
-  public void completeReview(AppUser user, Form formToProcess, FormReviewDecision formReviewDecision) {
-    Task task = getAssignedTaskForForm(user.getUsername(), formToProcess.getId());
-
-    Map<String, Object> variables = Map.of("nextStage",
-      formReviewDecision.equals(FormReviewDecision.APPROVED)
-        ? WorkflowTask.FORM_APPROVED.getTaskName()
-        : WorkflowTask.FORM_RETURNED_TO_FORM_FILLER.getTaskName()
-    );
-
-    if(task != null && task.getName().equals(WorkflowTask.REVIEWING_FORM.getTaskName())) {
-      taskService.complete(task.getId(), variables);
-    }
-
-    //TODO implement review stuff FS-76
   }
 
   public Task getAssignedTaskForForm(String assignee, int formId) {
@@ -123,12 +97,15 @@ public class FormWorkflowService {
         .collect(Collectors.toList());
   }
 
-  public List<FormInTask> getAllFormInTaskForAssignee(String assignee) {
-    //TODO Possible bug where the assignee is also the filler so short term fix where we strip out duplicates FS-77
+  public List<AssignedFormView> getAllFormInTaskForAssignee(String assignee) {
     return getAllAssignedTasksForAssignee(assignee).stream()
-      .map(task -> new FormInTask(
-          formService.getFormById((Integer) taskService.getVariables(task.getId()).get("formId")),
-          WorkflowTask.getWorkflowTaskFromTaskName(task.getName())))
+      .map(task -> {
+        Form form = formService.getFormById((Integer) taskService.getVariables(task.getId()).get("formId"));
+        return new AssignedFormView(
+            form,
+            formDetailService.getFormDetailByForm(form),
+            WorkflowTask.getWorkflowTaskFromTaskName(task.getName()));
+      })
       .collect(Collectors.toList());
   }
 

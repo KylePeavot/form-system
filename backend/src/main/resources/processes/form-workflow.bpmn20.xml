@@ -4,30 +4,15 @@
     <startEvent id="start" />
     <userTask id="assignFormToFormFiller" name="Assign form to form filler" flowable:assignee="${assigner}" />
     <userTask id="fillingForm" name="Filling form" flowable:assignee="${filler}">
-      <incoming>Flow_1havssx</incoming>
       <outgoing>Flow_0ujdavn</outgoing>
     </userTask>
     <sequenceFlow id="startToAssignFormToFormFiller" sourceRef="start" targetRef="assignFormToFormFiller" />
-    <userTask id="reviewingForm" name="Reviewing form" flowable:assignee="${assigner}">
-      <incoming>Flow_12bh3rb</incoming>
-      <outgoing>Flow_13xl70e</outgoing>
-    </userTask>
-    <exclusiveGateway id="reviewConclusion">
-      <incoming>Flow_13xl70e</incoming>
-      <outgoing>Flow_09i5mgk</outgoing>
-      <outgoing>Flow_1havssx</outgoing>
-      <outgoing>Flow_1vquyrw</outgoing>
-    </exclusiveGateway>
     <endEvent id="successfulSubmission" name="Successful submission">
-      <incoming>Flow_1vquyrw</incoming>
+      <incoming>Flow_12bh3rb</incoming>
     </endEvent>
     <endEvent id="formDeleted" name="Form deleted">
       <incoming>Flow_0d0uvkk</incoming>
     </endEvent>
-    <endEvent id="formWithdrawn" name="Form withdrawn">
-      <incoming>Flow_09i5mgk</incoming>
-    </endEvent>
-    <sequenceFlow id="reviewingFormToReviewConclusion" sourceRef="reviewingForm" targetRef="reviewConclusion" />
     <sequenceFlow id="assignFormToFormFillerToFillingForm" sourceRef="assignFormToFormFiller" targetRef="fillingForm" />
     <exclusiveGateway id="progressForm" name="Progress form">
       <incoming>Flow_0ujdavn</incoming>
@@ -35,107 +20,63 @@
       <outgoing>Flow_0d0uvkk</outgoing>
     </exclusiveGateway>
     <sequenceFlow id="Flow_0ujdavn" sourceRef="fillingForm" targetRef="progressForm" />
-    <sequenceFlow id="Flow_12bh3rb" sourceRef="progressForm" targetRef="reviewingForm">
+    <sequenceFlow id="Flow_12bh3rb" sourceRef="progressForm" targetRef="successfulSubmission">
       <conditionExpression>${nextStage == 'Reviewing form'}</conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="Flow_0d0uvkk" sourceRef="progressForm" targetRef="formDeleted">
       <conditionExpression>${nextStage == 'Delete form'}</conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="Flow_09i5mgk" sourceRef="reviewConclusion" targetRef="formWithdrawn">
-      <conditionExpression>${nextStage == 'Withdraw form'}</conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="Flow_13xl70e" sourceRef="reviewingForm" targetRef="reviewConclusion" />
-    <sequenceFlow id="Flow_1havssx" sourceRef="reviewConclusion" targetRef="fillingForm">
-      <conditionExpression xsi:type="tFormalExpression">${nextStage == 'Form returned to form filler'}</conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="Flow_1vquyrw" sourceRef="reviewConclusion" targetRef="successfulSubmission">
-      <conditionExpression xsi:type="tFormalExpression">${nextStage == 'Form response submitted'}</conditionExpression>
-    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_formWorkflow">
     <bpmndi:BPMNPlane id="BPMNPlane_formWorkflow" bpmnElement="formWorkflow">
-      <bpmndi:BPMNEdge id="Flow_13xl70e_di" bpmnElement="Flow_13xl70e">
-        <omgdi:waypoint x="589" y="252" />
-        <omgdi:waypoint x="650" y="252" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_09i5mgk_di" bpmnElement="Flow_09i5mgk">
-        <omgdi:waypoint x="670" y="232" />
-        <omgdi:waypoint x="670" y="135" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0d0uvkk_di" bpmnElement="Flow_0d0uvkk">
-        <omgdi:waypoint x="445" y="404" />
-        <omgdi:waypoint x="524" y="404" />
+        <omgdi:waypoint x="445" y="274" />
+        <omgdi:waypoint x="524" y="274" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_12bh3rb_di" bpmnElement="Flow_12bh3rb">
-        <omgdi:waypoint x="420" y="379" />
-        <omgdi:waypoint x="420" y="252" />
-        <omgdi:waypoint x="489" y="252" />
+        <omgdi:waypoint x="420" y="249" />
+        <omgdi:waypoint x="420" y="137" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0ujdavn_di" bpmnElement="Flow_0ujdavn">
-        <omgdi:waypoint x="316" y="404" />
-        <omgdi:waypoint x="395" y="404" />
+        <omgdi:waypoint x="316" y="274" />
+        <omgdi:waypoint x="395" y="274" />
       </bpmndi:BPMNEdge>
       <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-31fb41a0-56c5-4fde-a4a7-9b73f7bd0d60" bpmnElement="assignFormToFormFillerToFillingForm">
-        <omgdi:waypoint x="265.59999" y="292" />
-        <omgdi:waypoint x="265.60002" y="329.19998" />
-        <omgdi:waypoint x="265.6" y="364.00003" />
+        <omgdi:waypoint x="265.59999" y="162" />
+        <omgdi:waypoint x="265.60002" y="199.19997999999998" />
+        <omgdi:waypoint x="265.6" y="234.00002999999998" />
       </bpmdi:BPMNEdge>
       <bpmdi:BPMNEdge xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="edge-201526bc-068f-41cb-b7fe-8079b1a14c1b" bpmnElement="startToAssignFormToFormFiller">
-        <omgdi:waypoint x="189.59999" y="252" />
-        <omgdi:waypoint x="215.59999" y="252" />
+        <omgdi:waypoint x="189.59999" y="122" />
+        <omgdi:waypoint x="215.59999" y="122" />
       </bpmdi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1havssx_di" bpmnElement="Flow_1havssx">
-        <omgdi:waypoint x="670" y="272" />
-        <omgdi:waypoint x="670" y="470" />
-        <omgdi:waypoint x="266" y="470" />
-        <omgdi:waypoint x="266" y="444" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1vquyrw_di" bpmnElement="Flow_1vquyrw">
-        <omgdi:waypoint x="690" y="252" />
-        <omgdi:waypoint x="805" y="252" />
-      </bpmndi:BPMNEdge>
       <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-6a0d81bb-8844-4a1e-b259-787c23be41af" bpmnElement="start">
-        <omgdc:Bounds x="160" y="237" width="30" height="30" />
+        <omgdc:Bounds x="160" y="107" width="30" height="30" />
       </bpmdi:BPMNShape>
       <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-93c9184d-7f26-42d0-b89b-bddccc85fa74" bpmnElement="assignFormToFormFiller">
-        <omgdc:Bounds x="216" y="212" width="100" height="80" />
+        <omgdc:Bounds x="216" y="82" width="100" height="80" />
       </bpmdi:BPMNShape>
       <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-f128f596-15bb-4525-9953-24c36e244deb" bpmnElement="fillingForm">
-        <omgdc:Bounds x="216" y="364" width="100" height="80" />
-      </bpmdi:BPMNShape>
-      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-e46e4e40-4b0d-43ae-82c6-5b37da7d4742" bpmnElement="reviewingForm">
-        <omgdc:Bounds x="489" y="212" width="100" height="80" />
-      </bpmdi:BPMNShape>
-      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-b08eea94-38fc-4762-874a-abbe815286d7" bpmnElement="reviewConclusion" isMarkerVisible="true">
-        <omgdc:Bounds x="650" y="232" width="40" height="40" />
-        <bpmdi:BPMNLabel>
-          <omgdc:Bounds x="700" y="238" width="52" height="27" />
-        </bpmdi:BPMNLabel>
-      </bpmdi:BPMNShape>
-      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-299ec918-0697-4ddc-9fe0-7321e334ee7c" bpmnElement="successfulSubmission">
-        <omgdc:Bounds x="805" y="237" width="30" height="30" />
-        <bpmdi:BPMNLabel>
-          <omgdc:Bounds x="792" y="267" width="56" height="27" />
-        </bpmdi:BPMNLabel>
+        <omgdc:Bounds x="216" y="234" width="100" height="80" />
       </bpmdi:BPMNShape>
       <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-0b193d2d-90ec-4f8c-9289-123509fba4c8" bpmnElement="formDeleted">
-        <omgdc:Bounds x="524" y="389" width="30" height="30" />
+        <omgdc:Bounds x="524" y="259" width="30" height="30" />
         <bpmdi:BPMNLabel>
-          <omgdc:Bounds x="507" y="419" width="65" height="14" />
-        </bpmdi:BPMNLabel>
-      </bpmdi:BPMNShape>
-      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-219ddf1c-eed0-4673-82c1-c0ceeded44b5" bpmnElement="formWithdrawn">
-        <omgdc:Bounds x="655" y="105" width="30" height="30" />
-        <bpmdi:BPMNLabel>
-          <omgdc:Bounds x="630" y="81" width="79" height="14" />
+          <omgdc:Bounds x="507" y="289" width="65" height="14" />
         </bpmdi:BPMNLabel>
       </bpmdi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1qhnyu1_di" bpmnElement="progressForm" isMarkerVisible="true">
-        <omgdc:Bounds x="395" y="379" width="50" height="50" />
+        <omgdc:Bounds x="395" y="249" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds x="385" y="429" width="70" height="14" />
+          <omgdc:Bounds x="385" y="299" width="70" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmdi:BPMNShape xmlns:bpmdi="http://www.omg.org/spec/BPMN/20100524/DI" id="shape-299ec918-0697-4ddc-9fe0-7321e334ee7c" bpmnElement="successfulSubmission">
+        <omgdc:Bounds x="405" y="107" width="30" height="30" />
+        <bpmdi:BPMNLabel>
+          <omgdc:Bounds x="392" y="69.5" width="56" height="27" />
+        </bpmdi:BPMNLabel>
+      </bpmdi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </definitions>
