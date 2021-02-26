@@ -22,7 +22,7 @@ public class FormDetailService {
     }
 
     public FormDetail getFormDetailByForm(Form form) {
-        return formDetailRepository.findByFormWhereStatusControl(form);
+        return formDetailRepository.findByFormAndStatusControlIsTrue(form);
     }
 
     public void save(FormDetail formDetail){

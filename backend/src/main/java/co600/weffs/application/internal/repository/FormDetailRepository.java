@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FormDetailRepository extends CrudRepository<FormDetail, Integer> {
 
-  FormDetail findByFormWhereStatusControl(Form form);
+  FormDetail findByFormAndStatusControlIsTrue(Form form);
 
 }
