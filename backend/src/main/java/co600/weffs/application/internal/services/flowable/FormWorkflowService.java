@@ -1,4 +1,4 @@
-package co600.weffs.application.internal.service.flowable;
+package co600.weffs.application.internal.services.flowable;
 
 import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.flowable.AssignedFormView;
@@ -6,6 +6,7 @@ import co600.weffs.application.internal.model.flowable.WorkflowTask;
 import co600.weffs.application.internal.model.form.Form;
 import co600.weffs.application.internal.services.FormDetailService;
 import co600.weffs.application.internal.services.FormService;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,11 +29,15 @@ public class FormWorkflowService {
 
   @Autowired
   private FormService formService;
+
+  @Autowired
   private FormDetailService formDetailService;
 
-  public FormWorkflowService(RuntimeService runtimeService, TaskService taskService, FormDetailService formDetailService) {
+  @Autowired
+  public FormWorkflowService(RuntimeService runtimeService, TaskService taskService, FormService formService, FormDetailService formDetailService) {
     this.runtimeService = runtimeService;
     this.taskService = taskService;
+    this.formService = formService;
     this.formDetailService = formDetailService;
   }
 
@@ -50,12 +55,6 @@ public class FormWorkflowService {
     }
 
     runtimeService.startProcessInstanceByKey("formWorkflow", variables);
-
-    //Find the task that has been created
-    Task task = getAssignedTaskForForm(assigner.getUsername(), form.getId());
-
-    //transition the task to the next task
-    taskService.complete(task.getId());
   }
 
   public void deleteForm(AppUser user, Form formToDelete) {
@@ -97,7 +96,7 @@ public class FormWorkflowService {
         .collect(Collectors.toList());
   }
 
-  public List<AssignedFormView> getAllFormInTaskForAssignee(String assignee) {
+  public List<AssignedFormView> getAllAssignedFormViewsForAssignee(String assignee) {
     return getAllAssignedTasksForAssignee(assignee).stream()
       .map(task -> {
         Form form = formService.getFormById((Integer) taskService.getVariables(task.getId()).get("formId"));
@@ -107,6 +106,7 @@ public class FormWorkflowService {
             WorkflowTask.getWorkflowTaskFromTaskName(task.getName())
         );
       })
+      .sorted(Comparator.comparing(o -> o.getFormDetail().getLastUpdatedTimestamp()))
       .collect(Collectors.toList());
   }
 

@@ -1,7 +1,6 @@
 package co600.weffs.application.internal.model.flowable;
 
 public enum WorkflowTask {
-  ASSIGN_FORM_TO_FORM_FILLER("Assign form to form filler"),
   FILL_FORM("Filling form"),
   DELETE_FORM("Delete form"),
   FORM_SUBMITTED("Form submitted");

@@ -2,7 +2,7 @@ package co600.weffs.application.internal.controller;
 
 import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.security.jwt.MustBeAuthorized;
-import co600.weffs.application.internal.service.flowable.FormWorkflowService;
+import co600.weffs.application.internal.services.flowable.FormWorkflowService;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +38,7 @@ public class DashboardController {
     @MustBeAuthorized
     @GetMapping("/assigned-tasks")
     public Map<String, ?> getAssignedTasks(@RequestAttribute("User") AppUser appUser) {
-        return formWorkflowService.getAllFormInTaskForAssignee(appUser.getUsername()).stream()
+        return formWorkflowService.getAllAssignedFormViewsForAssignee(appUser.getUsername()).stream()
             .collect(Collectors.toMap(
                 assignedFormView  -> String.valueOf(assignedFormView.hashCode()),
                 assignedFormView -> assignedFormView)

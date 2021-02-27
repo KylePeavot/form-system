@@ -22,4 +22,8 @@ public class AssignedFormView {
   public WorkflowTask getWorkflowTask() {
     return workflowTask;
   }
+
+  public FormDetail getFormDetail() {
+    return formDetail;
+  }
 }
