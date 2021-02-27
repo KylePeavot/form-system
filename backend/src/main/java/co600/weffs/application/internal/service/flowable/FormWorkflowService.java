@@ -37,10 +37,11 @@ public class FormWorkflowService {
 
   public void assignFormToFormFiller(AppUser assigner, AppUser filler, Form form) {
     // start the process
-    Map<String, Object> variables = new HashMap<>();
-    variables.put("assigner", assigner.getUsername());
-    variables.put("filler", filler.getUsername());
-    variables.put("formId", form.getId());
+    Map<String, Object> variables = Map.of(
+      "assigner", assigner.getUsername(),
+      "filler", filler.getUsername(),
+      "formId", form.getId()
+    );
 
     //if the form is already assigned to the filler, return
     if (isFormAssignedToUser(filler.getUsername(), form.getId())) {
@@ -102,7 +103,8 @@ public class FormWorkflowService {
         return new AssignedFormView(
             form,
             formDetailService.getFormDetailByForm(form),
-            WorkflowTask.getWorkflowTaskFromTaskName(task.getName()));
+            WorkflowTask.getWorkflowTaskFromTaskName(task.getName())
+        );
       })
       .collect(Collectors.toList());
   }

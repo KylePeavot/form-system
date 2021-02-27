@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("api/flowable/workflow")
+@RequestMapping("api/flowable/workflow/form")
 public class FormWorkflowController {
 
   @Autowired
@@ -34,15 +34,14 @@ public class FormWorkflowController {
     formWorkflowService.assignFormToFormFiller(appUser, filler, formService.getFormById(formId));
   }
 
-  //    Delete form
   @MustBeAuthorized
-  @PostMapping("/delete-form")
+  @PostMapping("/delete")
   public void deleteForm(@RequestAttribute("User") AppUser appUser, @RequestAttribute("formId") int formId) {
     formWorkflowService.deleteForm(appUser, formService.getFormById(formId));
   }
 
   @MustBeAuthorized
-  @PostMapping("submit-form")
+  @PostMapping("submit")
   public void submitForm(@RequestAttribute("User") AppUser appUser, @RequestAttribute("formId") int formId) {
     formWorkflowService.submitForm(appUser, formService.getFormById(formId));
   }
