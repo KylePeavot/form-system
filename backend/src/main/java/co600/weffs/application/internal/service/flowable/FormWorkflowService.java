@@ -35,16 +35,16 @@ public class FormWorkflowService {
     this.formDetailService = formDetailService;
   }
 
-  public void assignFormToFormFiller(AppUser assigner, AppUser filler, Form form) {
+  public void assignFormToFormFiller(AppUser assigner, String filler, Form form) {
     // start the process
     Map<String, Object> variables = Map.of(
       "assigner", assigner.getUsername(),
-      "filler", filler.getUsername(),
+      "filler", filler,
       "formId", form.getId()
     );
 
     //if the form is already assigned to the filler, return
-    if (isFormAssignedToUser(filler.getUsername(), form.getId())) {
+    if (isFormAssignedToUser(filler, form.getId())) {
       return;
     }
 

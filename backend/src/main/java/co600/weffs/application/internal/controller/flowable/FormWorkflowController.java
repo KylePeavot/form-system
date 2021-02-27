@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -30,19 +31,19 @@ public class FormWorkflowController {
 
   @MustBeAuthorized
   @PostMapping("/start")
-  public void assignFormToUser(@RequestAttribute("User") AppUser appUser, @RequestAttribute("filler") AppUser filler, @RequestAttribute("formId") int formId) {
+  public void assignFormToUser(@RequestAttribute("User") AppUser appUser, @RequestParam String filler,  @RequestParam int formId) {
     formWorkflowService.assignFormToFormFiller(appUser, filler, formService.getFormById(formId));
   }
 
   @MustBeAuthorized
   @PostMapping("/delete")
-  public void deleteForm(@RequestAttribute("User") AppUser appUser, @RequestAttribute("formId") int formId) {
+  public void deleteForm(@RequestAttribute("User") AppUser appUser, @RequestParam int formId) {
     formWorkflowService.deleteForm(appUser, formService.getFormById(formId));
   }
 
   @MustBeAuthorized
   @PostMapping("submit")
-  public void submitForm(@RequestAttribute("User") AppUser appUser, @RequestAttribute("formId") int formId) {
+  public void submitForm(@RequestAttribute("User") AppUser appUser, @RequestParam int formId) {
     formWorkflowService.submitForm(appUser, formService.getFormById(formId));
   }
 }
