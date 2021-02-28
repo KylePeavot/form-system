@@ -1,6 +1,6 @@
 <template>
   <div class="popover-menu">
-    <button name="popper-button" class="focus:outline-none" @click="updatePopper">
+    <button name="popper-button" class="focus:outline-none">
       <strong><i class="ph-dots-three-bold text-xl"></i></strong>
     </button>
     <div name="popper-menu" class="popover-menu__container">
