@@ -1,6 +1,7 @@
 <template>
   <div name="checkbox-group-container">
     <BaseQuestion :base-question-props="baseQuestionProps">
+      <button class="popover-menu__item" @click="addNewCheckbox">Add new checkbox</button>
       <button class="popover-menu__item">Move</button>
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
@@ -42,6 +43,10 @@ export default class CheckboxGroup extends Vue {
 
   created() {
     this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
+  }
+
+  addNewCheckbox() {
+    this.value.push(new SelectionValue("Add a response here", false));
   }
 
   deleteComponent() {

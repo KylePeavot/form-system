@@ -2,7 +2,20 @@
   &__item{
     @apply rounded border-2 border-gray-400 h-7 w-7 text-blue-600 mr-2;
   }
+
   &__container {
-    @apply py-2;
+    @apply py-2 max-w-sm flex;
+    &:hover, &:focus-within {
+      .question__edit-pencil {
+        @apply visible inline;
+      }
+    }
+  }
+
+  &__label {
+
+    &-edit {
+      @apply p-0 rounded-md max-w-full w-auto;
+    }
   }
 }
