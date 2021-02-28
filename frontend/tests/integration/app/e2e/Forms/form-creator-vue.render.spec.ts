@@ -57,12 +57,13 @@ describe("Form creator page", () => {
       cy.get('button').contains("Delete").click();
     });
 
-    cy.get('div[name="checkbox-group-container"]').within(() => {
+
+    cy.get('div[name="radio-group-container"]').within(() => {
       cy.get('[name="popper-button"]').click();
       cy.get('button').contains("Delete").click();
     });
 
-    cy.get('div[name="radio-group-container"]').within(() => {
+    cy.get('div[name="checkbox-group-container"]').within(() => {
       cy.get('[name="popper-button"]').click();
       cy.get('button').contains("Delete").click();
     });
