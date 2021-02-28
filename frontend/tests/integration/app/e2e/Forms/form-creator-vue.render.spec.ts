@@ -81,15 +81,14 @@ describe("Form creator page", () => {
       //forcing the click because cypress doesn't can't handle hovering over an element to make another element visible
       cy.get('[class="question__edit-pencil ph-pencil"]').click({force: true});
       cy.get('input').type(" test {enter}");
-      cy.get('h2').contains("Question title test")
+      cy.get('h2').contains("Question title test");
     });
 
     cy.get('[class="question__guidance-container"]').within(() => {
       //forcing the click because cypress doesn't can't handle hovering over an element to make another element visible
       cy.get('[class="question__edit-pencil ph-pencil"]').click({force: true});
       cy.get('input').type(" test {enter}");
-      cy.get('p').contains("Question guidance test")
+      cy.get('p').contains("Question guidance test");
     });
-
   });
 });

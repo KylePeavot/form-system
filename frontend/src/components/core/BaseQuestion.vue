@@ -71,7 +71,7 @@ export default class BaseQuestion extends Vue {
 
   removeGuidance() {
     this.baseQuestionProps!.guidance = "";
-    this.guidanceTextExists = false
+    this.guidanceTextExists = false;
   }
 
 }

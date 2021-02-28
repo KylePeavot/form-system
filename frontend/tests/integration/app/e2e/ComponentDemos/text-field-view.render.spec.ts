@@ -26,8 +26,8 @@ describe("Text field demo page", () => {
       cy.get('[name="popper-menu"]').should('not.be.visible');
       cy.get('[name="popper-button"]').click();
       cy.get('[name="popper-menu"]').should('be.visible').within(() => {
-        cy.get('button').eq(2).contains("Move")
-        cy.get('button').eq(3).contains("Delete")
+        cy.get('button').eq(2).contains("Move");
+        cy.get('button').eq(3).contains("Delete");
       });
     });
   });
