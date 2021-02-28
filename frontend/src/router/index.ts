@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter, {RouteConfig} from 'vue-router'
 import Pages from "@/models/navigation/Pages";
+import AuthenticationUtils from "@/utils/AuthenticationUtils";
 
 Vue.use(VueRouter)
 
@@ -8,7 +9,10 @@ const routes: Array<RouteConfig> = [
   {
     path: Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD.url,
     name: Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD.name,
-    component: () => import("../views/Dashboard.vue")
+    component: () => import("../views/Dashboard.vue"),
+    meta: {
+      loginRequired: true
+    }
   },
   {
     path: Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.NEW_FORM.url,
@@ -18,7 +22,12 @@ const routes: Array<RouteConfig> = [
   {
     path: Pages.ROUTES.STATIC.LOGIN.url,
     name: Pages.ROUTES.STATIC.LOGIN.name,
-    component: () => import("../views/LoginHandler.vue")
+    component: () => import("../views/LoginScreen.vue")
+  },
+  {
+    path: Pages.ROUTES.STATIC.LOGOUT.url,
+    name: Pages.ROUTES.STATIC.LOGOUT.name,
+    component: () => import("../views/LogoutScreen.vue")
   },
   {
     path: Pages.ROUTES.SHOWN_IN_NAVBAR.COMPONENTS.subRoutes.TEXT_FIELD.url,
@@ -53,7 +62,14 @@ const router = new VueRouter({
   routes
 });
 
-router.afterEach(to => {
+// We can ensure that all users are logged in when they go to an endpoint with the loginRequired metadata.
+router.afterEach(async to => {
+  if (to.meta.loginRequired) {
+    const isLoggedIn = await AuthenticationUtils.isLoggedIn();
+    if (!isLoggedIn) {
+      await router.push(Pages.ROUTES.STATIC.LOGIN.url);
+    }
+  }
   document.title = to.name!;
 });
 

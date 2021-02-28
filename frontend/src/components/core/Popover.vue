@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <button name="popper-button" class="focus:outline-none" @click="togglePopper">
-      <strong>...</strong>
+  <div class="popover-menu">
+    <button name="popper-button" class="focus:outline-none" @click="updatePopper">
+      <strong><i class="ph-dots-three-bold text-xl"></i></strong>
     </button>
-    <div name="popper-menu" v-show="showMenu" class="popover-menu__container">
+    <div name="popper-menu" class="popover-menu__container">
       <slot></slot>
     </div>
   </div>
@@ -40,13 +40,7 @@ export default class Popover extends Vue {
   mounted() {
     this.popperButtonElement = this.$el.querySelector("[name=popper-button]") as Element;
     this.popperMenuElement = this.$el.querySelector("[name=popper-menu]") as HTMLElement;
-  }
-
-  openPopper() {
-    this.showMenu = true; // show the menu
-    if (this.popper === undefined) { //if there is no popper, create one
-      this.popper = createPopper(this.popperButtonElement as Element, this.popperMenuElement as HTMLElement, this.popperConfig) as any;
-    }
+    this.popper = createPopper(this.popperButtonElement as Element, this.popperMenuElement as HTMLElement, this.popperConfig) as any;
   }
 
   async closePopper() {
@@ -54,14 +48,6 @@ export default class Popover extends Vue {
     await this.sleep(100);
     this.showMenu = false;
     this.popper = null;
-  }
-
-  togglePopper() {
-    if (!this.showMenu) {
-      this.openPopper();
-    } else if (this.showMenu) {
-      this.closePopper();
-    }
   }
 
   sleep(ms: number) {

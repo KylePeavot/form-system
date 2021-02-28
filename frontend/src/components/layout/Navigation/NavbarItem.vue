@@ -9,10 +9,10 @@
       </a>
     </router-link>
     <div class="absolute navbar__submenu invisible" v-if="subrouteSize > 0">
-      <div class="relative bg-blue-800 shadow-md inset-y-1 w-full px-3 py-2 rounded-b-md rounded-tr-md">
-        <div v-for="(value, index) in subroutes" :key="`${index}-${value.name}`" class="px-3 py-2 text-sm font-medium text-white">
+      <div class="navbar-group">
+        <div v-for="(value, index) in subroutes" :key="`${index}-${value.name}`" class="navbar-group--item">
           <router-link :to="value.url">
-            <a class="hover:underline focus:underline">
+            <a>
               {{ value.name }}
             </a>
           </router-link>

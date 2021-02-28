@@ -64,7 +64,7 @@ export default class Pages {
             },
             LOGOUT: {
                 name: "Logout",
-                url: "/account/login"
+                url: "/account/logout"
             }
         }
     }
