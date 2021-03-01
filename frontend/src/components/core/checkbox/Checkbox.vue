@@ -4,6 +4,7 @@
     <EditableComponent edit-component-css="checkbox__label-edit" :value="checkboxValue.label" @finish-editing="updateLabel">
       <label class="checkbox__label" :for="id">{{ checkboxValue.label }}</label>
     </EditableComponent>
+    <button v-if="isDeletable" class="hidden-button ph-trash" @click="$emit('deleteCheckbox')"/>
   </div>
 </template>
 
@@ -23,6 +24,9 @@ export default class Checkbox extends Vue {
 
   @Prop({required: true})
   private checkboxValue!: SelectionValue;
+
+  @Prop({required: true, default: false})
+  private isDeletable!: boolean;
 
   updateLabel(newLabel: string) {
     this.checkboxValue.label = newLabel;

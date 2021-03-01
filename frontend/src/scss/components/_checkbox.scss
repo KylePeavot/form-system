@@ -6,14 +6,13 @@
   &__container {
     @apply py-2 max-w-sm flex;
     &:hover, &:focus-within {
-      .question__edit-pencil {
+      .hidden-button {
         @apply visible inline;
       }
     }
   }
 
   &__label {
-
     &-edit {
       @apply p-0 rounded-md max-w-full w-auto;
     }

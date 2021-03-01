@@ -1,13 +1,13 @@
 <template>
-  <div name="checkbox-group-container">
+  <div name="checkbox-group-container" class="pb-5">
     <BaseQuestion :base-question-props="baseQuestionProps">
-      <button class="popover-menu__item" @click="addNewCheckbox">Add new checkbox</button>
       <button class="popover-menu__item">Move</button>
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
     <div v-for="(checkbox, index) of value" :key="`${idPrefix}-${index}`">
-      <Checkbox :id="`${idPrefix}-${index}`" :checkbox-value="checkbox"/>
+      <Checkbox :id="`${idPrefix}-${index}`" :checkbox-value="checkbox" :isDeletable="true" @deleteCheckbox="deleteCheckbox(checkbox)"/>
     </div>
+    <button type="button" class="text-blue-500" @click="addNewCheckbox">+ Add new checkbox</button>
   </div>
 </template>
 
@@ -47,6 +47,13 @@ export default class CheckboxGroup extends Vue {
 
   addNewCheckbox() {
     this.value.push(new SelectionValue("Add a response here", false));
+  }
+
+  deleteCheckbox(checkboxToDelete: SelectionValue) {
+    const newValues = this.value.filter(value => {
+      return checkboxToDelete !== value;
+    })
+    this.$emit('propsUpdated', {value: newValues});
   }
 
   deleteComponent() {
