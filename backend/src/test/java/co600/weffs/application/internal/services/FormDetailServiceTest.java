@@ -37,14 +37,14 @@ class FormDetailServiceTest extends MockitoTest {
     @Test
     void getFormById() {
         when(formDetailRepository.findById(322)).thenReturn(Optional.of(formDetail));
-        var serviceFormDetail = formDetailService.getFormById(322);
+        var serviceFormDetail = formDetailService.getFormDetailById(322);
         assertThat(formDetail).isEqualTo(serviceFormDetail);
     }
     @Test
     void getFormById_DoesNotExist() {
         when(formDetailRepository.findById(322)).thenReturn(Optional.empty());
         Assertions.assertThrows(EntityNotFoundException.class,()->{
-            formDetailService.getFormById(322);
+            formDetailService.getFormDetailById(322);
         });
     }
 

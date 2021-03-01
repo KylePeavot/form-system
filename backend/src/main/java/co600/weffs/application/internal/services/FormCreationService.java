@@ -3,6 +3,7 @@ package co600.weffs.application.internal.services;
 import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -10,6 +11,7 @@ import java.time.Instant;
 
 @Service
 public class FormCreationService {
+    @Qualifier(value = "WeffsFormService")
     private final FormService formService;
     private final FormDetailService formDetailService;
     private final QuestionService questionService;
