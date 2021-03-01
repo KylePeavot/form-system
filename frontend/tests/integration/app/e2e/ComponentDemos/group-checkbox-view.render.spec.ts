@@ -20,7 +20,7 @@ describe("Group checkbox view", () => {
   });
 
   it("Has toggled second element", () => {
-    cy.get("input").then(firstInput => firstInput.get()[1].click());
+    cy.get("input").then(firstInput => firstInput.get()[3].click());
   });
 
   it("Now has one true state", () => {

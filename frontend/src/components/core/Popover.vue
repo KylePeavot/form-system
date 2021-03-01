@@ -1,6 +1,6 @@
 <template>
   <div class="popover-menu">
-    <button name="popper-button" class="focus:outline-none" @click="updatePopper">
+    <button name="popper-button" class="focus:outline-none">
       <strong><i class="ph-dots-three-bold text-xl"></i></strong>
     </button>
     <div name="popper-menu" class="popover-menu__container">
@@ -47,6 +47,7 @@ export default class Popover extends Vue {
     // sleep needed so that the browser has time to deal with button presses before closing the popper due to the @focusout event
     await this.sleep(100);
     this.showMenu = false;
+    this.popper = null;
   }
 
   sleep(ms: number) {

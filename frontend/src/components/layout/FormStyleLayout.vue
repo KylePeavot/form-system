@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
-import Heading from "@/components/core/Heading.vue";
+import Heading from "@/components/core/componentExtras/Heading.vue";
 import PageDetail from "@/models/navigation/PageDetail";
 import Navbar from "@/components/layout/Navigation/Navbar.vue";
 
