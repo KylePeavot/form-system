@@ -1,26 +1,32 @@
 package co600.weffs.application.internal.controller;
 
 import co600.weffs.application.internal.model.auth.AppUser;
+import co600.weffs.application.internal.model.form.FormDetail;
+import co600.weffs.application.internal.model.form.FormView;
 import co600.weffs.application.internal.model.form.FrontendForm;
+import co600.weffs.application.internal.repository.FormDetailRepository;
 import co600.weffs.application.internal.security.jwt.MustBeAuthorized;
 import co600.weffs.application.internal.services.FormCreationService;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/form")
 public class FormController {
 
   private final FormCreationService formCreationService;
+  private final FormDetailRepository formDetailRepository;
 
   @Autowired
-  public FormController(FormCreationService formCreationService) {
+  public FormController(FormCreationService formCreationService, FormDetailRepository formDetailRepository) {
     this.formCreationService = formCreationService;
+    this.formDetailRepository = formDetailRepository;
   }
 
   @MustBeAuthorized
@@ -30,6 +36,17 @@ public class FormController {
     return Map.of("success", true);
   }
 
-
+  @MustBeAuthorized
+  @GetMapping("/browse")
+  public List<FormView> getForm(){
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+    return ((List<FormDetail>) formDetailRepository.findAll()).stream()
+            .map(formDetail -> new FormView(formDetail.getForm().getId(), "name",
+                    formDetail.getForm().getCreatedBy(), formatter.format(Date.from(formDetail.getForm().getCreatedTimestamp())),
+                    formDetail.getLastUpdatedBy(), formatter.format(Date.from(formDetail.getLastUpdatedTimestamp()))))
+            .collect(Collectors.toList());
+  }
 }
+
+
 
