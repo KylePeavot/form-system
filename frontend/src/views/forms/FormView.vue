@@ -1,19 +1,20 @@
 <template>
   <div>
     <BaseStyleLayout title="Get forms available to you" :selected-page="page">
-      <table class="table__table">
-        <thead class="table__thead">
+      <table class="results-table">
+        <thead class="results-table__thead">
         <tr>
-          <th class="table__th">Name</th>
-          <th class="table__th">Created</th>
-          <th class="table__th">Updated</th>
+          <th class="results-table__th">Name</th>
+          <th></th>
+          <th class="results-table__th">Created</th>
+          <th class="results-table__th">Updated</th>
         </tr>
         </thead>
         <tbody>
-        <tr :v-if="forms !== undefined" v-for="form in forms" :key="form.id" class="table__tr">
-          <td class="table__td">{{form.name}}</td>
-          <td class="table__td">Created by  {{form.createdBy}} on {{form.createdWhen}}</td>
-          <td class="table__td">Updated by {{form.lastUpdatedBy }} on {{form.lastUpdatedWhen}}</td>
+        <tr :v-if="forms !== undefined" v-for="form in forms" :key="form.id" class="results-table__tr">
+          <td colspan="2" class="results-table__td results-table__td--name">{{ form.name }}</td>
+          <td class="results-table__td">Created by {{ form.createdBy }} on {{ form.createdWhen }}</td>
+          <td class="results-table__td">Updated by {{ form.lastUpdatedBy }} on {{ form.lastUpdatedWhen }}</td>
         </tr>
         </tbody>
       </table>
