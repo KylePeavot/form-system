@@ -18,7 +18,7 @@
         </tr>
         </tbody>
       </table>
-      <div v-else><span> <i class="animate-spin ph-arrow-clockwise"></i>Loading</span></div>
+      <div v-else><span> <i class="animate-spin ph-arrow-clockwise text-xl"></i>Loading</span></div>
     </BaseStyleLayout>
   </div>
 
