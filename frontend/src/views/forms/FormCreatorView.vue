@@ -11,8 +11,8 @@
         </SidebarGroup>
       </template>
       <slot>
-        <div :v-if="components !== undefined" v-for="component in components" :key="component.order">
-          <component :is="component.componentType" v-bind="component.componentProps" />
+        <div :v-if="components !== undefined" v-for="component in components" :key="component.order" >
+          <component :is="component.componentType" v-bind="component.componentProps" @delete-component="removeFromLayout(component)" />
         </div>
       </slot>
       <button class="button button--primary" @click="saveForm">Save Form</button>
@@ -45,6 +45,7 @@ import WebRequestUtils from "@/utils/WebRequestUtils";
 export default class FormCreatorView extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.NEW_FORM;
   private components: FormCreationComponent[] = new Array<FormCreationComponent>();
+  private nextComponentId = 1;
 
   saveForm(){
     const form = new Form("Form",this.components);
@@ -55,7 +56,11 @@ export default class FormCreatorView extends Vue {
     const userAction = (event.target as Element).getAttribute("name");
 
     let componentType = "";
-    let componentProps = {};
+    let componentProps: any = {};
+
+    for (let i = 0; i < this.components.length; i++) {
+      this.components[i].order = (i + 1) * 100;
+    }
 
     const order = (this.components.length + 1) * 100;
 
@@ -83,7 +88,7 @@ export default class FormCreatorView extends Vue {
       case "addCheckboxSingle": {
         componentType = "CheckboxQuestion";
         componentProps = {
-          id: 'cq',
+          id: 'cq-' + this.nextComponentId,
           title: 'Question title',
           guidance: 'Question guidance',
           level: 2,
@@ -94,7 +99,7 @@ export default class FormCreatorView extends Vue {
       case "addCheckboxGroup": {
         componentType = "CheckboxGroup";
         componentProps = {
-          idPrefix: 'cg',
+          idPrefix: 'cg-' + this.nextComponentId,
           title: 'Question title',
           guidance: 'Question guidance',
           level: 2,
@@ -109,7 +114,7 @@ export default class FormCreatorView extends Vue {
         componentType = "RadioGroup";
         componentProps = {
           level: 2,
-          idPrefix: 'rg',
+          idPrefix: 'rg-' + this.nextComponentId,
           title: 'Question title',
           guidance: 'Question guidance',
           value: [
@@ -126,6 +131,13 @@ export default class FormCreatorView extends Vue {
         componentProps,
         order
     ));
+  }
+
+
+  removeFromLayout(componentToDelete: FormCreationComponent) {
+    this.components = this.components.filter(item => {
+      return item !== componentToDelete;
+    })
   }
 }
 </script>
