@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div :class="{'bg-red-50 border-red-600 border-l-8 p-2 mb-1 rounded-md': getValidationErrorMessage() !== null}">
-      <p v-if="getValidationErrorMessage() !== null" class="mb-2">{{ getValidationErrorMessage() }}</p>
-      <input :id="id" :type="type" :value="wrapper.value" @input="emitInput" class="question__text-field" />
+    <div :class="{'bg-red-50 border-red-600 border-l-8 p-2 mb-1 rounded-md': errorMessage !== null}">
+      <p v-if="errorMessage !== null" class="mb-2">{{ errorMessage }}</p>
+      <input :id="id" :type="type" :value="wrapper.value" @input="emitInput" @blur="validate" class="question__text-field" />
     </div>
   </div>
 </template>
@@ -19,9 +19,12 @@ export default class TextValidator extends Vue {
   @Prop({default: false})
   private forceShowErrors!: boolean;
 
+  private errorMessage: string | null = null;
+
   @Watch("forceShowErrors")
   onForceShowChanged(newValue: boolean) {
     this.internalShowErrors = newValue;
+    this.validate();
   }
 
   private internalShowErrors = false;
@@ -38,20 +41,22 @@ export default class TextValidator extends Vue {
   emitInput(event: Event) {
     const wrapper = new ValidationWrapper((event.target as HTMLInputElement).value, this.wrapper.validators);
     this.$emit("input", wrapper);
-    this.internalShowErrors = true;
   }
 
-  getValidationErrorMessage(): string | null {
-    // Don't show validation errors if the field has never been used
-    if (!this.internalShowErrors) {
-      return null;
-    }
+  validate() {
+    this.errorMessage = null;
     for (const validator of this.wrapper.validators) {
       if (!validator.isValid(this.wrapper)) {
-        return validator.getMessage(this.wrapper);
+        this.errorMessage = validator.getMessage(this.wrapper);
+        return;
       }
     }
-    return null;
+  }
+
+  created() {
+    if (this.internalShowErrors) {
+      this.validate();
+    }
   }
 
 }

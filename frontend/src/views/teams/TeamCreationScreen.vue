@@ -4,7 +4,7 @@
       <div class="bg-red-50 border-red-600 border-l-8 p-2 rounded-md mb-2">
         <ul>
           <li class="list-disc list-inside" v-for="(value, index) in submissionError" :key="`error-${index}`">
-            <label class="text-blue-500" :for="`${value.field}`">{{ value.error.message }}</label>
+            <label class="text-blue-500 cursor-pointer" :for="`${value.field}`">{{ value.error.message }}</label>
           </li>
         </ul>
       </div>
