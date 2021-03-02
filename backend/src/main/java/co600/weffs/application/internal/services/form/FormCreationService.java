@@ -40,7 +40,7 @@ public class FormCreationService {
         frontendForm.get_componentList().forEach(frontendComponent -> createQuestion(appUser, frontendComponent, formDetail));
     }
 
-    void createQuestion(AppUser appUser, FrontendComponent frontendComponent, FormDetail formDetail) {
+    public void createQuestion(AppUser appUser, FrontendComponent frontendComponent, FormDetail formDetail) {
 
         var question = new Question();
         question.setCreatedBy(appUser.getUsername());
