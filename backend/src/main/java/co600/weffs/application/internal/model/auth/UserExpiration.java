@@ -9,6 +9,6 @@ import lombok.Data;
 public class UserExpiration {
 
   private final AppUser appUser;
-  private final LocalDateTime localDateTime;
+  private final LocalDateTime userExpirationDateTime;
 
 }
