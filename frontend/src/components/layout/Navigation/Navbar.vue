@@ -37,7 +37,7 @@ import {Component, Prop, PropSync, Vue} from "vue-property-decorator";
 import PageDetail from "../../../models/navigation/PageDetail";
 import Pages from "../../../models/navigation/Pages";
 import NavbarItem from "@/components/layout/Navigation/NavbarItem.vue";
-import Heading from "@/components/core/Heading.vue";
+import Heading from "@/components/core/componentExtras/Heading.vue";
 import PageDetailLink from "@/models/navigation/PageDetailLink";
 @Component({
   components: {Heading, NavbarItem}
