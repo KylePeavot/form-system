@@ -11,7 +11,7 @@ public class FormDetailService {
     private final FormDetailRepository formDetailRepository;
 
     @Autowired
-    public FormDetailService (FormDetailRepository formDetailRepository){
+    public FormDetailService(FormDetailRepository formDetailRepository){
         this.formDetailRepository = formDetailRepository;
     }
 

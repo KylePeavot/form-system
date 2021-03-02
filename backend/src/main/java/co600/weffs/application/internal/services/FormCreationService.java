@@ -24,7 +24,7 @@ public class FormCreationService {
     }
 
     @Transactional
-    public void createForm(AppUser appUser, FrontendForm frontendForm){
+    public void createForm(AppUser appUser, FrontendForm frontendForm) {
         var form = new Form();
         form.setCreatedBy(appUser.getUsername());
         form.setCreatedTimestamp(Instant.now());
@@ -37,9 +37,10 @@ public class FormCreationService {
         formDetail.setStatusControl(true);
         formDetailService.save(formDetail);
 
-        frontendForm.get_componentList().forEach(frontendComponent -> createQuestion(appUser,frontendComponent,formDetail));
+        frontendForm.get_componentList().forEach(frontendComponent -> createQuestion(appUser, frontendComponent, formDetail));
     }
-    private void createQuestion(AppUser appUser, FrontendComponent frontendComponent, FormDetail formDetail){
+
+    void createQuestion(AppUser appUser, FrontendComponent frontendComponent, FormDetail formDetail) {
 
         var question = new Question();
         question.setCreatedBy(appUser.getUsername());
@@ -52,13 +53,13 @@ public class FormCreationService {
         questionDetail.setLastUpdatedBy(appUser.getUsername());
         questionDetail.setLastUpdatedTimestamp(Instant.now());
         questionDetail.setOrderNumber(frontendComponent.get_order());
+        //TODO FS-38 make possible to reveal more questions depending on checkbox/radio state
 //        questionDetail.setParentQuestion();
         questionDetail.setQuestion(question);
         questionDetail.setQuestionType(frontendComponent.get_componentType());
         questionDetail.setStatusControl(true);
         questionDetail.setTitle((String) frontendComponent.get_componentProps().get("title"));
         questionDetailService.save(questionDetail);
-
     }
 
 }

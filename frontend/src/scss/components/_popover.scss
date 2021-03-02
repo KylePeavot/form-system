@@ -1,12 +1,21 @@
 .popover-menu {
+
+  $root: &;
+
   &__container {
-    @apply w-24 flex flex-col rounded-md shadow-lg bg-white ring-1 ring-opacity-5;
+    @apply w-auto flex flex-col rounded-md shadow-lg bg-white ring-1 ring-opacity-5;
   }
   &__item {
-    @apply block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100;
+    @apply block px-4 p-1 text-sm text-gray-700 hover:bg-gray-100 text-left;
 
     &--danger {
-      @apply block px-4 py-2 text-sm text-red-700 hover:bg-red-50;
+      @apply text-red-700 hover:bg-red-50;
+    }
+  }
+
+  &:not(:focus-within) {
+    #{$root}__container {
+      @apply invisible;
     }
   }
 }
