@@ -43,7 +43,8 @@ public class FormWorkflowController {
   @MustBeAuthorized
   @PostMapping("/delete")
   public void deleteForm(@RequestAttribute("User") AppUser appUser, @RequestBody FrontendWorkflowVariables frontendWorkflowVariables) {
-    formWorkflowService.deleteForm(appUser,
+    formWorkflowService.deleteForm(
+        appUser,
         formService.getFormById(frontendWorkflowVariables.get_formId())
     );
   }
