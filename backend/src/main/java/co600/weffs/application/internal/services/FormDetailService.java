@@ -7,13 +7,11 @@ import co600.weffs.application.internal.repository.FormDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public  class FormDetailService {
+public class FormDetailService {
     private final FormDetailRepository formDetailRepository;
 
     @Autowired
@@ -26,13 +24,11 @@ public  class FormDetailService {
                 .orElseThrow(() -> new EntityNotFoundException("Unable to find form entity with id " + id));
     }
 
-    public List<FormView> getActiveFormViewsById(Integer id) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-        var formDetailList = formDetailRepository.findAllByIdAndStatusControlIsTrue(id);
+    public List<FormView> getActiveFormViews() {
+        var formDetailList = formDetailRepository.findAllByStatusControlIsTrue();
         return formDetailList.stream()
-                .map(formDetail -> new FormView(formDetail.getForm().getId(), "name",
-                        formDetail.getForm().getCreatedBy(), formatter.format(Date.from(formDetail.getForm().getCreatedTimestamp())),
-                        formDetail.getLastUpdatedBy(), formatter.format(Date.from(formDetail.getLastUpdatedTimestamp()))))
+                //TODO FS-65 fix the name
+                .map(formDetail -> new FormView("name",formDetail))
                 .collect(Collectors.toList());
     }
 

@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public interface FormDetailRepository extends CrudRepository<FormDetail, Integer> {
-    List<FormDetail> findAllByIdAndStatusControlIsTrue(Integer id);
+    List<FormDetail> findAllByStatusControlIsTrue();
+
 }
 

@@ -18,7 +18,12 @@
         </tr>
         </tbody>
       </table>
-      <div v-else><span> <i class="animate-spin ph-arrow-clockwise text-xl"></i>Loading</span></div>
+      <div v-else>
+        <span>
+          <i class="animate-spin ph-arrow-clockwise text-xl">
+          </i>Loading
+        </span>
+      </div>
     </BaseStyleLayout>
   </div>
 
@@ -38,7 +43,7 @@ import FormViewInterface from "@/models/form/FormViewInterface";
 })
 
 export default class FormView extends Vue {
-  private page = Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.MY_FORMS;
+  private page = Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.SEARCH_FORMS;
   private forms: FormViewInterface[] = [];
   private loaded = false;
 
