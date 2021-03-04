@@ -1,6 +1,7 @@
 package co600.weffs.application.internal.services.form;
 
 import co600.weffs.application.internal.model.error.EntityNotFoundException;
+import co600.weffs.application.internal.model.form.Form;
 import co600.weffs.application.internal.model.form.FormDetail;
 import co600.weffs.application.internal.repository.form.FormDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,17 @@ public class FormDetailService {
     private final FormDetailRepository formDetailRepository;
 
     @Autowired
-    public FormDetailService (FormDetailRepository formDetailRepository){
+    public FormDetailService(FormDetailRepository formDetailRepository){
         this.formDetailRepository = formDetailRepository;
     }
 
-    public FormDetail getFormById(Integer id){
+    public FormDetail getFormDetailById(Integer id){
         return formDetailRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Unable to find form entity with id " + id));
+    }
+
+    public FormDetail getFormDetailByForm(Form form) {
+        return formDetailRepository.findByFormAndStatusControlIsTrue(form);
     }
 
     public void save(FormDetail formDetail){

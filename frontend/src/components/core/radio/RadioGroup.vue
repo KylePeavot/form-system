@@ -1,11 +1,8 @@
 <template>
   <div name="radio-group-container">
-    <BaseQuestion :level="level" :title="title" :guidance="guidance">
-      <Popover>
-        <button class="popover-menu__item">Edit</button>
-        <button class="popover-menu__item">Move</button>
-        <button class="popover-menu__item--danger" @click="deleteComponent">Delete</button>
-      </Popover>
+    <BaseQuestion :base-question-props="baseQuestionProps">
+      <button class="popover-menu__item">Move</button>
+      <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
     <div v-for="(radio, index) of value" :key="`${idPrefix}-${index}`">
       <div class="radio__container">
@@ -19,13 +16,13 @@
 <script lang="ts">
 
 import {Component, Model, Prop, Vue, Watch} from "vue-property-decorator";
-import Heading from "@/components/core/Heading.vue";
+import Heading from "@/components/core/componentExtras/Heading.vue";
 import SelectionValue from "@/models/form/SelectionValue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
-import Popover from "@/components/core/Popover.vue";
+import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 
 @Component({
-  components: {Popover, BaseQuestion, Heading}
+  components: {BaseQuestion, Heading}
 })
 export default class RadioGroup extends Vue {
 
@@ -45,6 +42,12 @@ export default class RadioGroup extends Vue {
 
   @Model("input", {required: true})
   private value!: SelectionValue[];
+
+  private baseQuestionProps: BaseQuestionProps | undefined;
+
+  created() {
+    this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
+  }
 
   @Watch("selected")
   selectUpdate(newValue: string) {

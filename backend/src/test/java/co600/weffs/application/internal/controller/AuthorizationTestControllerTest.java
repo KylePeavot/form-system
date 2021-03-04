@@ -14,11 +14,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 /**
  * A dummy implementation of a test showing authentication.
  */
 
+@WebMvcTest(
+    controllers = AuthorizationTestController.class,
+    excludeAutoConfiguration = {SecurityAutoConfiguration.class}
+)
 class AuthorizationTestControllerTest extends TestableController {
 
   @SneakyThrows

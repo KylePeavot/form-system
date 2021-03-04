@@ -3,6 +3,7 @@ package co600.weffs.application.internal.security.jwt;
 import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.auth.SamlRole;
 import co600.weffs.application.internal.model.auth.TokenResponse;
+import co600.weffs.application.internal.model.auth.UserExpiration;
 import co600.weffs.application.internal.model.error.NotAuthorizedException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
@@ -10,6 +11,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +27,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 public class UserInterceptor extends HandlerInterceptorAdapter {
 
   private static String USERINFO_ENDPOINT = "https://weffs.eu.auth0.com/userinfo/";
+  private static Map<String, UserExpiration> USER_TOKENS = new HashMap<>();
 
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -44,11 +49,20 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
   }
 
   private AppUser getUserFromToken(String token) throws IOException {
+    var existingUser = Optional.ofNullable(USER_TOKENS.getOrDefault(token, null));
+    if (existingUser.isPresent()) {
+      if (existingUser.get().getUserExpirationDateTime().isAfter(LocalDateTime.now())) {
+        return existingUser.get().getAppUser();
+      }
+    }
+
     var payload = verifyToken(token);
     var mapper = new ObjectMapper();
     var tokenResponse = mapper.readValue(payload, TokenResponse.class);
     var role = SamlRole.getFromSamlReference(tokenResponse.getFamily_name());
-    return new AppUser(tokenResponse.getName(), tokenResponse.getEmail(), role);
+    var appUser = new AppUser(tokenResponse.getName(), tokenResponse.getEmail(), role);
+    USER_TOKENS.put(token, new UserExpiration(appUser, LocalDateTime.now().plusSeconds(60)));
+    return appUser;
   }
 
   /**

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex">
     <component :is="`h${level}`" :class="textSize">
       <slot></slot>
     </component>
