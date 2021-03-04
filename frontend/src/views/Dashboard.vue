@@ -2,8 +2,12 @@
   <div>
     <BaseStyleLayout title="Page title" :selected-page="page">
       <Heading :level="2">Your dashboard</Heading>
-
-      <p>Items: {{ response }}</p>
+      <p v-if="!loaded">
+        <i class="animate-spin ph-arrow-clockwise " />
+        Awaiting dashboard items
+      </p>
+      <p v-else-if="Object.keys(response).length === 0">You have no forms to respond to</p>
+      <p v-else>{{ response }}</p>
     </BaseStyleLayout>
   </div>
 </template>
@@ -26,43 +30,23 @@ import AuthenticationUtils from "@/utils/AuthenticationUtils";
 export default class Dashboard extends Vue {
 
   private text = 'test';
-  private response = "Awaiting dashboard items";
+  private response: string | undefined;
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD;
+  private loaded = false;
 
   mounted() {
-    //get all assigned tasks
     this.getDashboardContents();
-
-    AuthenticationUtils.isLoggedIn().then(v => {
-      if (v) {
-        const validateAuthStartTime = new Date().getUTCMilliseconds();
-        WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/test-auth`, true)
-        .then(value => value.json())
-        .then(JSON.stringify)
-        .then(value => {
-          console.log("Expect successful AuthReq:", value);
-        })
-        .then(() => {
-          this.text = `Proved authentication in ${new Date().getUTCMilliseconds() - validateAuthStartTime}ms`
-        });
-      } else {
-        WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/test-auth`, false)
-        .then(value => value.json())
-        .then(JSON.stringify)
-        .then(value => {
-          console.log("Expect successful AuthReq:", value);
-        });
-      }
-    });
   }
 
   getDashboardContents() {
     //get all assigned tasks
     WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/assigned-tasks`, true)
     .then(async value => {
-      this.response = await value.text();
-    });
+      this.response = await value.json();
+    })
+    .finally(() => this.loaded = true);
     this.$forceUpdate();
+    console.log(this.response);
   }
 }
 

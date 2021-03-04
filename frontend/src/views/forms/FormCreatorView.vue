@@ -49,6 +49,7 @@ export default class FormCreatorView extends Vue {
 
   saveForm(){
     const form = new Form("Form",this.components);
+    console.log(form);
     WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form/save`,form);
   }
 

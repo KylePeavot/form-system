@@ -15,7 +15,7 @@ public class QuestionDetailService {
         this.questionDetailRepository = questionDetailRepository;
     }
 
-    public QuestionDetail getFormById(Integer id){
+    public QuestionDetail getQuestionDetailById(Integer id){
         return questionDetailRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Unable to find form entity with id " + id));
     }
