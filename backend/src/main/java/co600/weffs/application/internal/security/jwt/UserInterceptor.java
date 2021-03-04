@@ -24,7 +24,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  * When a request has been made, intercept it and find the method to be used.
  * If the method has a {@link MustBeAuthorized} annotation then validate the token.
  */
-public class JwtValidationInterceptor extends HandlerInterceptorAdapter {
+public class UserInterceptor extends HandlerInterceptorAdapter {
 
   private static String USERINFO_ENDPOINT = "https://weffs.eu.auth0.com/userinfo/";
   private static Map<String, UserExpiration> USER_TOKENS = new HashMap<>();
@@ -51,7 +51,7 @@ public class JwtValidationInterceptor extends HandlerInterceptorAdapter {
   private AppUser getUserFromToken(String token) throws IOException {
     var existingUser = Optional.ofNullable(USER_TOKENS.getOrDefault(token, null));
     if (existingUser.isPresent()) {
-      if (existingUser.get().getLocalDateTime().isAfter(LocalDateTime.now())) {
+      if (existingUser.get().getUserExpirationDateTime().isAfter(LocalDateTime.now())) {
         return existingUser.get().getAppUser();
       }
     }

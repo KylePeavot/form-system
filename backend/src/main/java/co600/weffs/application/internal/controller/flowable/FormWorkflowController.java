@@ -4,7 +4,7 @@ import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.flowable.FrontendWorkflowVariables;
 import co600.weffs.application.internal.security.jwt.MustBeAuthorized;
 import co600.weffs.application.internal.services.flowable.FormWorkflowService;
-import co600.weffs.application.internal.services.FormService;
+import co600.weffs.application.internal.services.form.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -43,7 +43,8 @@ public class FormWorkflowController {
   @MustBeAuthorized
   @PostMapping("/delete")
   public void deleteForm(@RequestAttribute("User") AppUser appUser, @RequestBody FrontendWorkflowVariables frontendWorkflowVariables) {
-    formWorkflowService.deleteForm(appUser,
+    formWorkflowService.deleteForm(
+        appUser,
         formService.getFormById(frontendWorkflowVariables.get_formId())
     );
   }
