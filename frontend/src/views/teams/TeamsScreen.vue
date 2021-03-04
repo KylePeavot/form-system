@@ -122,7 +122,6 @@ export default class TeamsScreen extends Vue {
       });
     })
     .then(() => this.retrievedTeams = true)
-    .then(() => console.log(this.teamAndUserMap))
     .catch(e => {
       this.retrieveError = e;
     });
