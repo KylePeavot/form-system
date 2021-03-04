@@ -3,8 +3,8 @@
     <div v-show="!editingField">
       <slot></slot>
     </div>
-    <input ref="editInput" type="text" :class="editComponentCss" v-show="editingField" v-model="value" @focusout="finishEditing" @keypress.enter="finishEditing" />
-    <button class="question__edit-pencil ph-pencil" @click="editField" />
+    <textarea ref="editInput" type="text" :class="editComponentCss" rows="1" v-show="editingField" v-model="value" @focusout="finishEditing" @keypress.enter="finishEditing" />
+    <button class="hidden-button ph-pencil" @click="editField" />
   </div>
 </template>
 
@@ -13,12 +13,11 @@
 <script lang="ts">
 
 import {Component, Model, Prop, Vue} from "vue-property-decorator";
-
 @Component
 export default class EditableComponent extends Vue {
 
-  @Prop({required: true})
-  private editComponentCss!: string;
+  @Prop({required: false})
+  private editComponentCss!: string | undefined;
 
   @Model("input", {required: true})
   private value!: string;

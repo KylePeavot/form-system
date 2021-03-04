@@ -12,7 +12,7 @@
       </template>
       <slot>
         <div :v-if="components !== undefined" v-for="component in components" :key="component.order" >
-          <component :is="component.componentType" v-bind="component.componentProps" @delete-component="removeFromLayout(component)" />
+          <component :is="component.componentType" v-bind="component.componentProps" @delete-component="removeFromLayout(component)" @propsUpdated="updateComponentProps($event, component)"/>
         </div>
       </slot>
       <button class="button button--primary" @click="saveForm">Save Form</button>
@@ -134,11 +134,19 @@ export default class FormCreatorView extends Vue {
     ));
   }
 
-
   removeFromLayout(componentToDelete: FormCreationComponent) {
     this.components = this.components.filter(item => {
       return item !== componentToDelete;
     })
   }
+
+  updateComponentProps(newProp: any, component: FormCreationComponent) {
+    const unsafeComponent = component as any;
+    Object.keys(newProp).forEach(key => {
+      unsafeComponent.componentProps[key] = newProp[key];
+      unsafeComponent.componentProps = (() => unsafeComponent.componentProps)();
+    })
+  }
+
 }
 </script>

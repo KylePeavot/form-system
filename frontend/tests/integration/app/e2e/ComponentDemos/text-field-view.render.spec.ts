@@ -12,12 +12,12 @@ describe("Text field demo page", () => {
     cy.get('[name="text-field-container"]').eq(0).within(() => {
       cy.get('h2').contains('Full name').should('exist');
       cy.get('p').contains('Please enter your first name, surname, and any middle names').should('exist');
-      cy.get('input').eq(2).should('exist');
+      cy.get('input').eq(0).should('exist');
     });
     cy.get('[name="text-field-container"]').eq(1).within(() => {
       cy.get('h3').contains('Mother\'s maiden name').should('exist');
       cy.get('p').contains('Please enter your mother\'s maiden name for... security reasons').should('exist');
-      cy.get('input').eq(2).should('exist');
+      cy.get('input').eq(0).should('exist');
     });
   });
 
