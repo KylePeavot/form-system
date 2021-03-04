@@ -1,0 +1,14 @@
+.vs__search {
+  @apply my-0.5;
+  border: 0;
+}
+
+.vs__selected-options, .vs3__combobox {
+  padding: 0;
+  border: 0;
+}
+
+.v-select, .vs--open {
+  @apply border-gray-300 border-2 rounded-md;
+  padding: 0.25em;
+}

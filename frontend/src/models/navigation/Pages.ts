@@ -16,9 +16,9 @@ export default class Pages {
                 name: "Dashboard",
                 url: "/"
             },
-            ACCOUNT: {
-                name: "Account",
-                url: "/account"
+            TEAMS: {
+                name: "Teams",
+                url: "/teams"
             },
             FORMS: {
                 name: "Forms",

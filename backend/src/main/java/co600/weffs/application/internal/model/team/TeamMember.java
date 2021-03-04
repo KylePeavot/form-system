@@ -23,7 +23,8 @@ public class TeamMember {
   private TeamDetail teamDetail;
 
   private String username;
-  private Boolean canModify;
+  private Boolean canModifyForms;
+  private Boolean canManageTeam;
   private Boolean statusControl;
 
 }
