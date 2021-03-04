@@ -60,13 +60,13 @@ import Pages from "@/models/navigation/Pages";
 import Banner from "@/components/widgets/Banner.vue";
 import WebRequestUtils from "@/utils/WebRequestUtils";
 import TeamView from "@/models/team/TeamView";
-import Heading from "@/components/core/Heading.vue";
 import CheckOrCrossIcon from "@/components/widgets/CheckOrCrossIcon.vue";
 import KentUser from "@/models/external/users/KentUser";
 import AuthenticationUtils from "@/utils/AuthenticationUtils";
 import TeamMember from "@/models/team/TeamMember";
 import UserSelector from "@/components/core/widgets/UserSelector.vue";
 import TeamAccessCard from "@/components/widgets/teams/TeamAccessCard.vue";
+import Heading from "@/components/core/componentExtras/Heading.vue";
 
 @Component({
   components: {
@@ -97,7 +97,6 @@ export default class TeamsScreen extends Vue {
       });
     })
     .then(() => this.retrievedTeams = true)
-    .then(() => console.log(this.teamAndUserMap))
     .catch(e => {
       this.retrieveError = e;
     });

@@ -1,22 +1,9 @@
 <template>
   <div>
     <BaseStyleLayout title="Page title" :selected-page="page">
-      <Heading :level="2">Response: {{ text }}</Heading>
-      <UserSelector v-model="user" :multiple="false"/>
-      <template v-if="user !== null">
-        <p>
-          {{ user.id }}
-        </p>
-      </template>
-      <br/>
-      <hr/>
-      <br/>
-      <UserSelector v-model="users" :multiple="true"/>
-      <template v-if="users !== null">
-        <p v-for="(selectedUser, index) of users" :key="`selected-user-${selectedUser.id}-${index}`">
-          {{ selectedUser.id }}
-        </p>
-      </template>
+      <Heading :level="2">Your dashboard</Heading>
+
+      <p>Items: {{ response }}</p>
     </BaseStyleLayout>
   </div>
 </template>
@@ -24,33 +11,27 @@
 <script lang="ts">
 
 import  {Component, Vue} from "vue-property-decorator";
-import Heading from "../components/core/Heading.vue";
+import Heading from "../components/core/componentExtras/Heading.vue";
 import BaseStyleLayout from "../components/layout/BaseStyleLayout.vue";
 import WebRequestUtils from "../utils/WebRequestUtils";
 import Pages from "../models/navigation/Pages";
 import AuthenticationUtils from "@/utils/AuthenticationUtils";
-import KentUser from "@/models/external/users/KentUser";
-import UserSelector from "@/components/core/widgets/UserSelector.vue";
 
 @Component({
   components: {
-    UserSelector,
     BaseStyleLayout,
     Heading
   }
 })
 export default class Dashboard extends Vue {
 
-  private text = 'Test';
+  private text = 'test';
+  private response = "Awaiting dashboard items";
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD;
-  private user: KentUser | null = null;
-  private users: KentUser[] | null = null;
 
   mounted() {
-    WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api`)
-        .then(async value => {
-          this.text = await value.text();
-        });
+    //get all assigned tasks
+    this.getDashboardContents();
 
     AuthenticationUtils.isLoggedIn().then(v => {
       if (v) {
@@ -75,6 +56,14 @@ export default class Dashboard extends Vue {
     });
   }
 
+  getDashboardContents() {
+    //get all assigned tasks
+    WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/assigned-tasks`, true)
+    .then(async value => {
+      this.response = await value.text();
+    });
+    this.$forceUpdate();
+  }
 }
 
 </script>
