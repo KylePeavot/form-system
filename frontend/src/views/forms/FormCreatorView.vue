@@ -12,7 +12,7 @@
       </template>
       <slot>
         <div :v-if="components !== undefined" v-for="component in components" :key="component.order" >
-          <component :is="component.componentType" v-bind="component.componentProps" @delete-component="removeFromLayout(component)" @propsUpdated="updateComponentProps($event, component)"/>
+          <component :is="component.componentType" v-bind="component.componentProps" @delete-component="removeFromLayout(component)" @props-updated="updateComponentProps($event, component)"/>
         </div>
       </slot>
       <button class="button button--primary" @click="saveForm">Save Form</button>
@@ -49,7 +49,6 @@ export default class FormCreatorView extends Vue {
 
   saveForm(){
     const form = new Form("Form",this.components);
-    console.log(form);
     WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form/save`,form);
   }
 

@@ -7,9 +7,6 @@
     <button class="hidden-button ph-pencil" @click="editField" />
   </div>
 </template>
-
-
-
 <script lang="ts">
 
 import {Component, Model, Prop, Vue} from "vue-property-decorator";

@@ -1,6 +1,6 @@
 <template>
   <div name="checkbox-group-container" class="pb-5">
-    <BaseQuestion :base-question-props="baseQuestionProps">
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)">
       <button class="popover-menu__item">Move</button>
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
@@ -53,7 +53,11 @@ export default class CheckboxGroup extends Vue {
     const newValues = this.value.filter(value => {
       return checkboxToDelete !== value;
     })
-    this.$emit('propsUpdated', {value: newValues});
+    this.$emit('props-updated', {value: newValues});
+  }
+
+  updateProps(baseQuestionProps: BaseQuestionProps) {
+    this.$emit('props-updated', {title: baseQuestionProps.title, guidance: baseQuestionProps.guidance});
   }
 
   deleteComponent() {

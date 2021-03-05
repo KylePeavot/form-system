@@ -1,6 +1,6 @@
 <template>
   <div name="text-field-container" class="question__text-field-container">
-    <BaseQuestion :base-question-props="baseQuestionProps">
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)">
       <button class="popover-menu__item">Move</button>
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
@@ -41,6 +41,10 @@ import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 
     deleteComponent() {
       this.$emit("delete-component");
+    }
+
+    updateProps(baseQuestionProps: BaseQuestionProps) {
+      this.$emit('props-updated', {title: baseQuestionProps.title, guidance: baseQuestionProps.guidance});
     }
   }
 
