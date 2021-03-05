@@ -1,7 +1,9 @@
 <template>
   <div>
     <BaseStyleLayout title="Page title" :selected-page="page">
-      <Heading :level="2">Response: {{ text }}</Heading>
+      <Heading :level="2">Your dashboard</Heading>
+
+      <p>Items: {{ response }}</p>
     </BaseStyleLayout>
   </div>
 </template>
@@ -23,14 +25,13 @@ import AuthenticationUtils from "@/utils/AuthenticationUtils";
 })
 export default class Dashboard extends Vue {
 
-  private text = 'Test';
+  private text = 'test';
+  private response = "Awaiting dashboard items";
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD;
 
   mounted() {
-    WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api`)
-        .then(async value => {
-          this.text = await value.text();
-        });
+    //get all assigned tasks
+    this.getDashboardContents();
 
     AuthenticationUtils.isLoggedIn().then(v => {
       if (v) {
@@ -55,6 +56,14 @@ export default class Dashboard extends Vue {
     });
   }
 
+  getDashboardContents() {
+    //get all assigned tasks
+    WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/assigned-tasks`, true)
+    .then(async value => {
+      this.response = await value.text();
+    });
+    this.$forceUpdate();
+  }
 }
 
 </script>

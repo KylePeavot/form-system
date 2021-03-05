@@ -30,6 +30,14 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/LogoutScreen.vue")
   },
   {
+    path: Pages.ROUTES.SHOWN_IN_NAVBAR.TEAMS.url,
+    name: Pages.ROUTES.SHOWN_IN_NAVBAR.TEAMS.name,
+    component: () => import("../views/teams/TeamsScreen.vue"),
+    meta: {
+      loginRequired: true
+    }
+  },
+  {
     path: Pages.ROUTES.SHOWN_IN_NAVBAR.COMPONENTS.subRoutes.TEXT_FIELD.url,
     name: Pages.ROUTES.SHOWN_IN_NAVBAR.COMPONENTS.subRoutes.TEXT_FIELD.name,
     component: () => import("../views/components/TextFieldView.vue")

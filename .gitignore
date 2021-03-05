@@ -53,3 +53,4 @@ Thumbs.db
 /docker/mariadb/dbdata/
 /docker/jenkins/ran_before
 /frontend/cypress/screenshots/e2e/ComponentDemos/*
+/backend/src/main/resources/db/application-local.yml

@@ -1,11 +1,18 @@
 package co600.weffs.application.internal.services;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import co600.weffs.application.MockitoTest;
 import co600.weffs.application.internal.model.error.EntityNotFoundException;
 import co600.weffs.application.internal.model.form.Form;
 import co600.weffs.application.internal.model.form.FormDetail;
 import co600.weffs.application.internal.repository.FormDetailRepository;
 import co600.weffs.application.utils.forms.FormTestUtils;
+import co600.weffs.application.internal.repository.form.FormDetailRepository;
+import co600.weffs.application.internal.services.form.FormDetailService;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,14 +49,14 @@ class FormDetailServiceTest extends MockitoTest {
     @Test
     void getFormById() {
         when(formDetailRepository.findById(322)).thenReturn(Optional.of(formDetail));
-        var serviceFormDetail = formDetailService.getFormById(322);
+        var serviceFormDetail = formDetailService.getFormDetailById(322);
         assertThat(formDetail).isEqualTo(serviceFormDetail);
     }
     @Test
     void getFormById_DoesNotExist() {
         when(formDetailRepository.findById(322)).thenReturn(Optional.empty());
         Assertions.assertThrows(EntityNotFoundException.class,()->{
-            formDetailService.getFormById(322);
+            formDetailService.getFormDetailById(322);
         });
     }
 

@@ -1,9 +1,10 @@
-package co600.weffs.application.internal.services;
+package co600.weffs.application.internal.services.form;
 
 import co600.weffs.application.internal.model.error.EntityNotFoundException;
+import co600.weffs.application.internal.model.form.Form;
 import co600.weffs.application.internal.model.form.FormDetail;
 import co600.weffs.application.internal.model.form.FormView;
-import co600.weffs.application.internal.repository.FormDetailRepository;
+import co600.weffs.application.internal.repository.form.FormDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class FormDetailService {
         this.formDetailRepository = formDetailRepository;
     }
 
-    public FormDetail getFormById(Integer id){
+    public FormDetail getFormDetailById(Integer id){
         return formDetailRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Unable to find form entity with id " + id));
     }
@@ -30,6 +31,10 @@ public class FormDetailService {
                 //TODO FS-65 fix the name
                 .map(formDetail -> new FormView("name",formDetail))
                 .collect(Collectors.toList());
+    }
+
+    public FormDetail getFormDetailByForm(Form form) {
+        return formDetailRepository.findByFormAndStatusControlIsTrue(form);
     }
 
     public void save(FormDetail formDetail){
