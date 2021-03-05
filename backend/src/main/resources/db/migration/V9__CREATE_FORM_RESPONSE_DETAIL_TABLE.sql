@@ -3,11 +3,10 @@
  */
 CREATE TABLE form_response_detail(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    fr_id INT REFERENCES form_response(id),
-    assignee_user VARCHAR(4000) NOT NULL,
+    form_response_id INT REFERENCES form_response(id),
     assigner_team_member INT NOT NULL REFERENCES team_member(id),
     status_control BOOL NOT NULL,
     last_updated_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
-CREATE INDEX idx_form_response_fr_id ON form_response_detail(fr_id);
+CREATE INDEX idx_form_response_fr_id ON form_response_detail(form_response_id);
