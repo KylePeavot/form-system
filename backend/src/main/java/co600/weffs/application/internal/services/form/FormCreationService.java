@@ -1,8 +1,9 @@
-package co600.weffs.application.internal.services;
+package co600.weffs.application.internal.services.form;
 
 import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -10,6 +11,7 @@ import java.time.Instant;
 
 @Service
 public class FormCreationService {
+    @Qualifier(value = "WeffsFormService")
     private final FormService formService;
     private final FormDetailService formDetailService;
     private final QuestionService questionService;
@@ -40,7 +42,7 @@ public class FormCreationService {
         frontendForm.get_componentList().forEach(frontendComponent -> createQuestion(appUser, frontendComponent, formDetail));
     }
 
-    void createQuestion(AppUser appUser, FrontendComponent frontendComponent, FormDetail formDetail) {
+    public void createQuestion(AppUser appUser, FrontendComponent frontendComponent, FormDetail formDetail) {
 
         var question = new Question();
         question.setCreatedBy(appUser.getUsername());

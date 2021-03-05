@@ -1,21 +1,21 @@
 package co600.weffs.application.internal.services;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import co600.weffs.application.MockitoTest;
 import co600.weffs.application.internal.model.error.EntityNotFoundException;
 import co600.weffs.application.internal.model.form.Question;
-import co600.weffs.application.internal.repository.QuestionRepository;
+import co600.weffs.application.internal.repository.form.QuestionRepository;
+import co600.weffs.application.internal.services.form.QuestionService;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 class QuestionServiceTest extends MockitoTest {
 

@@ -4,7 +4,7 @@ import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.form.FormView;
 import co600.weffs.application.internal.model.form.FrontendForm;
 import co600.weffs.application.internal.security.jwt.MustBeAuthorized;
-import co600.weffs.application.internal.services.FormCreationService;
+import co600.weffs.application.internal.services.form.FormCreationService;
 import co600.weffs.application.internal.services.FormDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
