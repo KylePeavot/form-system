@@ -1,14 +1,10 @@
 .question {
 
-  &__edit-pencil {
-    @apply invisible ml-1;
-  }
-
   &__title-row {
     @apply w-auto max-w-sm flex;
 
     &:hover, &:focus-within {
-      .question__edit-pencil {
+      .hidden-button {
         @apply visible inline;
       }
     }
@@ -27,7 +23,7 @@
     @apply w-auto max-w-sm flex;
 
     &:hover, &:focus-within {
-      .question__edit-pencil {
+      .hidden-button {
         @apply visible inline;
       }
     }
@@ -47,6 +43,10 @@
 
   &__popup {
     @apply flex-none;
+  }
+
+  &__hidden-button {
+    @apply invisible ml-1;
   }
 
 }
