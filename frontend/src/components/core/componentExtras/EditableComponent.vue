@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div class="flex editable-element">
     <div v-show="!editingField">
       <slot></slot>
     </div>
@@ -36,6 +36,7 @@ export default class EditableComponent extends Vue {
   finishEditing() {
     this.editingField = false;
     this.$emit('finish-editing', this.value);
+    this.$emit('input', this.value);
   }
 
 }

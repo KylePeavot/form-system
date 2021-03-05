@@ -52,6 +52,7 @@ import EditableComponent from "@/components/core/componentExtras/EditableCompone
     CheckboxGroup,
     CheckboxQuestion, SidebarGroup, TextArea, TextField, TwoColumnStyleLayout}
 })
+
 export default class FormCreatorView extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.NEW_FORM;
   private components: FormCreationComponent[] = new Array<FormCreationComponent>();
