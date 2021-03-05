@@ -17,8 +17,9 @@ public class FormDetail {
     @ManyToOne
     @JoinColumn(name = "form_id")
     private Form form;
-    //TODO FS-65 add name field
+    private String name;
     private Instant lastUpdatedTimestamp;
     private String lastUpdatedBy;
     private Boolean statusControl;
+
 }

@@ -27,8 +27,7 @@ public class FormDetailService {
     public List<FormView> getActiveFormViews() {
         var formDetailList = formDetailRepository.findAllByStatusControlIsTrue();
         return formDetailList.stream()
-                //TODO FS-65 fix the name
-                .map(formDetail -> new FormView("name",formDetail))
+                .map(formDetail -> new FormView(formDetail))
                 .collect(Collectors.toList());
     }
 

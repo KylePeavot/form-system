@@ -68,6 +68,7 @@ class FormCreationServiceTest extends MockitoTest {
         var form = formCaptor.getValue();
         assertThat(formDetail.getForm()).isEqualTo(form);
         assertThat(form.getCreatedBy()).isEqualTo(user.getUsername());
+        assertThat(formDetail.getName()).isEqualTo(frontendForm.get_name());
         // TODO: FS-65 assert name field
     }
 
