@@ -12,3 +12,4 @@ public interface FormDetailRepository extends CrudRepository<FormDetail, Integer
     List<FormDetail> findAllByStatusControlIsTrue();
     FormDetail findByFormAndStatusControlIsTrue(Form form);
 }
+
