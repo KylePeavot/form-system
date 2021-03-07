@@ -139,7 +139,9 @@ export default class TeamCreationScreen extends Vue {
       WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/teams/new`, {
         members: this.members,
         name: this.teamNameWrapper.value
-      });
+      })
+      .then(value => value.json())
+      .then(this.onSuccessfulSubmit);
     }
   }
 
@@ -148,7 +150,9 @@ export default class TeamCreationScreen extends Vue {
       WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/teams/${this.teamId}`, {
         members: this.members,
         name: this.teamNameWrapper.value
-      });
+      })
+      .then(value => value.json())
+      .then(this.onSuccessfulSubmit);
     }
   }
 
@@ -194,6 +198,17 @@ export default class TeamCreationScreen extends Vue {
       return false;
     }
     return true;
+  }
+
+  onSuccessfulSubmit(response: any) {
+    if (response.success === true) {
+      this.$router.push(Pages.ROUTES.SHOWN_IN_NAVBAR.TEAMS.url);
+    } else if (response.error !== undefined) {
+      this.submissionError.push(new FormError(
+          new Error(response.error),
+          ""
+      ));
+    }
   }
 
 }
