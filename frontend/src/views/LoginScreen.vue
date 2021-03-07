@@ -17,7 +17,7 @@ import Pages from "../models/navigation/Pages";
 import BaseStyleLayout from "../components/layout/BaseStyleLayout.vue";
 import TwoColumnStyleLayout from "../components/layout/TwoColumnStyleLayout.vue";
 import AuthenticationUtils from "@/utils/AuthenticationUtils";
-import Heading from "@/components/core/Heading.vue";
+import Heading from "@/components/core/componentExtras/Heading.vue";
 
 @Component({
   components: {Heading, TwoColumnStyleLayout, BaseStyleLayout}

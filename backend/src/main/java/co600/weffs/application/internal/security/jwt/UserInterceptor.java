@@ -51,7 +51,7 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
   private AppUser getUserFromToken(String token) throws IOException {
     var existingUser = Optional.ofNullable(USER_TOKENS.getOrDefault(token, null));
     if (existingUser.isPresent()) {
-      if (existingUser.get().getLocalDateTime().isAfter(LocalDateTime.now())) {
+      if (existingUser.get().getUserExpirationDateTime().isAfter(LocalDateTime.now())) {
         return existingUser.get().getAppUser();
       }
     }

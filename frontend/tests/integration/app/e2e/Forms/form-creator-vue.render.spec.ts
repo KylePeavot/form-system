@@ -57,12 +57,13 @@ describe("Form creator page", () => {
       cy.get('button').contains("Delete").click();
     });
 
-    cy.get('div[name="checkbox-group-container"]').within(() => {
+
+    cy.get('div[name="radio-group-container"]').within(() => {
       cy.get('[name="popper-button"]').click();
       cy.get('button').contains("Delete").click();
     });
 
-    cy.get('div[name="radio-group-container"]').within(() => {
+    cy.get('div[name="checkbox-group-container"]').within(() => {
       cy.get('[name="popper-button"]').click();
       cy.get('button').contains("Delete").click();
     });
@@ -72,5 +73,23 @@ describe("Form creator page", () => {
     cy.get('[name="checkbox-question-container"]').should("not.exist");
     cy.get('[name="checkbox-group-container"]').should("not.exist");
     cy.get('[name="radio-group-container"]').should("not.exist");
+  });
+
+  it("has a button on each component to edit the title and guidance on hover", () => {
+    cy.get("button").contains("Text field").click();
+
+    cy.get('div[name="text-field-container"]').get('[class="question__title-row"]').within(() => {
+      //forcing the click because cypress doesn't can't handle hovering over an element to make another element visible
+      cy.get('[class="question__edit-pencil ph-pencil"]').click({force: true});
+      cy.get('input').type(" test {enter}");
+      cy.get('h2').contains("Question title test");
+    });
+
+    cy.get('[class="question__guidance-container"]').within(() => {
+      //forcing the click because cypress doesn't can't handle hovering over an element to make another element visible
+      cy.get('[class="question__edit-pencil ph-pencil"]').click({force: true});
+      cy.get('input').type(" test {enter}");
+      cy.get('p').contains("Question guidance test");
+    });
   });
 });

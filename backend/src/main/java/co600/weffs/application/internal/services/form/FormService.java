@@ -6,7 +6,7 @@ import co600.weffs.application.internal.repository.form.FormRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service(value = "WeffsFormService")
 public class FormService {
     private final FormRepository formRepository;
 
