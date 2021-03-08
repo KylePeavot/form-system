@@ -1,7 +1,10 @@
 package co600.weffs.application.internal.model.formResponse;
 
+import co600.weffs.application.internal.model.team.Team;
+import co600.weffs.application.internal.model.team.TeamDetail;
 import co600.weffs.application.internal.model.team.TeamMember;
 import java.time.Instant;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,8 +33,12 @@ public class FormResponseDetail {
   private FormResponse formResponse;
 
   @ManyToOne
-  @JoinColumn(name = "assigner_team_member")
+  @JoinColumn(name = "assigner_team_member_id")
   private TeamMember assigner;
+
+  @ManyToOne
+  @JoinColumn(name = "assigner_team_detail_id")
+  private TeamDetail assignerTeamDetail;
 
   private Instant lastUpdatedTimestamp;
 

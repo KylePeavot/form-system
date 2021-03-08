@@ -18,11 +18,12 @@ import java.util.Map;
 @RequestMapping("/api")
 public class DashboardController {
 
-    @Autowired
     private FormWorkflowService formWorkflowService;
 
     @Autowired
-    private FormService formService;
+    public DashboardController(FormWorkflowService formWorkflowService) {
+        this.formWorkflowService = formWorkflowService;
+    }
 
     @GetMapping
     public Map<String, ?> getDashboardHello() {

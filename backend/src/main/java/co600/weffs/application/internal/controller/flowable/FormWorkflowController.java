@@ -1,10 +1,17 @@
 package co600.weffs.application.internal.controller.flowable;
 
 import co600.weffs.application.internal.model.auth.AppUser;
-import co600.weffs.application.internal.model.flowable.FrontendWorkflowVariables;
+import co600.weffs.application.internal.model.flowable.frontend.FrontendAssignWorkflowVariables;
+import co600.weffs.application.internal.model.flowable.frontend.FrontendDeleteWorkflowVariables;
+import co600.weffs.application.internal.model.flowable.frontend.FrontendSubmitWorkflowVariables;
+import co600.weffs.application.internal.model.formResponse.FormResponse;
+import co600.weffs.application.internal.model.formResponse.FormResponseDetail;
 import co600.weffs.application.internal.security.jwt.MustBeAuthorized;
 import co600.weffs.application.internal.services.flowable.FormWorkflowService;
+import co600.weffs.application.internal.services.form.FormDetailService;
 import co600.weffs.application.internal.services.form.FormService;
+import co600.weffs.application.internal.services.formResponse.FormResponseDetailService;
+import co600.weffs.application.internal.services.formResponse.FormResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -18,43 +25,63 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/flowable/workflow/form")
 public class FormWorkflowController {
 
-  @Autowired
   private FormWorkflowService formWorkflowService;
 
-  @Autowired
   private FormService formService;
 
+  private FormResponseService formResponseService;
+
+  private FormDetailService formDetailService;
+
+  private FormResponseDetailService formResponseDetailService;
+
   @Autowired
-  public FormWorkflowController(FormWorkflowService formWorkflowService, FormService formService) {
+  public FormWorkflowController(
+      FormWorkflowService formWorkflowService,
+      FormService formService,
+      FormResponseService formResponseService,
+      FormDetailService formDetailService,
+      FormResponseDetailService formResponseDetailService) {
     this.formWorkflowService = formWorkflowService;
     this.formService = formService;
+    this.formResponseService = formResponseService;
+    this.formDetailService = formDetailService;
+    this.formResponseDetailService = formResponseDetailService;
   }
 
   @MustBeAuthorized
   @PostMapping("/start")
-  public void assignFormToUser(@RequestAttribute("User") AppUser appUser, @RequestBody FrontendWorkflowVariables frontendWorkflowVariables) {
-    formWorkflowService.assignFormToFormFiller(
-        appUser,
-        frontendWorkflowVariables.get_targetUser(),
-        formService.getFormById(frontendWorkflowVariables.get_formId())
+  public void assignFormToUser(@RequestBody FrontendAssignWorkflowVariables frontendAssignWorkflowVariables) {
+    String assigner = frontendAssignWorkflowVariables.get_assigner();
+    String filler = frontendAssignWorkflowVariables.get_targetUser();
+
+
+    FormResponse formResponse = formResponseService.create(
+        filler,
+        formDetailService.getFormDetailByForm(formService.getFormById(frontendAssignWorkflowVariables.get_formId()))
     );
+
+    formResponseDetailService.create(formResponse, assigner, frontendAssignWorkflowVariables.get_assignerTeamDetail());
+
+    formWorkflowService.assignFormToFormFiller(assigner, filler, formResponse);
+
   }
 
   @MustBeAuthorized
   @PostMapping("/delete")
-  public void deleteForm(@RequestAttribute("User") AppUser appUser, @RequestBody FrontendWorkflowVariables frontendWorkflowVariables) {
-    formWorkflowService.deleteForm(
-        appUser,
-        formService.getFormById(frontendWorkflowVariables.get_formId())
+  public void deleteForm(@RequestBody FrontendDeleteWorkflowVariables frontendDeleteWorkflowVariables) {
+    formWorkflowService.deleteFormResponse(
+        frontendDeleteWorkflowVariables.get_fillerUsername(),
+        formResponseService.getFormResponseById(frontendDeleteWorkflowVariables.get_formResponseId())
     );
   }
 
   @MustBeAuthorized
   @PostMapping("submit")
-  public void submitForm(@RequestAttribute("User") AppUser appUser, @RequestBody FrontendWorkflowVariables frontendWorkflowVariables) {
-    formWorkflowService.submitForm(
-        appUser,
-        formService.getFormById(frontendWorkflowVariables.get_formId())
+  public void submitForm(@RequestBody FrontendSubmitWorkflowVariables frontendSubmitWorkflowVariables) {
+    formWorkflowService.submitFormResponse(
+      frontendSubmitWorkflowVariables.get_fillerUsername(),
+      formResponseService.getFormResponseById(frontendSubmitWorkflowVariables.get_formResponseId())
     );
   }
 }

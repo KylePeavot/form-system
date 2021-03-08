@@ -1,11 +1,9 @@
 package co600.weffs.application.internal.services.flowable;
 
-import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.flowable.AssignedFormView;
 import co600.weffs.application.internal.model.flowable.WorkflowTask;
-import co600.weffs.application.internal.model.form.Form;
-import co600.weffs.application.internal.services.form.FormDetailService;
-import co600.weffs.application.internal.services.form.FormService;
+import co600.weffs.application.internal.model.formResponse.FormResponse;
+import co600.weffs.application.internal.services.formResponse.FormResponseService;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -20,45 +18,39 @@ import org.springframework.stereotype.Service;
 @Service
 public class FormWorkflowService {
 
-  @Autowired
   private RuntimeService runtimeService;
 
-  @Autowired
   private TaskService taskService;
 
-  @Autowired
-  private FormService formService;
+  private FormResponseService formResponseService;
 
   @Autowired
-  private FormDetailService formDetailService;
-
-  @Autowired
-  public FormWorkflowService(RuntimeService runtimeService, TaskService taskService, FormService formService, FormDetailService formDetailService) {
+  public FormWorkflowService(RuntimeService runtimeService, TaskService taskService, FormResponseService formResponseService) {
     this.runtimeService = runtimeService;
     this.taskService = taskService;
-    this.formService = formService;
-    this.formDetailService = formDetailService;
+    this.formResponseService = formResponseService;
   }
 
-  public void assignFormToFormFiller(AppUser assigner, String filler, Form form) {
+  public void assignFormToFormFiller(String assigner, String filler, FormResponse formResponse) {
     // start the process
     Map<String, Object> variables = Map.of(
-      "assigner", assigner.getUsername(),
+      "assigner", assigner,
       "filler", filler,
-      "formId", form.getId()
+      //TODO FS-52 Check for all uses of formId
+      "formResponseId", formResponse.getId()
     );
 
     //if the form is already assigned to the filler, return
-    if (isFormAssignedToUser(filler, form.getId())) {
+    if (isFormResponseAssignedToUser(filler, formResponse.getId())) {
       return;
     }
 
     runtimeService.startProcessInstanceByKey("formWorkflow", variables);
   }
 
-  public void deleteForm(AppUser user, Form formToDelete) {
+  public void deleteFormResponse(String filler, FormResponse formResponseToDelete) {
     //get task for the user with the formToDelete
-    Task task = getAssignedTaskForForm(user.getUsername(), formToDelete.getId());
+    Task task = getAssignedTaskForFormResponse(filler, formResponseToDelete.getId());
 
     Map<String, Object> variables = Map.of("nextStage", WorkflowTask.DELETE_FORM.getTaskName());
 
@@ -69,8 +61,8 @@ public class FormWorkflowService {
     }
   }
 
-  public void submitForm(AppUser user, Form formToSubmit) {
-    Task task = getAssignedTaskForForm(user.getUsername(), formToSubmit.getId());
+  public void submitFormResponse(String filler, FormResponse formResponseToSubmit) {
+    Task task = getAssignedTaskForFormResponse(filler, formResponseToSubmit.getId());
 
     Map<String, Object> variables = Map.of("nextStage", WorkflowTask.FORM_SUBMITTED.getTaskName());
 
@@ -79,11 +71,11 @@ public class FormWorkflowService {
     }
   }
 
-  public Task getAssignedTaskForForm(String assignee, int formId) {
+  public Task getAssignedTaskForFormResponse(String assignee, int formResponseId) {
     return taskService.createTaskQuery().list().stream()
         .filter(taskToReturn -> {
           Map<String, Object> processVariables = taskService.getVariables(taskToReturn.getId());
-          return assignee.equals(taskToReturn.getAssignee()) && processVariables.get("formId").equals(formId);
+          return assignee.equals(taskToReturn.getAssignee()) && processVariables.get("formResponseId").equals(formResponseId);
         })
         .findFirst()
         .orElse(null);
@@ -98,18 +90,17 @@ public class FormWorkflowService {
   public List<AssignedFormView> getAllAssignedFormViewsForAssignee(String assignee) {
     return getAllAssignedTasksForAssignee(assignee).stream()
       .map(task -> {
-        Form form = formService.getFormById((Integer) taskService.getVariables(task.getId()).get("formId"));
+        FormResponse formResponse = formResponseService.getFormResponseById((Integer) taskService.getVariables(task.getId()).get("formResponseId"));
         return new AssignedFormView(
-            form,
-            formDetailService.getFormDetailByForm(form),
+            formResponse,
             WorkflowTask.getWorkflowTaskFromTaskName(task.getName())
         );
       })
-      .sorted(Comparator.comparing(o -> o.getFormDetail().getLastUpdatedTimestamp()))
+      .sorted(Comparator.comparing(o -> o.getFormResponse().getAssignedTimestamp()))
       .collect(Collectors.toList());
   }
 
-  public boolean isFormAssignedToUser(String assignee, int formId) {
-    return getAssignedTaskForForm(assignee, formId) != null;
+  public boolean isFormResponseAssignedToUser(String assignee, int formResponseId) {
+    return getAssignedTaskForFormResponse(assignee, formResponseId) != null;
   }
 }

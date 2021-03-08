@@ -18,8 +18,7 @@ public class TeamMemberService {
   private final TeamMemberRepository teamMemberRepository;
 
   @Autowired
-  public TeamMemberService(
-      TeamMemberRepository teamMemberRepository) {
+  public TeamMemberService(TeamMemberRepository teamMemberRepository) {
     this.teamMemberRepository = teamMemberRepository;
   }
 
@@ -52,5 +51,9 @@ public class TeamMemberService {
     return teamMemberRepository.findAllByTeamDetailInAndStatusControlIsTrue(details)
         .stream()
         .collect(Collectors.groupingBy(TeamMember::getTeamDetail));
+  }
+
+  public TeamMember getTeamMemberFromUsernameAndTeamDetail(String username, TeamDetail teamDetail) {
+    return teamMemberRepository.findByUsernameAndTeamDetail(username, teamDetail);
   }
 }
