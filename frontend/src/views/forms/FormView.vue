@@ -1,52 +1,62 @@
-<!--
-  The purpose of this screen is to display a bunch of given components in a readonly/edit/formfilling mode
-  //TODO FS-52 remove edit from above (or just the whole comment) or see if edit mode is possible too
--->
 <template>
   <div>
-    <FormStyleLayout :selected-page="page" :title="title">
-      <div :v-if="components !== undefined" v-for="component in components" :key="component.order" >
-        <component :is="component.componentType" v-bind="component.componentProps"/>
+    <BaseStyleLayout title="Get forms available to you" :selected-page="page">
+      <table v-if="loaded" class="results-table">
+        <thead class="results-table__thead">
+        <tr>
+          <th class="results-table__th">Name</th>
+          <th></th>
+          <th class="results-table__th">Created</th>
+          <th class="results-table__th">Updated</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="form in forms" :key="form.id" class="results-table__tr">
+          <td colspan="2" class="results-table__td results-table__td--name">{{ form.name }}</td>
+          <td class="results-table__td">Created by {{ form.createdBy }} on {{ form.createdWhen }}</td>
+          <td class="results-table__td">Updated by {{ form.lastUpdatedBy }} on {{ form.lastUpdatedWhen }}</td>
+        </tr>
+        </tbody>
+      </table>
+      <div v-else>
+        <span>
+          <i class="animate-spin ph-arrow-clockwise text-xl">
+          </i>Loading
+        </span>
       </div>
-    </FormStyleLayout>
+    </BaseStyleLayout>
   </div>
-</template>
 
+</template>
 <script lang="ts">
 
-import {Component, Prop, Vue} from "vue-property-decorator";
-import FormComponent from "@/models/form/FormComponent";
-import FormStyleLayout from "@/components/layout/FormStyleLayout.vue";
-import {FormDisplayMode} from "@/models/form/FormDisplayMode";
+import {Component, Vue} from "vue-property-decorator";
 import Pages from "@/models/navigation/Pages";
+import BaseStyleLayout from "@/components/layout/BaseStyleLayout.vue";
+import WebRequestUtils from "@/utils/WebRequestUtils";
+import FormViewInterface from "@/models/form/FormViewInterface";
 
 @Component({
-  components: {FormStyleLayout}
+  components: {
+    BaseStyleLayout,
+  }
 })
+
 export default class FormView extends Vue {
-  private page: string | undefined;
-
-  private title: string | undefined;
-
-  private components: FormComponent[] | undefined;
-
-  @Prop({required: true})
-  private mode!: FormDisplayMode;
-
-  @Prop({required: true})
-  private id!: number;
+  private page = Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.SEARCH_FORMS;
+  private forms: FormViewInterface[] = [];
+  private loaded = false;
 
   created() {
-    if (this.mode === FormDisplayMode.FORM_FILLING) {
-      this.title = Pages.ROUTES.FORM.FILL_FORM.name;
-      this.page = Pages.ROUTES.FORM.FILL_FORM.url.replace(":id", this.id.toString());
-    } else if (this.mode === FormDisplayMode.READ_ONLY) {
-      this.title = Pages.ROUTES.FORM.VIEW_FORM.name;
-      this.page = Pages.ROUTES.FORM.VIEW_FORM.url.replace(":id", this.id.toString());
-    }
-
-
+    this.getForms();
   }
 
+  getForms() {
+    WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/form/browse`, true)
+        .then(value => value.json())
+        .then(value => value as FormViewInterface[])
+        .then(value => this.forms = value)
+        .then(() => this.loaded = true);
+  }
 }
 </script>

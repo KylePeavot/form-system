@@ -1,28 +1,29 @@
 package co600.weffs.application.internal.controller;
 
 import co600.weffs.application.internal.model.auth.AppUser;
+import co600.weffs.application.internal.model.form.FormView;
 import co600.weffs.application.internal.model.form.FrontendForm;
 import co600.weffs.application.internal.security.jwt.MustBeAuthorized;
 import co600.weffs.application.internal.services.form.FormCreationService;
-import java.util.Map;
+import co600.weffs.application.internal.services.form.FormDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/form")
 public class FormController {
-
   private final FormCreationService formCreationService;
+  private final FormDetailService formDetailService;
 
   @Autowired
-  public FormController(FormCreationService formCreationService) {
+  public FormController(FormCreationService formCreationService, FormDetailService formDetailService) {
     this.formCreationService = formCreationService;
+    this.formDetailService = formDetailService;
   }
 
   @MustBeAuthorized
@@ -33,9 +34,15 @@ public class FormController {
   }
 
   @MustBeAuthorized
+  @GetMapping("/browse")
+  public List<FormView> getForm(){
+    return formDetailService.getActiveFormViews();
+  }
+
+  @MustBeAuthorized
   @GetMapping("/get/{formId}")
   public Object getForm(@PathVariable("formId") int formId) {
-    //TODO add DB object for FormResponse
+    //TODO FS-52 add DB object for FormResponse
     //Should hold id, FormId, then figure out some way to store all the responses to the form
     //Once sorted, for a FormResponseId, get the formId
 
@@ -47,4 +54,6 @@ public class FormController {
   }
 
 }
+
+
 
