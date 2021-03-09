@@ -1,4 +1,4 @@
-export default class FormCreationComponent {
+export default class FormComponent {
   private readonly _componentType: string;
   private _componentProps: object;
   private _order: number;

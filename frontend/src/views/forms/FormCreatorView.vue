@@ -26,7 +26,7 @@ import Pages from "@/models/navigation/Pages";
 import TwoColumnStyleLayout from "@/components/layout/TwoColumnStyleLayout.vue";
 import TextField from "@/components/core/TextField.vue";
 import TextValue from "@/models/form/TextValue";
-import FormCreationComponent from "@/models/form/FormCreationComponent";
+import FormComponent from "@/models/form/FormComponent";
 import TextArea from "@/components/core/TextArea.vue";
 import SidebarGroup from "@/components/layout/Navigation/SidebarGroup.vue";
 import CheckboxQuestion from "@/components/core/checkbox/CheckboxQuestion.vue";
@@ -44,7 +44,7 @@ import WebRequestUtils from "@/utils/WebRequestUtils";
 })
 export default class FormCreatorView extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.NEW_FORM;
-  private components: FormCreationComponent[] = new Array<FormCreationComponent>();
+  private components: FormComponent[] = new Array<FormComponent>();
   private nextComponentId = 1;
 
   saveForm(){
@@ -126,20 +126,20 @@ export default class FormCreatorView extends Vue {
       }
     }
 
-    this.components.push(new FormCreationComponent(
+    this.components.push(new FormComponent(
         componentType,
         componentProps,
         order
     ));
   }
 
-  removeFromLayout(componentToDelete: FormCreationComponent) {
+  removeFromLayout(componentToDelete: FormComponent) {
     this.components = this.components.filter(item => {
       return item !== componentToDelete;
     })
   }
 
-  updateComponentProps(newProp: any, component: FormCreationComponent) {
+  updateComponentProps(newProp: any, component: FormComponent) {
     const unsafeComponent = component as any;
     Object.keys(newProp).forEach(key => {
       unsafeComponent.componentProps[key] = newProp[key];

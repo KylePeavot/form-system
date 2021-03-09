@@ -40,6 +40,16 @@ export default class Pages {
                 }
             },
         },
+        FORM: {
+            VIEW_FORM: {
+                name: "View form",
+                url: "/forms/:id"
+            },
+            FILL_FORM: {
+                name: "Fill form",
+                url: "/forms/respond/:id"
+            }
+        },
         AUTHENTICATION: {
             COMPUTED_LOGIN: async function(): Promise<PageDetail> {
                 return new Promise(resolve => {

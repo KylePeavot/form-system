@@ -1,11 +1,11 @@
-import FormCreationComponent from "@/models/form/FormCreationComponent";
+import FormComponent from "@/models/form/FormComponent";
 
 export default class Form {
 
     private readonly _name: string;
-    private readonly _componentList: FormCreationComponent[];
+    private readonly _componentList: FormComponent[];
 
-    constructor(name: string, componentList: FormCreationComponent[]) {
+    constructor(name: string, componentList: FormComponent[]) {
         this._name = name;
         this._componentList = componentList;
     }
@@ -14,7 +14,7 @@ export default class Form {
         return this._name;
     }
 
-    get componentList(): FormCreationComponent[] {
+    get componentList(): FormComponent[] {
         return this._componentList;
     }
 
