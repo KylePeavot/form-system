@@ -4,8 +4,8 @@
       <button class="popover-menu__item">Move</button>
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
-    <div v-for="(checkbox, index) of value" :key="`${idPrefix}-${index}`">
-      <Checkbox :id="`${idPrefix}-${index}`" :checkbox-value="checkbox" :isDeletable="true" @deleteCheckbox="deleteCheckbox(checkbox)"/>
+    <div v-for="(checkbox, index) of selectionValues" :key="`${idPrefix}-${index}`">
+      <Checkbox :id="`${idPrefix}-${index}`" :selection-value="checkbox" :isDeletable="true" @deleteCheckbox="deleteCheckbox(checkbox)"/>
     </div>
     <button type="button" class="text-blue-500" @click="addNewCheckbox">+ Add new checkbox</button>
   </div>
@@ -37,7 +37,7 @@ export default class CheckboxGroup extends Vue {
   private level!: number;
 
   @Model("input", {required: true})
-  private value!: SelectionValue[];
+  private selectionValues!: SelectionValue[];
 
   private baseQuestionProps: BaseQuestionProps | undefined;
 
@@ -46,14 +46,14 @@ export default class CheckboxGroup extends Vue {
   }
 
   addNewCheckbox() {
-    this.value.push(new SelectionValue("Add a response here", false));
+    this.selectionValues.push(new SelectionValue("Add a response here", false));
   }
 
   deleteCheckbox(checkboxToDelete: SelectionValue) {
-    const newValues = this.value.filter(value => {
+    const newValues = this.selectionValues.filter(value => {
       return checkboxToDelete !== value;
     })
-    this.$emit('props-updated', {value: newValues});
+    this.$emit('props-updated', {selectionValues: newValues});
   }
 
   updateProps(baseQuestionProps: BaseQuestionProps) {

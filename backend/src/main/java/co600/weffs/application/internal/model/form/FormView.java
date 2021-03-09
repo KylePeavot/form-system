@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Data
 public class FormView {
-    private Integer id;
+    private Integer formDetailId;
     private String name;
     private String createdBy;
     private String createdWhen;
@@ -20,7 +20,7 @@ public class FormView {
 
     public FormView(String name, FormDetail formDetail){
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-        this.id = formDetail.getForm().getId();
+        this.formDetailId = formDetail.getId();
         this.createdBy = formDetail.getForm().getCreatedBy();
         this.createdWhen = formatter.format(Date.from(formDetail.getForm().getCreatedTimestamp()));
         this.lastUpdatedBy = formDetail.getLastUpdatedBy();

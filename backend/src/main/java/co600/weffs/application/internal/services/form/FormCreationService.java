@@ -2,6 +2,11 @@ package co600.weffs.application.internal.services.form;
 
 import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.form.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import net.bytebuddy.dynamic.scaffold.MethodGraph.Linked;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -56,12 +61,49 @@ public class FormCreationService {
         questionDetail.setLastUpdatedTimestamp(Instant.now());
         questionDetail.setOrderNumber(frontendComponent.get_order());
         //TODO FS-38 make possible to reveal more questions depending on checkbox/radio state
-//        questionDetail.setParentQuestion();
+
+        if (FrontendComponentTypes.NESTED_QUESTION.getComponentType().equals(frontendComponent.get_componentType())) {
+            questionDetail.setParentQuestion(questionService.getQuestionById((Integer) frontendComponent.get_componentProps().get("parentQuestionId")));
+        }
+
         questionDetail.setQuestion(question);
         questionDetail.setQuestionType(frontendComponent.get_componentType());
         questionDetail.setStatusControl(true);
         questionDetail.setTitle((String) frontendComponent.get_componentProps().get("title"));
         questionDetailService.save(questionDetail);
+
+        if (isQuestionSingleNested(frontendComponent)) {
+            HashMap<String, ?> nestedQuestionSelectorValue = (HashMap<String, ?>) frontendComponent.get_componentProps().get(FrontendComponentProps.SELECTION_VALUE.getFrontendName());
+
+            var subQuestionFrontendComponent = new FrontendComponent();
+            subQuestionFrontendComponent.set_componentType(FrontendComponentTypes.NESTED_QUESTION.getComponentType());
+            subQuestionFrontendComponent.set_componentProps(Map.of("title", nestedQuestionSelectorValue.get("_label"), "parentQuestionId", question.getId()));
+            subQuestionFrontendComponent.set_order(0); //on a single checkbox question, we don't care what the order is
+
+            createQuestion(appUser, subQuestionFrontendComponent, formDetail);
+        } else if (isQuestionMultiNested(frontendComponent)) {
+            int order = 0;
+            ArrayList<HashMap<String, ?>> nestedQuestionSelectorValues = (ArrayList<HashMap<String, ?>>) frontendComponent.get_componentProps().get(FrontendComponentProps.SELECTION_VALUES.getFrontendName());
+
+            for (HashMap<String, ?> nestedQuestion : nestedQuestionSelectorValues) {
+                var subQuestionFrontendComponent = new FrontendComponent();
+                subQuestionFrontendComponent.set_componentType(FrontendComponentTypes.NESTED_QUESTION.getComponentType());
+                subQuestionFrontendComponent.set_componentProps(Map.of("title", nestedQuestion.get("_label"), "parentQuestionId", question.getId()));
+                subQuestionFrontendComponent.set_order(order--); //we want to preserve the order they came in as but don't want to interfere with other question's order
+
+                createQuestion(appUser, subQuestionFrontendComponent, formDetail);
+            }
+        }
     }
+
+    public boolean isQuestionSingleNested(FrontendComponent frontendComponent) {
+        return FrontendComponentTypes.CHECKBOX_QUESTION.getComponentType().equals(frontendComponent.get_componentType());
+    }
+
+    public boolean isQuestionMultiNested(FrontendComponent frontendComponent) {
+        return FrontendComponentTypes.CHECKBOX_GROUP.getComponentType().equals(frontendComponent.get_componentType())
+            || FrontendComponentTypes.RADIO_GROUP.getComponentType().equals(frontendComponent.get_componentType());
+    }
+
 
 }

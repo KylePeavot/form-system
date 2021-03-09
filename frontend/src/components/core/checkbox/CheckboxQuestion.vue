@@ -4,7 +4,7 @@
       <button class="popover-menu__item">Move</button>
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
-    <Checkbox :id="id" :checkbox-value="value"/>
+    <Checkbox :id="id" :selection-value="selectionValue"/>
   </div>
 </template>
 
@@ -34,7 +34,7 @@ import BaseQuestionProps from "@/models/form/BaseQuestionProps";
     private level!: number;
 
     @Model("input", {required: true})
-    private value!: SelectionValue;
+    private selectionValue!: SelectionValue;
 
     private baseQuestionProps: BaseQuestionProps | undefined;
 

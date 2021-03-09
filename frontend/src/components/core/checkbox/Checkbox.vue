@@ -1,8 +1,8 @@
 <template>
   <div class="checkbox__container">
-    <input :id="id" type="checkbox" class="checkbox__item" v-model="checkboxValue.value" @finish-editing="$emit('props-updated', $event)">
-    <EditableComponent edit-component-css="checkbox__label-edit" :value="checkboxValue.label" @finish-editing="updateLabel">
-      <label class="checkbox__label" :for="id">{{ checkboxValue.label }}</label>
+    <input :id="id" type="checkbox" class="checkbox__item" v-model="selectionValue.value" @finish-editing="$emit('props-updated', $event)">
+    <EditableComponent edit-component-css="checkbox__label-edit" :value="selectionValue.label" @finish-editing="updateLabel">
+      <label class="checkbox__label" :for="id">{{ selectionValue.label }}</label>
     </EditableComponent>
     <button v-if="isDeletable" class="hidden-button ph-trash" @click="$emit('deleteCheckbox')"/>
   </div>
@@ -24,13 +24,13 @@ export default class Checkbox extends Vue {
   private id!: string;
 
   @Prop({required: true})
-  private checkboxValue!: SelectionValue;
+  private selectionValue!: SelectionValue;
 
   @Prop({required: true, default: false})
   private isDeletable!: boolean;
 
   updateLabel(newLabel: string) {
-    this.checkboxValue.label = newLabel;
+    this.selectionValue.label = newLabel;
   }
 
   updateProps(baseQuestionProps: BaseQuestionProps) {

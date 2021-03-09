@@ -40,8 +40,8 @@ public class FormController {
   }
 
   @MustBeAuthorized
-  @GetMapping("/get/{formId}")
-  public Object getForm(@PathVariable("formId") int formId) {
+  @GetMapping("/get/{formDetailId}")
+  public Object getForm(@PathVariable("formDetailId") int formDetailId) {
     //TODO FS-52 add DB object for FormResponse
     //Should hold id, FormId, then figure out some way to store all the responses to the form
     //Once sorted, for a FormResponseId, get the formId
@@ -50,6 +50,9 @@ public class FormController {
     // get the current form detail id,
     // from that get all questions associated,
     // then get all current question details for that question
+
+//    FrontendForm = formService.getFrontendFormFromFormId(formId);
+
     return null;
   }
 

@@ -5,7 +5,8 @@
 <template>
   <div>
     <FormStyleLayout :selected-page="page" :title="title">
-      <div :v-if="components !== undefined" v-for="component in components" :key="component.order" >
+
+      <div :v-if="form !== undefined" v-for="component in form.componentList" :key="component.order" >
         <component :is="component.componentType" v-bind="component.componentProps"/>
       </div>
     </FormStyleLayout>
@@ -19,6 +20,7 @@ import FormComponent from "@/models/form/FormComponent";
 import FormStyleLayout from "@/components/layout/FormStyleLayout.vue";
 import {FormDisplayMode} from "@/models/form/FormDisplayMode";
 import Pages from "@/models/navigation/Pages";
+import Form from "@/models/form/Form";
 
 @Component({
   components: {FormStyleLayout}
@@ -28,7 +30,7 @@ export default class FormView extends Vue {
 
   private title: string | undefined;
 
-  private components: FormComponent[] | undefined;
+  private form: Form | undefined;
 
   @Prop({required: true})
   private mode!: FormDisplayMode;

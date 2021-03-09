@@ -12,11 +12,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="form in forms" :key="form.id" class="results-table__tr">
+        <tr v-for="form in forms" :key="form.formDetailId" class="results-table__tr">
           <td colspan="2" class="results-table__td results-table__td--name">{{ form.name }}</td>
           <td class="results-table__td">Created by {{ form.createdBy }} on {{ form.createdWhen }}</td>
           <td class="results-table__td">Updated by {{ form.lastUpdatedBy }} on {{ form.lastUpdatedWhen }}</td>
-          <td class="results-table__td"><router-link :to="getViewFormUrl(form.id)"><a>View</a></router-link></td>
+          <td class="results-table__td"><router-link :to="getViewFormUrl(form.formDetailId)"><a>View</a></router-link></td>
         </tr>
         </tbody>
       </table>

@@ -4,7 +4,7 @@
       <button class="popover-menu__item">Move</button>
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
-    <div v-for="(radio, index) of value" :key="`${idPrefix}-${index}`">
+    <div v-for="(radio, index) of selectionValues" :key="`${idPrefix}-${index}`">
       <div class="radio__container">
         <input :id="`${idPrefix}-${index}`" class="radio__item" type="radio" :value="radio.label" v-model="selected">
         <label :for="`${idPrefix}-${index}`">{{radio.label}}</label>
@@ -41,7 +41,7 @@ export default class RadioGroup extends Vue {
   private guidance!: string;
 
   @Model("input", {required: true})
-  private value!: SelectionValue[];
+  private selectionValues!: SelectionValue[];
 
   private baseQuestionProps: BaseQuestionProps | undefined;
 
@@ -51,7 +51,7 @@ export default class RadioGroup extends Vue {
 
   @Watch("selected")
   selectUpdate(newValue: string) {
-    this.value.map(SelectionValue => {
+    this.selectionValues.map(SelectionValue => {
       SelectionValue.value = (SelectionValue.label == newValue);
     });
   }
