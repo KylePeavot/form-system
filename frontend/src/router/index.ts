@@ -78,7 +78,7 @@ const routes: Array<RouteConfig> = [
   {
     path: Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.SEARCH_FORMS.url,
     name: Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.SEARCH_FORMS.name,
-    component: () => import("../views/forms/FormView.vue")
+    component: () => import("../views/forms/BrowseFormsView.vue")
   }
 ]
 

@@ -43,7 +43,7 @@ export default class Pages {
         FORM: {
             VIEW_FORM: {
                 name: "View form",
-                url: "/forms/:id"
+                url: "/forms/view/:id"
             },
             FILL_FORM: {
                 name: "Fill form",
