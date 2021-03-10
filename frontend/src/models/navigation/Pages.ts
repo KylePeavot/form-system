@@ -16,15 +16,15 @@ export default class Pages {
                 name: "Dashboard",
                 url: "/"
             },
-            ACCOUNT: {
-                name: "Account",
-                url: "/account"
+            TEAMS: {
+                name: "Teams",
+                url: "/teams"
             },
             FORMS: {
                 name: "Forms",
                 url: "/forms",
                 subRoutes: {
-                    MY_FORMS: {name: "Browse forms", url: "/forms/browse"},
+                    SEARCH_FORMS: {name: "Browse forms", url: "/forms/browse"},
                     NEW_FORM: {name: "Create new form", url: "/forms/new"}
                 }
             },

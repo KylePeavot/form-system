@@ -2,8 +2,11 @@ package co600.weffs.application.internal.services;
 
 import co600.weffs.application.MockitoTest;
 import co600.weffs.application.internal.model.error.EntityNotFoundException;
+import co600.weffs.application.internal.model.form.Form;
 import co600.weffs.application.internal.model.form.FormDetail;
-import co600.weffs.application.internal.repository.FormDetailRepository;
+import co600.weffs.application.internal.repository.form.FormDetailRepository;
+import co600.weffs.application.internal.services.form.FormDetailService;
+import co600.weffs.application.utils.forms.FormTestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +14,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,17 +43,16 @@ class FormDetailServiceTest extends MockitoTest {
     @Test
     void getFormById() {
         when(formDetailRepository.findById(322)).thenReturn(Optional.of(formDetail));
-        var serviceFormDetail = formDetailService.getFormById(322);
+        var serviceFormDetail = formDetailService.getFormDetailById(322);
         assertThat(formDetail).isEqualTo(serviceFormDetail);
     }
     @Test
     void getFormById_DoesNotExist() {
         when(formDetailRepository.findById(322)).thenReturn(Optional.empty());
         Assertions.assertThrows(EntityNotFoundException.class,()->{
-            formDetailService.getFormById(322);
+            formDetailService.getFormDetailById(322);
         });
     }
-
 
     @Test
     void save() {
@@ -56,4 +61,23 @@ class FormDetailServiceTest extends MockitoTest {
         verify(formDetailRepository).save(formDetailCaptor.capture());
         assertThat(formDetail).isEqualTo(formDetailCaptor.getValue());
     }
-}
+
+    @Test
+    void getActiveFormViews(){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        Form form = FormTestUtils.createBasicForm();
+        formDetail = FormTestUtils.createBasicFormDetail(form);
+        when(formDetailRepository.findAllByStatusControlIsTrue()).thenReturn(List.of(formDetail));
+        var formViews = formDetailService.getActiveFormViews();
+        var formView = formViews.get(0);
+        var formCreatedTimestamp = formatter.format(Date.from(form.getCreatedTimestamp()));
+        var fromUpdatedTimestamp = formatter.format(Date.from(formDetail.getLastUpdatedTimestamp()));
+        var formViewCreatedTimestamp = formView.getCreatedWhen();
+        var formViewLastUpdatedTimestamp = formView.getLastUpdatedWhen();
+        //TODO FS-65 Add a test for the name
+        //assertThat(formView.getName()).isEqualTo();
+        assertThat(formViewCreatedTimestamp).isEqualTo(formCreatedTimestamp);
+        assertThat(formView.getCreatedBy()).isEqualTo(form.getCreatedBy());
+        assertThat(formViewLastUpdatedTimestamp).isEqualTo(fromUpdatedTimestamp);
+        assertThat(formView.getLastUpdatedBy()).isEqualTo(formDetail.getLastUpdatedBy());
+    }}

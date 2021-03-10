@@ -26,6 +26,7 @@ export default class WebRequestUtils {
         }
         return fetch(input, init);
     }
+
     public static async post(input: RequestInfo, data: object, init?: RequestInit) {
         init = init ?? {};
         init.body = JSON.stringify(data);

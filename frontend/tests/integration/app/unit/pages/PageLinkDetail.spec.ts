@@ -44,7 +44,7 @@ describe("PageDetailLink Tests", () => {
     it("Contains an expected subroute", async () => {
       const routeLink = await Pages.getPageDetailLinkForRoute(Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS, links);
       assert.isDefined(routeLink);
-      assert.isDefined(routeLink!.findNestedChildRouteAsLink(Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.MY_FORMS));
+      assert.isDefined(routeLink!.findNestedChildRouteAsLink(Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.SEARCH_FORMS));
     });
   });
 

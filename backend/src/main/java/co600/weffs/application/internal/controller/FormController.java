@@ -1,26 +1,27 @@
 package co600.weffs.application.internal.controller;
 
 import co600.weffs.application.internal.model.auth.AppUser;
+import co600.weffs.application.internal.model.form.FormView;
 import co600.weffs.application.internal.model.form.FrontendForm;
 import co600.weffs.application.internal.security.jwt.MustBeAuthorized;
-import co600.weffs.application.internal.services.FormCreationService;
-import java.util.Map;
+import co600.weffs.application.internal.services.form.FormCreationService;
+import co600.weffs.application.internal.services.form.FormDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/form")
 public class FormController {
-
   private final FormCreationService formCreationService;
+  private final FormDetailService formDetailService;
 
   @Autowired
-  public FormController(FormCreationService formCreationService) {
+  public FormController(FormCreationService formCreationService, FormDetailService formDetailService) {
     this.formCreationService = formCreationService;
+    this.formDetailService = formDetailService;
   }
 
   @MustBeAuthorized
@@ -30,6 +31,12 @@ public class FormController {
     return Map.of("success", true);
   }
 
-
+  @MustBeAuthorized
+  @GetMapping("/browse")
+  public List<FormView> getForm(){
+    return formDetailService.getActiveFormViews();
+  }
 }
+
+
 
