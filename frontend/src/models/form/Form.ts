@@ -1,4 +1,5 @@
 import FormComponent from "@/models/form/FormComponent";
+import FormInterface from "@/models/form/FormInterface";
 
 export default class Form {
 
@@ -18,5 +19,8 @@ export default class Form {
         return this._componentList;
     }
 
+    static mapFormInterfaceToForm(formInterface: FormInterface): Form {
+        return new Form(formInterface._name, formInterface._componentList);
+    }
 
 }

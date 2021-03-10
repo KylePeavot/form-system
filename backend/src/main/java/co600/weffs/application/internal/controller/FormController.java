@@ -6,6 +6,7 @@ import co600.weffs.application.internal.model.form.FrontendForm;
 import co600.weffs.application.internal.security.jwt.MustBeAuthorized;
 import co600.weffs.application.internal.services.form.FormCreationService;
 import co600.weffs.application.internal.services.form.FormDetailService;
+import co600.weffs.application.internal.services.form.FrontendFormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,11 +20,15 @@ import java.util.Map;
 public class FormController {
   private final FormCreationService formCreationService;
   private final FormDetailService formDetailService;
+  private FrontendFormService frontendFormService;
 
   @Autowired
-  public FormController(FormCreationService formCreationService, FormDetailService formDetailService) {
+  public FormController(FormCreationService formCreationService,
+      FormDetailService formDetailService,
+      FrontendFormService frontendFormService) {
     this.formCreationService = formCreationService;
     this.formDetailService = formDetailService;
+    this.frontendFormService = frontendFormService;
   }
 
   @MustBeAuthorized
@@ -41,19 +46,8 @@ public class FormController {
 
   @MustBeAuthorized
   @GetMapping("/get/{formDetailId}")
-  public Object getForm(@PathVariable("formDetailId") int formDetailId) {
-    //TODO FS-52 add DB object for FormResponse
-    //Should hold id, FormId, then figure out some way to store all the responses to the form
-    //Once sorted, for a FormResponseId, get the formId
-
-    //For a form id,
-    // get the current form detail id,
-    // from that get all questions associated,
-    // then get all current question details for that question
-
-//    FrontendForm = formService.getFrontendFormFromFormId(formId);
-
-    return null;
+  public FrontendForm getForm(@PathVariable("formDetailId") int formDetailId) {
+    return frontendFormService.getFrontendFormFromFormDetailId(formDetailId);
   }
 
 }

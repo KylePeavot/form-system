@@ -17,4 +17,12 @@ public enum FrontendComponentTypes {
   public String getComponentType() {
     return componentType;
   }
+
+  public static boolean hasMultipleNestedQuestions(String componentType) {
+    return CHECKBOX_GROUP.componentType.equals(componentType) || RADIO_GROUP.componentType.equals(componentType);
+  }
+
+  public static boolean hasSingleNestedQuestion(String componentType) {
+    return CHECKBOX_QUESTION.componentType.equals(componentType);
+  }
 }
