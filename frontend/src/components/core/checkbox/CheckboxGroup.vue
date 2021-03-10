@@ -5,7 +5,7 @@
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
     <div v-for="(checkbox, index) of value" :key="`${idPrefix}-${index}`">
-      <Checkbox :id="`${idPrefix}-${index}`" :checkbox-value="checkbox" :isDeletable="true" @deleteCheckbox="deleteCheckbox(checkbox)"/>
+      <Checkbox :id="`${idPrefix}-${index}`" :checkbox-value="checkbox" :can-remove="true" @deleteCheckbox="deleteCheckbox(checkbox)"/>
     </div>
     <button type="button" class="text-blue-500" @click="addNewCheckbox">+ Add new checkbox</button>
   </div>

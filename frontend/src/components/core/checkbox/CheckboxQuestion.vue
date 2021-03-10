@@ -4,7 +4,7 @@
       <button class="popover-menu__item">Move</button>
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
-    <Checkbox :id="id" :checkbox-value="value"/>
+    <Checkbox :id="id" :checkbox-value="value" :can-remove="false"/>
   </div>
 </template>
 

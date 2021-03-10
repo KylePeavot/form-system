@@ -17,7 +17,7 @@ import {Component, Model, Prop, Vue} from "vue-property-decorator";
 export default class EditableComponent extends Vue {
 
   @Prop({required: false})
-  private editComponentCss!: string | undefined;
+  private editComponentCss!: string;
 
   @Model("input", {required: true})
   private value!: string;
