@@ -15,7 +15,9 @@
           <component :is="component.componentType" v-bind="component.componentProps" :current-form-display-mode="currentFormDisplayMode" @delete-component="removeFromLayout(component)" @props-updated="updateComponentProps($event, component)"/>
         </div>
       </slot>
-      <button class="button button--primary" @click="saveForm">Save Form</button>
+      <router-link :to="redirectUrl">
+        <button class="button button--primary" @click="saveForm">Save Form</button>
+      </router-link>
     </TwoColumnStyleLayout>
   </div>
 </template>
@@ -48,10 +50,11 @@ export default class FormCreatorView extends Vue {
   private components: FormComponent[] = new Array<FormComponent>();
   private nextComponentId = 1;
   private currentFormDisplayMode: CurrentFormDisplayMode = new CurrentFormDisplayMode(false, true, false);
-
+  private redirectUrl = Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD.url;
   saveForm(){
     const form = new Form("Form",this.components);
     WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form/save`,form);
+
   }
 
   addComponentToList(event: Event) {
