@@ -2,7 +2,7 @@ package co600.weffs.application.internal.controller;
 
 import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.form.FormView;
-import co600.weffs.application.internal.model.form.FrontendForm;
+import co600.weffs.application.internal.model.form.frontend.FrontendForm;
 import co600.weffs.application.internal.security.jwt.MustBeAuthorized;
 import co600.weffs.application.internal.services.form.FormCreationService;
 import co600.weffs.application.internal.services.form.FormDetailService;

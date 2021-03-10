@@ -1,4 +1,4 @@
-package co600.weffs.application.internal.model.form;
+package co600.weffs.application.internal.model.form.frontend;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

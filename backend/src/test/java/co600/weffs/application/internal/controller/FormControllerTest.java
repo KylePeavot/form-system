@@ -4,7 +4,7 @@ import co600.weffs.application.TestableController;
 import co600.weffs.application.internal.model.form.Form;
 import co600.weffs.application.internal.model.form.FormDetail;
 import co600.weffs.application.internal.model.form.FormView;
-import co600.weffs.application.internal.model.form.FrontendForm;
+import co600.weffs.application.internal.model.form.frontend.FrontendForm;
 import co600.weffs.application.internal.services.form.FormCreationService;
 import co600.weffs.application.internal.services.form.FormDetailService;
 import co600.weffs.application.utils.UserTestUtils;

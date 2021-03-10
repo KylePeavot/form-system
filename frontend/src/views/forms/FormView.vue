@@ -52,6 +52,7 @@ export default class FormView extends Vue {
     if (this.mode === FormDisplayModeEnum.FORM_FILLING) {
       this.title = Pages.ROUTES.FORM.FILL_FORM.name;
       this.page = Pages.ROUTES.FORM.FILL_FORM.url.replace(":id", this.id.toString());
+      //TODO FS-86 do this bit
     } else if (this.mode === FormDisplayModeEnum.READ_ONLY) {
       this.title = Pages.ROUTES.FORM.VIEW_FORM.name;
       this.page = Pages.ROUTES.FORM.VIEW_FORM.url.replace(":id", this.id.toString());

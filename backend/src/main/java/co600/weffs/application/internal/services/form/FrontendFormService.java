@@ -1,12 +1,12 @@
 package co600.weffs.application.internal.services.form;
 
-import co600.weffs.application.internal.model.error.NoNestedQuestionFoundException;
 import co600.weffs.application.internal.model.form.FormDetail;
-import co600.weffs.application.internal.model.form.FrontendComponent;
-import co600.weffs.application.internal.model.form.FrontendComponentTypes;
-import co600.weffs.application.internal.model.form.FrontendForm;
-import co600.weffs.application.internal.model.form.FrontendSelectionValue;
+import co600.weffs.application.internal.model.form.frontend.FrontendComponent;
+import co600.weffs.application.internal.model.form.frontend.FrontendComponentTypes;
+import co600.weffs.application.internal.model.form.frontend.FrontendForm;
+import co600.weffs.application.internal.model.form.frontend.FrontendSelectionValue;
 import co600.weffs.application.internal.model.form.QuestionDetail;
+import co600.weffs.application.internal.model.form.frontend.FrontendTextValue;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,6 +71,8 @@ public class FrontendFormService {
             .filter(nestedQuestionDetail -> nestedQuestionDetail.getParentQuestion().getId().equals(questionDetail.getId()))
             .forEach(nestedQuestionDetail -> frontendSelectionValues.add(new FrontendSelectionValue(nestedQuestionDetail.getTitle(), false)));
         componentProps.put("selectionValues", frontendSelectionValues);
+      } else if (FrontendComponentTypes.isText(questionDetail.getQuestionType())) {
+        componentProps.put("textValue", new FrontendTextValue(""));
       }
 
       componentToAdd.set_componentType(questionDetail.getQuestionType());

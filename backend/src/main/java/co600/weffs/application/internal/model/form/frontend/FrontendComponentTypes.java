@@ -1,4 +1,4 @@
-package co600.weffs.application.internal.model.form;
+package co600.weffs.application.internal.model.form.frontend;
 
 public enum FrontendComponentTypes {
   TEXT_FIELD("TextField"),
@@ -24,5 +24,9 @@ public enum FrontendComponentTypes {
 
   public static boolean hasSingleNestedQuestion(String componentType) {
     return CHECKBOX_QUESTION.componentType.equals(componentType);
+  }
+
+  public static boolean isText(String componentType) {
+    return TEXT_FIELD.componentType.equals(componentType) || TEXT_AREA.componentType.equals(componentType);
   }
 }

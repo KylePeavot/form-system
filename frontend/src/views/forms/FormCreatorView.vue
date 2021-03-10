@@ -12,7 +12,7 @@
       </template>
       <slot>
         <div :v-if="components !== undefined" v-for="component in components" :key="component.order" >
-          <component :is="component.componentType" v-bind="component.componentProps" @delete-component="removeFromLayout(component)" @props-updated="updateComponentProps($event, component)"/>
+          <component :is="component.componentType" v-bind="component.componentProps" :current-form-display-mode="currentFormDisplayMode" @delete-component="removeFromLayout(component)" @props-updated="updateComponentProps($event, component)"/>
         </div>
       </slot>
       <button class="button button--primary" @click="saveForm">Save Form</button>
@@ -35,6 +35,7 @@ import SelectionValue from "@/models/form/SelectionValue";
 import RadioGroup from "@/components/core/radio/RadioGroup.vue";
 import Form from "@/models/form/Form";
 import WebRequestUtils from "@/utils/WebRequestUtils";
+import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 
 @Component({
   components: {
@@ -46,6 +47,7 @@ export default class FormCreatorView extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.NEW_FORM;
   private components: FormComponent[] = new Array<FormComponent>();
   private nextComponentId = 1;
+  private currentFormDisplayMode: CurrentFormDisplayMode = new CurrentFormDisplayMode(false, true, false);
 
   saveForm(){
     const form = new Form("Form",this.components);

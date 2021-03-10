@@ -2,11 +2,13 @@ package co600.weffs.application.internal.services.form;
 
 import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.form.*;
+import co600.weffs.application.internal.model.form.frontend.FrontendComponent;
+import co600.weffs.application.internal.model.form.frontend.FrontendComponentProps;
+import co600.weffs.application.internal.model.form.frontend.FrontendComponentTypes;
+import co600.weffs.application.internal.model.form.frontend.FrontendForm;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import net.bytebuddy.dynamic.scaffold.MethodGraph.Linked;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -73,7 +75,8 @@ public class FormCreationService {
         questionDetailService.save(questionDetail);
 
         if (isQuestionSingleNested(frontendComponent)) {
-            HashMap<String, ?> nestedQuestionSelectorValue = (HashMap<String, ?>) frontendComponent.get_componentProps().get(FrontendComponentProps.SELECTION_VALUE.getFrontendName());
+            HashMap<String, ?> nestedQuestionSelectorValue = (HashMap<String, ?>) frontendComponent.get_componentProps().get(
+                FrontendComponentProps.SELECTION_VALUE.getFrontendName());
 
             var subQuestionFrontendComponent = new FrontendComponent();
             subQuestionFrontendComponent.set_componentType(FrontendComponentTypes.NESTED_QUESTION.getComponentType());
