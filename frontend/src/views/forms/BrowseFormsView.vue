@@ -36,7 +36,7 @@ import {Component, Vue} from "vue-property-decorator";
 import Pages from "@/models/navigation/Pages";
 import BaseStyleLayout from "@/components/layout/BaseStyleLayout.vue";
 import WebRequestUtils from "@/utils/WebRequestUtils";
-import FormViewInterface from "@/models/form/FormViewInterface";
+import FormViewInterface from "@/models/form/interfaces/FormViewInterface";
 
 @Component({
   components: {

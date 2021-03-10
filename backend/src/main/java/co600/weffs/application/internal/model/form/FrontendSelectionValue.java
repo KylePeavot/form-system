@@ -8,6 +8,6 @@ import lombok.Data;
 public class FrontendSelectionValue {
 
   private String _label;
-  private boolean _values;
+  private boolean _value;
 
 }

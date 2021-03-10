@@ -19,6 +19,7 @@ import Heading from "@/components/core/componentExtras/Heading.vue";
 import SelectionValue from "@/models/form/SelectionValue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
 import BaseQuestionProps from "@/models/form/BaseQuestionProps";
+import SelectionValueInterface from "@/models/form/interfaces/SelectionValueInterface";
 @Component({
   components: {BaseQuestion, Heading, Checkbox}
 })
@@ -43,6 +44,7 @@ export default class CheckboxGroup extends Vue {
 
   created() {
     this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
+    this.selectionValues = this.selectionValues.map(value => SelectionValue.mapSelectionValueInterfaceToSelectionValue(value as SelectionValueInterface));
   }
 
   addNewCheckbox() {

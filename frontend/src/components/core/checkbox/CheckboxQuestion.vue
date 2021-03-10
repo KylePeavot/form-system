@@ -16,6 +16,7 @@ import Heading from "@/components/core/componentExtras/Heading.vue";
 import SelectionValue from "@/models/form/SelectionValue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
 import BaseQuestionProps from "@/models/form/BaseQuestionProps";
+import SelectionValueInterface from "@/models/form/interfaces/SelectionValueInterface";
 @Component({
   components: {BaseQuestion, Heading, Checkbox}
 })
@@ -40,6 +41,7 @@ import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 
     created() {
       this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
+      this.selectionValue = SelectionValue.mapSelectionValueInterfaceToSelectionValue(this.selectionValue as SelectionValueInterface);
     }
 
     updateProps(baseQuestionProps: BaseQuestionProps) {
