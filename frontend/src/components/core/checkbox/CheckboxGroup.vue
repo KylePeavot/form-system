@@ -1,13 +1,13 @@
 <template>
   <div name="checkbox-group-container" class="pb-5">
-    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)">
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" :current-form-display-mode="currentFormDisplayMode">
       <button class="popover-menu__item">Move</button>
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
     <div v-for="(checkbox, index) of selectionValues" :key="`${idPrefix}-${index}`">
-      <Checkbox :id="`${idPrefix}-${index}`" :selection-value="checkbox" :isDeletable="true" @deleteCheckbox="deleteCheckbox(checkbox)"/>
+      <Checkbox :id="`${idPrefix}-${index}`" :selection-value="checkbox" :isDeletable="true" @deleteCheckbox="deleteCheckbox(checkbox)" :current-form-display-mode="currentFormDisplayMode"/>
     </div>
-    <button type="button" class="text-blue-500" @click="addNewCheckbox">+ Add new checkbox</button>
+    <button v-if="currentFormDisplayMode.isEdit" type="button" class="text-blue-500" @click="addNewCheckbox">+ Add new checkbox</button>
   </div>
 </template>
 
@@ -20,6 +20,7 @@ import SelectionValue from "@/models/form/SelectionValue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
 import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 import SelectionValueInterface from "@/models/form/interfaces/SelectionValueInterface";
+import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 @Component({
   components: {BaseQuestion, Heading, Checkbox}
 })
@@ -36,6 +37,9 @@ export default class CheckboxGroup extends Vue {
 
   @Prop({default: 2})
   private level!: number;
+
+  @Prop({required: true})
+  private currentFormDisplayMode!: CurrentFormDisplayMode;
 
   @Model("input", {required: true})
   private selectionValues!: SelectionValue[];

@@ -1,12 +1,12 @@
 <template>
   <div name="radio-group-container">
-    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)">
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" :current-form-display-mode="currentFormDisplayMode">
       <button class="popover-menu__item">Move</button>
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
     <div v-for="(radio, index) of selectionValues" :key="`${idPrefix}-${index}`">
       <div class="radio__container">
-        <input :id="`${idPrefix}-${index}`" class="radio__item" type="radio" :value="radio.label" v-model="selected">
+        <input :id="`${idPrefix}-${index}`" class="radio__item" type="radio" :disabled="currentFormDisplayMode.isReadOnly" :value="radio.label" v-model="selected">
         <label :for="`${idPrefix}-${index}`">{{radio.label}}</label>
       </div>
     </div>
@@ -21,6 +21,7 @@ import SelectionValue from "@/models/form/SelectionValue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
 import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 import SelectionValueInterface from "@/models/form/interfaces/SelectionValueInterface";
+import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 
 @Component({
   components: {BaseQuestion, Heading}
@@ -40,6 +41,9 @@ export default class RadioGroup extends Vue {
 
   @Prop({default: ""})
   private guidance!: string;
+
+  @Prop({required: true})
+  private currentFormDisplayMode!: CurrentFormDisplayMode;
 
   @Model("input", {required: true})
   private selectionValues!: SelectionValue[];

@@ -1,10 +1,10 @@
 <template>
   <div name="checkbox-question-container">
-    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)">
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" :current-form-display-mode="currentFormDisplayMode">
       <button class="popover-menu__item">Move</button>
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
-    <Checkbox :id="id" :selection-value="selectionValue"/>
+    <Checkbox :id="id" :selection-value="selectionValue" :current-form-display-mode="currentFormDisplayMode"/>
   </div>
 </template>
 
@@ -17,6 +17,10 @@ import SelectionValue from "@/models/form/SelectionValue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
 import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 import SelectionValueInterface from "@/models/form/interfaces/SelectionValueInterface";
+import {FormDisplayModeEnum} from "@/models/form/FormDisplayModeEnum";
+import currentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
+import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
+
 @Component({
   components: {BaseQuestion, Heading, Checkbox}
 })
@@ -37,10 +41,15 @@ import SelectionValueInterface from "@/models/form/interfaces/SelectionValueInte
     @Model("input", {required: true})
     private selectionValue!: SelectionValue;
 
+    @Prop({required: true})
+    private currentFormDisplayMode!: CurrentFormDisplayMode;
+
     private baseQuestionProps: BaseQuestionProps | undefined;
 
     created() {
       this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
+
+      //Required to map from raw JSON to an interface to a class
       this.selectionValue = SelectionValue.mapSelectionValueInterfaceToSelectionValue(this.selectionValue as SelectionValueInterface);
     }
 

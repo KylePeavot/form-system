@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter, {RouteConfig} from 'vue-router'
 import Pages from "@/models/navigation/Pages";
 import AuthenticationUtils from "@/utils/AuthenticationUtils";
-import {FormDisplayMode} from "@/models/form/FormDisplayMode";
+import {FormDisplayModeEnum} from "@/models/form/FormDisplayModeEnum";
 
 Vue.use(VueRouter)
 
@@ -46,7 +46,7 @@ const routes: Array<RouteConfig> = [
       loginRequired: true
     },
     props: route => ({
-      mode: FormDisplayMode.READ_ONLY,
+      mode: FormDisplayModeEnum.READ_ONLY,
       id: route.params.id
     })
   },
