@@ -17,8 +17,6 @@ import org.apache.ibatis.annotations.Many;
 @Entity
 public class QuestionResponse {
 
-  //TODO FS-52 this might break, make sure tested
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;

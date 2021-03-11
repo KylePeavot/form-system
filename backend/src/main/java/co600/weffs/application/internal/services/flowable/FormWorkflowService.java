@@ -14,7 +14,6 @@ import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-//TODO FS-52 Update this class to use the id of a (new object called) FormSubmission
 @Service
 public class FormWorkflowService {
 
@@ -36,7 +35,6 @@ public class FormWorkflowService {
     Map<String, Object> variables = Map.of(
       "assigner", assigner,
       "filler", filler,
-      //TODO FS-52 Check for all uses of formId
       "formResponseId", formResponse.getId()
     );
 

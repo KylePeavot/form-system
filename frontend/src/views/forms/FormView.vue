@@ -1,7 +1,3 @@
-<!--
-  The purpose of this screen is to display a bunch of given components in a readonly/edit/formfilling mode
-  //TODO FS-52 remove edit from above (or just the whole comment) or see if edit mode is possible too
--->
 <template>
   <div>
     <FormStyleLayout :selected-page="page" :title="title">

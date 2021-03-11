@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-//TODO FS-52 Update this class to use the id of a (new object called) FormSubmission
 @RestController
 @RequestMapping("api/flowable/workflow/form")
 public class FormWorkflowController {
@@ -54,7 +53,6 @@ public class FormWorkflowController {
   public void assignFormToUser(@RequestBody FrontendAssignWorkflowVariables frontendAssignWorkflowVariables) {
     String assigner = frontendAssignWorkflowVariables.get_assigner();
     String filler = frontendAssignWorkflowVariables.get_targetUser();
-
 
     FormResponse formResponse = formResponseService.create(
         filler,
