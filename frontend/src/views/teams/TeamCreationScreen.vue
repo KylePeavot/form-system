@@ -161,7 +161,7 @@ export default class TeamCreationScreen extends Vue {
   private validateForm(): boolean {
     this.forceShownTeamNameErrors = true;
     this.submissionError = [];
-    if (this.members.length == 0) {
+    if (this.members.length === 0) {
       const err = new Error("Team must have at least one member");
       this.submissionError.push(new FormError(err, "members"));
       return false;
