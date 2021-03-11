@@ -47,7 +47,6 @@ import {Component, Vue} from "vue-property-decorator";
 import BaseStyleLayout from "../../components/layout/BaseStyleLayout.vue";
 import Pages from "../../models/navigation/Pages";
 import TextField from "@/components/core/TextField.vue";
-import Heading from "@/components/core/Heading.vue";
 import UserSelector from "@/components/core/widgets/UserSelector.vue";
 import KentUser from "@/models/external/users/KentUser";
 import AuthenticationUtils from "@/utils/AuthenticationUtils";
@@ -59,6 +58,7 @@ import ValidationWrapper from "@/models/validation/ValidationWrapper";
 import SensibleNameValidator from "@/validators/SensibleNameValidator";
 import WebRequestUtils from "@/utils/WebRequestUtils";
 import FormError from "@/models/form/FormError";
+import Heading from "@/components/core/componentExtras/Heading.vue";
 
 @Component({
   components: {
