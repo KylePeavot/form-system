@@ -40,7 +40,7 @@ class TeamCreationServiceTest extends MockitoTest {
     var member = new FrontendTeamMember();
     member.setCanModifyForms(true);
     member.setCanManageTeam(true);
-    member.setUsername("test_user");
+    member.setUsername("other_user");
     teamCreation.setMembers(new FrontendTeamMember[]{member});
 
     teamCreationService.createTeam(user, teamCreation);
@@ -54,7 +54,7 @@ class TeamCreationServiceTest extends MockitoTest {
     var teamDetail = teamDetailCaptor.getValue();
     assertThat(teamDetail.getTeam()).isEqualTo(teamCaptor.getValue());
     assertThat(teamDetail.getName()).isEqualTo(teamCreation.getName());
-    assertThat(teamDetail.getCreatedBy()).isEqualTo(teamCreation.getMembers()[0].getUsername());
+    assertThat(teamDetail.getCreatedBy()).isEqualTo(user.getUsername());
     assertThat(teamDetail.getStatusControl()).isTrue();
 
     ArgumentCaptor<List<TeamMember>> membersCaptor = ArgumentCaptor.forClass(List.class);
@@ -71,7 +71,7 @@ class TeamCreationServiceTest extends MockitoTest {
         tuple(
             teamDetail,
             teamCreation.getMembers()[0].getUsername(),
-            teamCreation.getMembers()[0].getUsername(),
+            user.getUsername(),
             teamCreation.getMembers()[0].getCanManageTeam(),
             teamCreation.getMembers()[0].getCanModifyForms(),
             true

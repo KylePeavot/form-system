@@ -12,7 +12,7 @@ public class TeamCreationValidator implements RequestValidator {
   public static final String NAME_NOT_BLANK_ERROR_MESSAGE = "Name must not be empty";
   public static final String SENSIBLE_NAME_ERROR_MESSAGE = "Name is not sensible";
   public static final String AT_LEAST_ONE_MANAGE_TEAM_ERROR_MESSAGE = "At least one member must be able to manage the team";
-  public static final String AT_LEAST_ONE_MODIFY_FORMS_ERROR_MESSAGE = "At least one member must be able to modify forms within the team";
+  public static final String AT_LEAST_ONE_MODIFY_FORMS_ERROR_MESSAGE = "At least one member must be able to modify forms";
 
   @Override
   public void validate(Object responseBody) throws Exception {
