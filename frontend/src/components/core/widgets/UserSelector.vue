@@ -19,11 +19,6 @@ export default class UserSelector extends Vue {
 
   private users: KentUser[] = [];
 
-  @Watch("trackValue")
-  trackUpdate(newValue: any) {
-    this.$emit("input", newValue);
-  }
-
   @Prop({default: false})
   private multiple!: boolean;
 
