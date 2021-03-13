@@ -20,7 +20,7 @@ import java.util.Map;
 public class FormController {
   private final FormCreationService formCreationService;
   private final FormDetailService formDetailService;
-  private FrontendFormService frontendFormService;
+  private final FrontendFormService frontendFormService;
 
   @Autowired
   public FormController(FormCreationService formCreationService,

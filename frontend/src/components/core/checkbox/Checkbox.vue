@@ -31,7 +31,7 @@ export default class Checkbox extends Vue {
   private isDeletable!: boolean;
 
   @Prop({required: true})
-  private currentFormDisplayMode: CurrentFormDisplayMode;
+  private currentFormDisplayMode!: CurrentFormDisplayMode;
 
   updateLabel(newLabel: string) {
     this.selectionValue.label = newLabel;

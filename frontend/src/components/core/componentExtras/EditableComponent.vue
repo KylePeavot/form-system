@@ -18,7 +18,7 @@ export default class EditableComponent extends Vue {
   private editComponentCss!: string | undefined;
 
   @Prop({required: true})
-  private currentFormDisplayMode: CurrentFormDisplayMode;
+  private currentFormDisplayMode!: CurrentFormDisplayMode;
 
   @Model("input", {required: true})
   private value!: string;

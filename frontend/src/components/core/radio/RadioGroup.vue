@@ -52,7 +52,7 @@ export default class RadioGroup extends Vue {
 
   created() {
     this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
-    this.selectionValues = this.selectionValues.map(value => SelectionValue.mapSelectionValueInterfaceToSelectionValue(value as SelectionValueInterface));
+    this.selectionValues = this.selectionValues.map(value => SelectionValue.mapSelectionValueInterfaceToSelectionValue(value));
   }
 
   @Watch("selected")

@@ -7,7 +7,8 @@ export default class TextValue {
     this._value = value;
   }
 
-  static mapTextValueInterfaceToTextValue(textValueInterface: TextValueInterface) {
+  static mapTextValueInterfaceToTextValue(textValueInterface: any) {
+    textValueInterface = textValueInterface as TextValueInterface;
     return new TextValue(textValueInterface._value);
   }
 

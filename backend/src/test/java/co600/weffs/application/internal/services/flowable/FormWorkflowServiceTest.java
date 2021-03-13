@@ -71,6 +71,8 @@ class FormWorkflowServiceTest extends MockitoTest {
 
     this.testFormResponseA = new FormResponse();
     this.testFormResponseA.setFormDetail(testFormDetailA);
+    this.testFormResponseA.setId(1);
+    this.testFormResponseA.setAssignedTimestamp(Instant.now());
   }
 
   @AfterEach
@@ -94,7 +96,7 @@ class FormWorkflowServiceTest extends MockitoTest {
 
     assertThat(task.getAssignee()).isEqualTo(filler.getUsername());
 
-    assertThat(taskService.getVariables(task.getId())).containsEntry("formId", testFormA.getId());
+    assertThat(taskService.getVariables(task.getId())).containsEntry("formResponseId", testFormResponseA.getId());
   }
 
   @Test
@@ -109,6 +111,7 @@ class FormWorkflowServiceTest extends MockitoTest {
 
     FormResponse testFormResponseB = new FormResponse();
     testFormResponseB.setFormDetail(testFormDetailB);
+    testFormResponseB.setId(2);
 
     Form testFormC = new Form();
 
@@ -117,6 +120,7 @@ class FormWorkflowServiceTest extends MockitoTest {
 
     FormResponse testFormResponseC = new FormResponse();
     testFormResponseB.setFormDetail(testFormDetailC);
+    testFormResponseC.setId(3);
 
     //Assign form to assigner
     formWorkflowService.assignFormToFormFiller(newAssigner.getUsername(), assigner.getUsername(), testFormResponseA);
@@ -138,16 +142,21 @@ class FormWorkflowServiceTest extends MockitoTest {
 
     FormResponse testFormResponseB = new FormResponse();
     testFormResponseB.setFormDetail(testFormDetailB);
+    testFormResponseB.setId(2);
+    testFormResponseB.setAssignedTimestamp(Instant.now());
 
 //    when(formDetailService.getFormDetailByForm(testFormA)).thenReturn(testFormDetailA);
 //    when(formDetailService.getFormDetailByForm(testFormB)).thenReturn(testFormDetailB);
 //    when(formService.getFormById(1)).thenReturn(testFormA);
 //    when(formService.getFormById(2)).thenReturn(testFormB);
 
+    when(formResponseService.getFormResponseById(1)).thenReturn(testFormResponseA);
+    when(formResponseService.getFormResponseById(2)).thenReturn(testFormResponseB);
+
     formWorkflowService.assignFormToFormFiller(assigner.getUsername(), filler.getUsername(), testFormResponseA);
     formWorkflowService.assignFormToFormFiller(assigner.getUsername(), filler.getUsername(), testFormResponseB);
 
-    assertThat(taskService.createTaskQuery().list().size()).isEqualTo(3);
+    assertThat(taskService.createTaskQuery().list().size()).isEqualTo(2);
 
     List<AssignedFormView> assignedFormViews = formWorkflowService.getAllAssignedFormViewsForAssignee(filler.getUsername());
 

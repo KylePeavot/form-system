@@ -10,7 +10,8 @@ export default class SelectionValue {
     this._value = value;
   }
 
-  static mapSelectionValueInterfaceToSelectionValue(selectionValueInterface: SelectionValueInterface): SelectionValue {
+  static mapSelectionValueInterfaceToSelectionValue(selectionValueInterface: any): SelectionValue {
+    selectionValueInterface = selectionValueInterface as SelectionValueInterface;
     return new SelectionValue(selectionValueInterface._label, selectionValueInterface._value);
   }
 

@@ -21,21 +21,16 @@ public class FrontendFormService {
 
   private QuestionDetailService questionDetailService;
   private QuestionService questionService;
-  private FormDetailService formDetailService;
 
   @Autowired
   public FrontendFormService(QuestionDetailService questionDetailService,
-      QuestionService questionService,
-      FormDetailService formDetailService) {
+      QuestionService questionService) {
     this.questionDetailService = questionDetailService;
     this.questionService = questionService;
-    this.formDetailService = formDetailService;
   }
 
   public FrontendForm getFrontendFormFromFormDetailId(int formDetailId) {
-    FormDetail formDetail = formDetailService.getFormDetailById(formDetailId);
-
-    //partitioningBy returns two lists of T. The elements are added to the second list if the expression in partitioningBy is true, the first if false
+    //partitioningBy returns two lists of QuestionDetail. The elements are added to the second list if the expression in partitioningBy is true, the first if false
     List<List<QuestionDetail>> questionsAndNestedQuestions = new ArrayList<>(
         questionService.getQuestionsForFormDetailId(formDetailId).stream()
         .map(question -> questionDetailService.getCurrentQuestionDetailByQuestionId(question.getId()))

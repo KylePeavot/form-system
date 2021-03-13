@@ -7,6 +7,7 @@ import co600.weffs.application.internal.model.form.FormView;
 import co600.weffs.application.internal.model.form.frontend.FrontendForm;
 import co600.weffs.application.internal.services.form.FormCreationService;
 import co600.weffs.application.internal.services.form.FormDetailService;
+import co600.weffs.application.internal.services.form.FrontendFormService;
 import co600.weffs.application.utils.UserTestUtils;
 import co600.weffs.application.utils.ValueMapUtils;
 import co600.weffs.application.utils.routes.Router;
@@ -39,6 +40,8 @@ class FormControllerTest extends TestableController {
     private FormCreationService formCreationService;
     @MockBean
     private FormDetailService formDetailService;
+    @MockBean
+    private FrontendFormService frontendFormService;
 
     @SneakyThrows
     @Test
