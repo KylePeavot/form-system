@@ -4,6 +4,7 @@ import co600.weffs.application.internal.model.team.TeamDetail;
 import co600.weffs.application.internal.model.team.TeamMember;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +15,5 @@ public interface TeamMemberRepository extends CrudRepository<TeamMember, Integer
 
   List<TeamMember> findAllByTeamDetailInAndStatusControlIsTrue(Collection<TeamDetail> teamDetails);
 
-  TeamMember findByUsernameAndTeamDetail(String username, TeamDetail teamDetail);
+  Optional<TeamMember> findByUsernameAndTeamDetail(String username, TeamDetail teamDetail);
 }

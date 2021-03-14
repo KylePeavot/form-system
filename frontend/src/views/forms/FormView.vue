@@ -5,6 +5,7 @@
       <div v-for="(component, index) in form.componentList" :key="component.order">
         <component :is="component.componentType" v-bind="component.componentProps" :level="2" :id="index" :id-prefix="index" :current-form-display-mode="currentFormDisplayMode"/>
       </div>
+      <button v-if="currentFormDisplayMode.isFill" class="button--primary my-5 p-2 rounded">Submit form</button>
     </FormStyleLayout>
   </div>
 </template>
@@ -48,7 +49,14 @@ export default class FormView extends Vue {
     if (this.mode === FormDisplayModeEnum.FORM_FILLING) {
       this.title = Pages.ROUTES.FORM.FILL_FORM.name;
       this.page = Pages.ROUTES.FORM.FILL_FORM.url.replace(":id", this.id.toString());
-      //TODO FS-86 do this bit
+
+      WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/form-response/get/${this.id}`, true)
+      .then(async value => await value.json())
+      .then(value => value as FormInterface)
+      .then(value => this.form = Form.mapFormInterfaceToForm(value));
+
+      this.currentFormDisplayMode = new CurrentFormDisplayMode(false, false, true);
+
     } else if (this.mode === FormDisplayModeEnum.READ_ONLY) {
       this.title = Pages.ROUTES.FORM.VIEW_FORM.name;
       this.page = Pages.ROUTES.FORM.VIEW_FORM.url.replace(":id", this.id.toString());

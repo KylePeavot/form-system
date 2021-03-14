@@ -1,5 +1,7 @@
 package co600.weffs.application.internal.services.team;
 
+import co600.weffs.application.internal.model.error.EntityNotFoundException;
+import co600.weffs.application.internal.model.team.TeamDetail;
 import co600.weffs.application.internal.repository.team.TeamDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,5 +15,10 @@ public class TeamDetailService {
   public TeamDetailService(
       TeamDetailRepository teamDetailRepository) {
     this.teamDetailRepository = teamDetailRepository;
+  }
+
+  public TeamDetail getTeamDetailById(int id) {
+    return teamDetailRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("No TeamDetail found with id: " + id));
   }
 }

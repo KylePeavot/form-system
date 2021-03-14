@@ -1,13 +1,15 @@
 package co600.weffs.application.internal.model.flowable.frontend;
 
 import co600.weffs.application.internal.model.team.TeamDetail;
+import java.util.Map;
 import lombok.Data;
 
 @Data
 public class FrontendAssignWorkflowVariables {
 
   private String _assigner;
-  private TeamDetail _assignerTeamDetail;
+  //FS-55 TODO fix this to correctly receive stuff (might need to update the frontend version of this class too
+  private Map<String, ?> _assignerTeamDetail;
   private String _targetUser;
   private int _formId;
 
