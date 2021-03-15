@@ -1,5 +1,6 @@
 package co600.weffs.application.internal.services.formResponse;
 
+import co600.weffs.application.internal.model.error.EntityNotFoundException;
 import co600.weffs.application.internal.model.formResponse.FormResponse;
 import co600.weffs.application.internal.model.formResponse.FormResponseDetail;
 import co600.weffs.application.internal.model.team.TeamDetail;
@@ -33,6 +34,13 @@ public class FormResponseDetailService {
     newFormResponseDetail.setLastUpdatedTimestamp(Instant.now());
 
     return formResponseDetailRepository.save(newFormResponseDetail);
+  }
+
+  public FormResponseDetail findCurrentDetailByFormResponse(FormResponse formResponse) {
+    return formResponseDetailRepository.findByFormResponseAndStatusControlIsTrue(formResponse)
+        .orElseThrow(() -> new EntityNotFoundException("No FormResponseDetail found with statusControl: true and FormResponse id: " + formResponse.getId()));
+
+
   }
 
 }

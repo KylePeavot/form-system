@@ -30,6 +30,8 @@ public class FrontendFormService {
   }
 
   public FrontendForm getFrontendFormFromFormDetailId(int formDetailId) {
+    List<FrontendComponent> frontendComponents = new ArrayList<>();
+
     //partitioningBy returns two lists of QuestionDetail. The elements are added to the second list if the expression in partitioningBy is true, the first if false
     List<List<QuestionDetail>> questionsAndNestedQuestions = new ArrayList<>(
         questionService.getQuestionsForFormDetailId(formDetailId).stream()
@@ -41,14 +43,11 @@ public class FrontendFormService {
     List<QuestionDetail> questions = questionsAndNestedQuestions.get(0);
     List<QuestionDetail> nestedQuestions = questionsAndNestedQuestions.get(1);
 
-    List<FrontendComponent> frontendComponents = new ArrayList<>();
-
     for (QuestionDetail questionDetail : questions) {
-      FrontendComponent componentToAdd = new FrontendComponent();
-
       Map<String, Object> componentProps = new HashMap<>();
       componentProps.put("title", questionDetail.getTitle());
       componentProps.put("guidance", questionDetail.getGuidance());
+      componentProps.put("questionDetailId", questionDetail.getId());
 
       if (FrontendComponentTypes.hasSingleNestedQuestion(questionDetail.getQuestionType())) {
 
@@ -70,9 +69,7 @@ public class FrontendFormService {
         componentProps.put("textValue", new FrontendTextValue(""));
       }
 
-      componentToAdd.set_componentType(questionDetail.getQuestionType());
-      componentToAdd.set_componentProps(componentProps);
-      componentToAdd.set_order(questionDetail.getOrderNumber());
+      FrontendComponent componentToAdd = new FrontendComponent(questionDetail.getQuestionType(), componentProps, questionDetail.getOrderNumber());
 
       frontendComponents.add(componentToAdd);
     }

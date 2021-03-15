@@ -78,10 +78,11 @@ public class FormCreationService {
             HashMap<String, ?> nestedQuestionSelectorValue = (HashMap<String, ?>) frontendComponent.get_componentProps().get(
                 FrontendComponentProps.SELECTION_VALUE.getFrontendName());
 
-            var subQuestionFrontendComponent = new FrontendComponent();
-            subQuestionFrontendComponent.set_componentType(FrontendComponentTypes.NESTED_QUESTION.getComponentType());
-            subQuestionFrontendComponent.set_componentProps(Map.of("title", nestedQuestionSelectorValue.get("_label"), "parentQuestionId", question.getId()));
-            subQuestionFrontendComponent.set_order(0); //on a single checkbox question, we don't care what the order is
+            var subQuestionFrontendComponent = new FrontendComponent(
+                FrontendComponentTypes.NESTED_QUESTION.getComponentType(),
+                Map.of("title", nestedQuestionSelectorValue.get("_label"), "parentQuestionId", question.getId()),
+                0 //on a single checkbox question, we don't care what the order is
+            );
 
             createQuestion(appUser, subQuestionFrontendComponent, formDetail);
         } else if (isQuestionMultiNested(frontendComponent)) {
@@ -89,10 +90,11 @@ public class FormCreationService {
             ArrayList<HashMap<String, ?>> nestedQuestionSelectorValues = (ArrayList<HashMap<String, ?>>) frontendComponent.get_componentProps().get(FrontendComponentProps.SELECTION_VALUES.getFrontendName());
 
             for (HashMap<String, ?> nestedQuestion : nestedQuestionSelectorValues) {
-                var subQuestionFrontendComponent = new FrontendComponent();
-                subQuestionFrontendComponent.set_componentType(FrontendComponentTypes.NESTED_QUESTION.getComponentType());
-                subQuestionFrontendComponent.set_componentProps(Map.of("title", nestedQuestion.get("_label"), "parentQuestionId", question.getId()));
-                subQuestionFrontendComponent.set_order(order--); //we want to preserve the order they came in as but don't want to interfere with other question's order
+                var subQuestionFrontendComponent = new FrontendComponent(
+                    FrontendComponentTypes.NESTED_QUESTION.getComponentType(),
+                    Map.of("title", nestedQuestion.get("_label"), "parentQuestionId", question.getId()),
+                    order-- //we want to preserve the order they came in as but don't want to interfere with other question's order
+                );
 
                 createQuestion(appUser, subQuestionFrontendComponent, formDetail);
             }
