@@ -2,12 +2,6 @@
 
   &__title-row {
     @apply w-auto max-w-sm flex;
-
-    &:hover, &:focus-within {
-      .hidden-button {
-        @apply visible inline;
-      }
-    }
   }
 
   &__title {
@@ -18,15 +12,8 @@
     }
   }
 
-
   &__guidance-container {
     @apply w-auto max-w-sm flex;
-
-    &:hover, &:focus-within {
-      .hidden-button {
-        @apply visible inline;
-      }
-    }
   }
 
   &__guidance-text {
@@ -46,7 +33,7 @@
   }
 
   &__hidden-button {
-    @apply invisible ml-1;
+    @apply ml-1;
   }
 
 }

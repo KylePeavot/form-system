@@ -18,9 +18,10 @@ public class FormView {
     private String lastUpdatedBy;
     private String lastUpdatedWhen;
 
-    public FormView(String name, FormDetail formDetail){
+    public FormView(FormDetail formDetail){
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         this.id = formDetail.getForm().getId();
+        this.name = formDetail.getName();
         this.createdBy = formDetail.getForm().getCreatedBy();
         this.createdWhen = formatter.format(Date.from(formDetail.getForm().getCreatedTimestamp()));
         this.lastUpdatedBy = formDetail.getLastUpdatedBy();

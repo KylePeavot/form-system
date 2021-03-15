@@ -77,8 +77,7 @@ class FormControllerTest extends TestableController {
         form.setCreatedTimestamp(Instant.now());
         form.setId(1);
         formDetail.setForm(form);
-        //TODO FS-65 fix the name
-        var formView = new FormView("name", formDetail);
+        var formView = new FormView(formDetail);
         when(formDetailService.getActiveFormViews()).thenReturn(List.of(formView));
         var response = mockMvc.perform(
                 get(Router.determineRoute(on(FormController.class).getForm()))

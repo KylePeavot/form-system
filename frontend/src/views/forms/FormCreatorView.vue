@@ -1,6 +1,12 @@
 <template>
   <div>
     <TwoColumnStyleLayout title="Create a new form" :selected-page="page">
+      <EditableComponent edit-component-css="question__title question__edit text-3xl font-semibold" v-model="formName">
+        <Heading class="question__title" :level=1>
+          {{ this.formName }}
+        </Heading>
+      </EditableComponent>
+      <br/>
       <template v-slot:sidebar>
         <SidebarGroup title="Components">
           <button name="addTextField" type="button" class="sidebar-group__item-button" @click="addComponentToList">Text field</button>
@@ -35,20 +41,26 @@ import SelectionValue from "@/models/form/SelectionValue";
 import RadioGroup from "@/components/core/radio/RadioGroup.vue";
 import Form from "@/models/form/Form";
 import WebRequestUtils from "@/utils/WebRequestUtils";
+import Heading from "@/components/core/componentExtras/Heading.vue";
+import EditableComponent from "@/components/core/componentExtras/EditableComponent.vue";
 
 @Component({
   components: {
+    Heading,
+    EditableComponent,
     RadioGroup,
     CheckboxGroup,
     CheckboxQuestion, SidebarGroup, TextArea, TextField, TwoColumnStyleLayout}
 })
+
 export default class FormCreatorView extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.NEW_FORM;
   private components: FormCreationComponent[] = new Array<FormCreationComponent>();
   private nextComponentId = 1;
+  private formName = "Enter form name here";
 
   saveForm(){
-    const form = new Form("Form",this.components);
+    const form = new Form(this.formName,this.components);
     WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form/save`,form);
   }
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BaseStyleLayout title="Get forms available to you" :selected-page="page">
+    <BaseStyleLayout title="Browse forms available to you" :selected-page="page">
       <table v-if="loaded" class="results-table">
         <thead class="results-table__thead">
         <tr>
