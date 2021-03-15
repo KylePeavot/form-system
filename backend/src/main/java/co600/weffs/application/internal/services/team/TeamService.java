@@ -1,5 +1,6 @@
 package co600.weffs.application.internal.services.team;
 
+import co600.weffs.application.internal.model.team.Team;
 import co600.weffs.application.internal.repository.team.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,4 +14,9 @@ public class TeamService {
   public TeamService(TeamRepository teamRepository) {
     this.teamRepository = teamRepository;
   }
+
+  public void save(Team team) {
+    teamRepository.save(team);
+  }
+
 }

@@ -18,7 +18,10 @@ export default class Pages {
             },
             TEAMS: {
                 name: "Teams",
-                url: "/teams"
+                url: "/teams",
+                subRoutes: {
+                    CREATE_TEAM: {name: "Create team", url: "/teams/new"}
+                }
             },
             FORMS: {
                 name: "Forms",
