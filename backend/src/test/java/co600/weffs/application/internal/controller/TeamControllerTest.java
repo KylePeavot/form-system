@@ -1,6 +1,7 @@
 package co600.weffs.application.internal.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -9,7 +10,6 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 
 import co600.weffs.application.TestableController;
 import co600.weffs.application.internal.model.auth.AppUser;
-import co600.weffs.application.internal.model.team.TeamDetail;
 import co600.weffs.application.internal.model.team.TeamMember;
 import co600.weffs.application.internal.model.team.frontend.FrontendTeamCreation;
 import co600.weffs.application.internal.services.team.TeamCreationService;
@@ -58,9 +58,8 @@ class TeamControllerTest extends TestableController {
   @SneakyThrows
   @Test
   void getAvailableTeams() {
-    var teamDetail = new TeamDetail();
     var teamMember = new TeamMember();
-    var teamView = new TeamView(teamDetail, List.of(teamMember));
+    var teamView = new TeamView(1, "test_team", List.of(teamMember));
     when(teamMemberService.getTeamViewForUsername(user.getUsername()))
         .thenReturn(List.of(teamView));
 
@@ -84,9 +83,8 @@ class TeamControllerTest extends TestableController {
   @SneakyThrows
   @Test
   void getAvailableTeams_unauthenticated() {
-    var teamDetail = new TeamDetail();
     var teamMember = new TeamMember();
-    var teamView = new TeamView(teamDetail, List.of(teamMember));
+    var teamView = new TeamView(1, "test_team", List.of(teamMember));
     when(teamMemberService.getTeamViewForUsername(user.getUsername()))
         .thenReturn(List.of(teamView));
 
@@ -157,5 +155,126 @@ class TeamControllerTest extends TestableController {
               return mockHttpServletRequest;
             }))
         .andExpect(status().is4xxClientError());
+  }
+
+  @SneakyThrows
+  @Test
+  void updateTeam_noData() {
+    mockMvc.perform(
+        post(Router.determineRoute(on(TeamController.class).updateTeam(null, 1, null)))
+            .with(mockHttpServletRequest -> {
+              mockHttpServletRequest.setAttribute("User", user);
+              return mockHttpServletRequest;
+            }))
+        .andExpect(status().is4xxClientError());
+  }
+
+  @SneakyThrows
+  @Test
+  void updateTeam_unauthorized() {
+    var teamCreation = new FrontendTeamCreation();
+    mockMvc.perform(
+        post(Router.determineRoute(on(TeamController.class).updateTeam(null, 1, null)))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(jacksonMapper.writeValueAsString(teamCreation)))
+        .andExpect(status().is4xxClientError());
+  }
+
+  @SneakyThrows
+  @Test
+  void updateTeam_valid() {
+    var teamCreation = new FrontendTeamCreation();
+    var teamView = new TeamView();
+    when(teamMemberService.getTeamViewByIdForUser(1)).thenReturn(teamView);
+    when(teamMemberService.canUserManageTeamView(user, teamView)).thenReturn(true);
+
+    var response = mockMvc.perform(
+        post(Router.determineRoute(on(TeamController.class).updateTeam(null, 1, null)))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(jacksonMapper.writeValueAsString(teamCreation))
+            .with(mockHttpServletRequest -> {
+              mockHttpServletRequest.setAttribute("User", user);
+              return mockHttpServletRequest;
+            }))
+        .andExpect(status().isOk())
+        .andReturn()
+        .getResponse();
+    var result = new ValueMapUtils<Map<String, ?>>().mapResponse(response);
+    assertThat(result.get("success")).isEqualTo(true);
+  }
+
+  @SneakyThrows
+  @Test
+  void updateTeam_invalidData() {
+    var teamCreation = new FrontendTeamCreation();
+    var teamView = new TeamView();
+    when(teamMemberService.getTeamViewByIdForUser(1)).thenReturn(teamView);
+    when(teamMemberService.canUserManageTeamView(user, teamView)).thenReturn(true);
+
+    doAnswer(invocationOnMock -> {
+      throw new Exception("Fake error");
+    }).when(teamCreationValidator).validate(teamCreation);
+
+    var response = mockMvc.perform(
+        post(Router.determineRoute(on(TeamController.class).updateTeam(null, 1, null)))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(jacksonMapper.writeValueAsString(teamCreation))
+            .with(mockHttpServletRequest -> {
+              mockHttpServletRequest.setAttribute("User", user);
+              return mockHttpServletRequest;
+            }))
+        .andExpect(status().isOk())
+        .andReturn()
+        .getResponse();
+    var result = new ValueMapUtils<Map<String, ?>>().mapResponse(response);
+    assertThat(result.get("success")).isEqualTo(false);
+  }
+
+  @SneakyThrows
+  @Test
+  void updateTeam_cantManageTeam() {
+    var teamCreation = new FrontendTeamCreation();
+    var teamView = new TeamView();
+    when(teamMemberService.getTeamViewByIdForUser(1)).thenReturn(teamView);
+    when(teamMemberService.canUserManageTeamView(user, teamView)).thenReturn(false);
+
+    var response = mockMvc.perform(
+        post(Router.determineRoute(on(TeamController.class).updateTeam(null, 1, null)))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(jacksonMapper.writeValueAsString(teamCreation))
+            .with(mockHttpServletRequest -> {
+              mockHttpServletRequest.setAttribute("User", user);
+              return mockHttpServletRequest;
+            }))
+        .andExpect(status().isOk())
+        .andReturn()
+        .getResponse();
+    var result = new ValueMapUtils<Map<String, ?>>().mapResponse(response);
+    assertThat(result.get("success")).isEqualTo(false);
+  }
+
+  @SneakyThrows
+  @Test
+  void updateTeam_noTeamView() {
+    var teamCreation = new FrontendTeamCreation();
+    var teamView = new TeamView();
+    when(teamMemberService.getTeamViewByIdForUser(1)).thenAnswer(invocationOnMock -> {
+      throw new Exception("Internal error");
+    });
+    when(teamMemberService.canUserManageTeamView(user, teamView)).thenReturn(true);
+
+    var response = mockMvc.perform(
+        post(Router.determineRoute(on(TeamController.class).updateTeam(null, 1, null)))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(jacksonMapper.writeValueAsString(teamCreation))
+            .with(mockHttpServletRequest -> {
+              mockHttpServletRequest.setAttribute("User", user);
+              return mockHttpServletRequest;
+            }))
+        .andExpect(status().isOk())
+        .andReturn()
+        .getResponse();
+    var result = new ValueMapUtils<Map<String, ?>>().mapResponse(response);
+    assertThat(result.get("success")).isEqualTo(false);
   }
 }

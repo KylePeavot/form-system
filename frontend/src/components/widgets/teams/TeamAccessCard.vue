@@ -1,6 +1,13 @@
 <template>
   <div class="mb-1 mr-2 p-2 bg-gray-200 inline-block rounded-md">
-    <p>{{ member.username }}</p>
+    <div class="flex">
+      <span class="inline-block flex-1">
+        {{ member.username }}
+      </span>
+      <button class="inline-block flex-none" @click="$emit('remove-member', member)" v-if="editable">
+          <i class="ph-trash-bold text-red-600"></i>
+      </button>
+    </div>
     <template v-if="editable">
       <div class="text-sm text-gray-700">
         <input :id="`member-${member.username}-cmf`"
