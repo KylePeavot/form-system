@@ -7,16 +7,16 @@ describe("Single checkbox view", () => {
   });
 
   it("Has an initial state of true", () => {
-    cy.get("input").eq(2).should("be.checked");
+    cy.get("input").eq(0).should("be.checked");
     cy.get("[id='show_value']").contains("true");
   });
 
   it("Has been clicked", () => {
-    cy.get("input").eq(2).click();
+    cy.get("input").eq(0).click();
   });
 
   it("Now has a state of false", () => {
-    cy.get("input").eq(2).should("not.be.checked");
+    cy.get("input").eq(0).should("not.be.checked");
     cy.get("[id='show_value']").contains("false");
   })
 
