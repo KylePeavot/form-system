@@ -1,6 +1,6 @@
 <template>
   <div class="question">
-    <div class="question__title-row">
+    <div class="question__title-row editable-element">
       <div class="flex flex-1">
         <EditableComponent edit-component-css="question__title question__edit text-2xl" :current-form-display-mode="currentFormDisplayMode" v-model="baseQuestionProps.title" @finish-editing="editTitle" >
           <Heading class="question__title" :level="baseQuestionProps.level">
@@ -16,7 +16,7 @@
         </Popover>
       </div>
     </div>
-    <div v-if="baseQuestionProps.guidance.length !== 0" class="question__guidance-container">
+    <div v-if="baseQuestionProps.guidance.length !== 0" class="question__guidance-container editable-element">
       <EditableComponent edit-component-css="question__guidance-text question__edit" :current-form-display-mode="currentFormDisplayMode" v-model="baseQuestionProps.guidance" @finish-editing="editGuidance" >
         <p class="question__guidance-text">
           {{ baseQuestionProps.guidance }}

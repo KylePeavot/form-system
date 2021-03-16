@@ -4,7 +4,7 @@
     <EditableComponent edit-component-css="checkbox__label-edit" :value="selectionValue.label" @finish-editing="updateLabel" :current-form-display-mode="currentFormDisplayMode">
       <label class="checkbox__label" :for="id">{{ selectionValue.label }}</label>
     </EditableComponent>
-    <button v-if="isDeletable && currentFormDisplayMode.isEdit" class="hidden-button ph-trash" @click="$emit('deleteCheckbox')"/>
+    <button v-if="canRemove && currentFormDisplayMode.isEdit" class="hidden-button ph-trash" @click="$emit('deleteCheckbox')"/>
   </div>
 </template>
 
@@ -28,7 +28,7 @@ export default class Checkbox extends Vue {
   private selectionValue!: SelectionValue;
 
   @Prop({required: true, default: false})
-  private isDeletable!: boolean;
+  private canRemove!: boolean;
 
   @Prop({required: true})
   private currentFormDisplayMode!: CurrentFormDisplayMode;

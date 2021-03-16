@@ -74,8 +74,7 @@ class FormDetailServiceTest extends MockitoTest {
         var fromUpdatedTimestamp = formatter.format(Date.from(formDetail.getLastUpdatedTimestamp()));
         var formViewCreatedTimestamp = formView.getCreatedWhen();
         var formViewLastUpdatedTimestamp = formView.getLastUpdatedWhen();
-        //TODO FS-65 Add a test for the name
-        //assertThat(formView.getName()).isEqualTo();
+        assertThat(formView.getName()).isEqualTo(formDetail.getName());
         assertThat(formViewCreatedTimestamp).isEqualTo(formCreatedTimestamp);
         assertThat(formView.getCreatedBy()).isEqualTo(form.getCreatedBy());
         assertThat(formViewLastUpdatedTimestamp).isEqualTo(fromUpdatedTimestamp);

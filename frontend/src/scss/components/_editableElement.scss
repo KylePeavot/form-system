@@ -1,0 +1,7 @@
+.editable-element{
+  &:hover, &:focus-within {
+    .hidden-button {
+      @apply visible;
+    }
+  }
+}

@@ -18,7 +18,10 @@ export default class Pages {
             },
             TEAMS: {
                 name: "Teams",
-                url: "/teams"
+                url: "/teams",
+                subRoutes: {
+                    CREATE_TEAM: {name: "Create team", url: "/teams/new"}
+                }
             },
             FORMS: {
                 name: "Forms",
@@ -75,6 +78,10 @@ export default class Pages {
             LOGOUT: {
                 name: "Logout",
                 url: "/account/logout"
+            },
+            EDIT_TEAM: {
+                name: "Edit team",
+                url: "/teams/edit/:id"
             }
         }
     }

@@ -6,67 +6,37 @@
     </Banner>
     <p><strong>All team members can send forms to others</strong></p>
     <br/>
-    <button class="button button--primary">Create new team</button>
+    <router-link :to="createTeamUrl">
+      <a class="button button--primary">Create new team</a>
+    </router-link>
     <br/><br/>
     <hr/>
     <div class="my-2">
       <Heading :level="2">Your teams</Heading>
     </div>
     <template v-if="retrievedTeams">
-      <div v-for="team of teams" :key="`team-${team.teamDetail.id}`">
+      <div v-for="team of teams" :key="`team-${team.teamId}`">
         <div class="team">
           <div class="team__title my-2">
             <Heading :level="3">
-              {{ team.teamDetail.name }}
+              {{ team.teamName }}
+              <template v-if="selfCanManageTeam(team.teamMembers)">
+                <router-link :to="`${getEditUrl(team)}`">
+                  <button class="inline-block flex-none">
+                    <i class="ph-pencil-bold"></i>
+                  </button>
+                </router-link>
+              </template>
             </Heading>
           </div>
           <div class="team__body">
-            <div v-if="selfCanManageTeam(team.teamMembers)" class="my-2">
-              <div class="flex">
-                <div class="flex-1 max-w-sm">
-                  <UserSelector :value="teamAndUserMap.get(team)"/>
-                </div>
-                <div>
-                  <button class="button ml-2">Add member</button>
-                </div>
-              </div>
-            </div>
             <div class="team__members">
-              <div class="mb-1 mr-2 p-2 bg-gray-200 inline-block rounded-md"
-                   v-for="member of team.teamMembers"
-                   :key="`member-${member.username}-form-${team.teamDetail.id}`">
-                <p>{{ member.username }}</p>
-                <template v-if="selfCanManageTeam(team.teamMembers)">
-                  <div class="text-sm text-gray-700">
-                    <input :id="`member-${member.username}-form-${team.teamDetail.id}-cmf`"
-                           class="checkbox"
-                           type="checkbox"
-                           v-model="member.canModifyForms"/>
-                    <label :for="`member-${member.username}-form-${team.teamDetail.id}-cmf`">
-                      Modify forms
-                    </label>
-                  </div>
-                  <div class="text-sm text-gray-700">
-                    <input :id="`member-${member.username}-form-${team.teamDetail.id}-cmt`"
-                           class="checkbox"
-                           type="checkbox"
-                           v-model="member.canManageTeam"/>
-                    <label :for="`member-${member.username}-form-${team.teamDetail.id}-cmt`">
-                      Manage team
-                    </label>
-                  </div>
-                </template>
-                <template v-else>
-                  <div class="text-sm text-gray-700">
-                    <CheckOrCrossIcon :value="member.canModifyForms"/>
-                    <span>Modify forms</span>
-                  </div>
-                  <div class="text-sm text-gray-700">
-                    <CheckOrCrossIcon :value="member.canManageTeam"/>
-                    <span>Manage team</span>
-                  </div>
-                </template>
-              </div>
+              <TeamAccessCard
+                  v-for="member of team.teamMembers"
+                  :key="`member-${member.username}-form-${team.teamId}`"
+                  :editable="false"
+                  :member="member">
+              </TeamAccessCard>
             </div>
           </div>
         </div>
@@ -93,10 +63,12 @@ import KentUser from "@/models/external/users/KentUser";
 import AuthenticationUtils from "@/utils/AuthenticationUtils";
 import TeamMember from "@/models/team/TeamMember";
 import UserSelector from "@/components/core/widgets/UserSelector.vue";
+import TeamAccessCard from "@/components/widgets/teams/TeamAccessCard.vue";
 import Heading from "@/components/core/componentExtras/Heading.vue";
 
 @Component({
   components: {
+    TeamAccessCard,
     CheckOrCrossIcon,
     Heading,
     Banner,
@@ -107,19 +79,17 @@ import Heading from "@/components/core/componentExtras/Heading.vue";
 export default class TeamsScreen extends Vue {
 
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.TEAMS;
-  private teamAndUserMap: Map<TeamView, KentUser | null> = new Map<TeamView, KentUser | null>();
+  private teams: TeamView[] = [];
   private retrievedTeams = false;
   private retrieveError: Error | null = null;
   private user: KentUser | null = null;
+  private createTeamUrl = Pages.ROUTES.SHOWN_IN_NAVBAR.TEAMS.subRoutes.CREATE_TEAM.url;
 
   mounted() {
     WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/teams`, true)
     .then(value => value.json() as unknown as TeamView[])
     .then(value => {
-      this.teamAndUserMap = new Map<TeamView, KentUser | null>();
-      value.forEach(team => {
-        this.teamAndUserMap.set(team, null);
-      });
+      this.teams = value;
     })
     .then(() => this.retrievedTeams = true)
     .catch(e => {
@@ -128,14 +98,6 @@ export default class TeamsScreen extends Vue {
     AuthenticationUtils.getUser().then(self => {
       this.user = new KentUser(self.name, self.name);
     });
-  }
-
-  get teams() {
-    const list: TeamView[] = [];
-    this.teamAndUserMap.forEach((value, key) => {
-      list.push(key);
-    });
-    return list;
   }
 
   selfCanManageTeam(team: TeamMember[]) {
@@ -147,6 +109,10 @@ export default class TeamsScreen extends Vue {
       return userInTeam.canManageTeam;
     }
     return false;
+  }
+
+  getEditUrl(team: TeamView): string {
+    return Pages.ROUTES.STATIC.EDIT_TEAM.url.replace(":id", team.teamId.toString());
   }
 
 }
