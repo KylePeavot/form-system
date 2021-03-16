@@ -1,5 +1,6 @@
 package co600.weffs.application.internal.services.formResponse;
 
+import co600.weffs.application.internal.model.error.EntityNotFoundException;
 import co600.weffs.application.internal.model.error.NoComponentTypeFoundException;
 import co600.weffs.application.internal.model.form.QuestionDetail;
 import co600.weffs.application.internal.model.form.backend.BackendComponentProps;
@@ -38,7 +39,9 @@ public class QuestionResponseService {
   }
 
   public void loadQuestionResponsesIntoFrontendForm(FrontendForm frontendForm, FormResponse formResponse) {
-    FormResponseDetail formResponseDetail = formResponseDetailService.findCurrentDetailByFormResponse(formResponse);
+    FormResponseDetail formResponseDetail = formResponseDetailService.findCurrentDetailByFormResponse(formResponse)
+        .orElseThrow(() -> new EntityNotFoundException("No FormResponseDetail found for FormResponse with id: " + formResponse.getId()));
+
     List<QuestionResponse> questionResponses = questionResponseRepository.findAllByFormResponseDetail(formResponseDetail);
 
     for (QuestionResponse questionResponse : questionResponses) {
@@ -60,21 +63,21 @@ public class QuestionResponseService {
           } else if (FrontendComponentTypes.hasMultipleNestedQuestions(parentQuestionDetail.getQuestionType())) {
             // arrayList of FrontendSelectionValues
             frontendForm.get_componentList().stream()
-                .filter(frontendComponent -> frontendComponent.get_componentProps().get(BackendComponentProps.QUESTION_DETAIL_ID.getName()).equals(parentQuestionDetail.getId()))
-                .map(frontendComponent -> {
-                      Map<String, Object> newComponentProps = frontendComponent.get_componentProps();
+              .filter(frontendComponent -> frontendComponent.get_componentProps().get(BackendComponentProps.QUESTION_DETAIL_ID.getName()).equals(parentQuestionDetail.getId()))
+              .map(frontendComponent -> {
+                  Map<String, Object> newComponentProps = frontendComponent.get_componentProps();
 
-                      ((ArrayList<FrontendSelectionValue>) newComponentProps.get(FrontendComponentProps.SELECTION_VALUES.getFrontendName())).stream()
-                          .filter(frontendSelectionValue -> frontendSelectionValue.get_label().equals(questionResponse.getQuestionDetail().getTitle()))
-                          .map(frontendSelectionValue -> new FrontendSelectionValue(frontendSelectionValue.get_label(), Boolean.valueOf(questionResponse.getResponse())));
+                  ((ArrayList<FrontendSelectionValue>) newComponentProps.get(FrontendComponentProps.SELECTION_VALUES.getFrontendName())).stream()
+                      .filter(frontendSelectionValue -> frontendSelectionValue.get_label().equals(questionResponse.getQuestionDetail().getTitle()))
+                      .map(frontendSelectionValue -> new FrontendSelectionValue(frontendSelectionValue.get_label(), Boolean.valueOf(questionResponse.getResponse()), frontendSelectionValue.get_questionDetailId()));
 
-                      return new FrontendComponent(
-                          frontendComponent.get_componentType(),
-                          newComponentProps,
-                          frontendComponent.get_order()
-                      );
-                    }
-                );
+                  return new FrontendComponent(
+                      frontendComponent.get_componentType(),
+                      newComponentProps,
+                      frontendComponent.get_order()
+                  );
+                }
+              );
             //Text field/area
           } else if (FrontendComponentTypes.isText(questionResponseType)) {
             frontendForm.get_componentList().stream()
@@ -90,6 +93,10 @@ public class QuestionResponseService {
       }
 
     }
+  }
+
+  public void save(QuestionResponse questionResponse) {
+    questionResponseRepository.save(questionResponse);
   }
 }
 

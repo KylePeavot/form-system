@@ -9,5 +9,6 @@ public class FrontendSelectionValue {
 
   private String _label;
   private boolean _value;
+  private int _questionDetailId;
 
 }

@@ -56,14 +56,14 @@ public class FrontendFormService {
           .findFirst()
           .get();
 
-        componentProps.put("selectionValue", new FrontendSelectionValue(nestedQuestion.getTitle(), false));
+        componentProps.put("selectionValue", new FrontendSelectionValue(nestedQuestion.getTitle(), false, nestedQuestion.getId()));
 
 
       } else if (FrontendComponentTypes.hasMultipleNestedQuestions(questionDetail.getQuestionType())) {
         ArrayList<FrontendSelectionValue> frontendSelectionValues = new ArrayList<>();
         nestedQuestions.stream()
             .filter(nestedQuestionDetail -> nestedQuestionDetail.getParentQuestion().getId().equals(questionDetail.getId()))
-            .forEach(nestedQuestionDetail -> frontendSelectionValues.add(new FrontendSelectionValue(nestedQuestionDetail.getTitle(), false)));
+            .forEach(nestedQuestionDetail -> frontendSelectionValues.add(new FrontendSelectionValue(nestedQuestionDetail.getTitle(), false, nestedQuestionDetail.getId())));
         componentProps.put("selectionValues", frontendSelectionValues);
       } else if (FrontendComponentTypes.isText(questionDetail.getQuestionType())) {
         componentProps.put("textValue", new FrontendTextValue(""));

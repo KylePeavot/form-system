@@ -8,6 +8,7 @@ import co600.weffs.application.internal.model.team.TeamMember;
 import co600.weffs.application.internal.repository.formResponse.FormResponseDetailRepository;
 import co600.weffs.application.internal.services.team.TeamMemberService;
 import java.time.Instant;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,11 +37,12 @@ public class FormResponseDetailService {
     return formResponseDetailRepository.save(newFormResponseDetail);
   }
 
-  public FormResponseDetail findCurrentDetailByFormResponse(FormResponse formResponse) {
-    return formResponseDetailRepository.findByFormResponseAndStatusControlIsTrue(formResponse)
-        .orElseThrow(() -> new EntityNotFoundException("No FormResponseDetail found with statusControl: true and FormResponse id: " + formResponse.getId()));
+  public Optional<FormResponseDetail> findCurrentDetailByFormResponse(FormResponse formResponse) {
+    return formResponseDetailRepository.findByFormResponseAndStatusControlIsTrue(formResponse);
+  }
 
-
+  public FormResponseDetail save(FormResponseDetail formResponseDetail) {
+    return formResponseDetailRepository.save(formResponseDetail);
   }
 
 }

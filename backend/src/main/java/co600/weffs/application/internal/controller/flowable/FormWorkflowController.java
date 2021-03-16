@@ -60,8 +60,6 @@ public class FormWorkflowController {
         filler,
         formDetailService.getFormDetailByForm(formService.getFormById(frontendAssignWorkflowVariables.get_formId()))
     );
-    //FS-55 TODO update this teamDetailService call
-    formResponseDetailService.create(formResponse, assigner, teamDetailService.getTeamDetailById(1));
 
     formWorkflowService.assignFormToFormFiller(assigner, filler, formResponse);
 
