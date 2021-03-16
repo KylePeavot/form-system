@@ -41,11 +41,11 @@ public class FormCreationService {
 
         var formDetail = new FormDetail();
         formDetail.setForm(form);
+        formDetail.setName(frontendForm.get_name());
         formDetail.setLastUpdatedBy(appUser.getUsername());
         formDetail.setLastUpdatedTimestamp(Instant.now());
         formDetail.setStatusControl(true);
         formDetailService.save(formDetail);
-
         frontendForm.get_componentList().forEach(frontendComponent -> createQuestion(appUser, frontendComponent, formDetail));
     }
 

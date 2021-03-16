@@ -1,10 +1,10 @@
 <template>
   <div class="checkbox__container">
-    <input :id="id" type="checkbox" class="checkbox__item" :disabled="!currentFormDisplayMode.isFill" v-model="selectionValue.value" @finish-editing="$emit('props-updated', $event)">
+    <input :id="id" type="checkbox" :class="{'checkbox__item':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" :disabled="!currentFormDisplayMode.isFill" v-model="selectionValue.value" @finish-editing="$emit('props-updated', $event)">
     <EditableComponent edit-component-css="checkbox__label-edit" :value="selectionValue.label" @finish-editing="updateLabel" :current-form-display-mode="currentFormDisplayMode">
       <label class="checkbox__label" :for="id">{{ selectionValue.label }}</label>
     </EditableComponent>
-    <button v-if="isDeletable && currentFormDisplayMode.isEdit" class="hidden-button ph-trash" @click="$emit('deleteCheckbox')"/>
+    <button v-if="canRemove && currentFormDisplayMode.isEdit" class="hidden-button ph-trash" @click="$emit('deleteCheckbox')"/>
   </div>
 </template>
 
@@ -28,7 +28,7 @@ export default class Checkbox extends Vue {
   private selectionValue!: SelectionValue;
 
   @Prop({required: true, default: false})
-  private isDeletable!: boolean;
+  private canRemove!: boolean;
 
   @Prop({required: true})
   private currentFormDisplayMode!: CurrentFormDisplayMode;

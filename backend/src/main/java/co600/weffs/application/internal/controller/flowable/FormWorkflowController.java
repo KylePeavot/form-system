@@ -58,11 +58,14 @@ public class FormWorkflowController {
 
     FormResponse formResponse = formResponseService.create(
         filler,
+        assigner,
+        frontendAssignWorkflowVariables.get_assignerTeamDetail(),
         formDetailService.getFormDetailByForm(formService.getFormById(frontendAssignWorkflowVariables.get_formId()))
     );
 
-    formWorkflowService.assignFormToFormFiller(assigner, filler, formResponse);
+    formResponseDetailService.create(formResponse);
 
+    formWorkflowService.assignFormToFormFiller(assigner, filler, formResponse);
   }
 
   @MustBeAuthorized

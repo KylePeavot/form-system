@@ -21,4 +21,17 @@ public class TeamDetailService {
     return teamDetailRepository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException("No TeamDetail found with id: " + id));
   }
+
+  public void save(TeamDetail teamDetail) {
+    teamDetailRepository.save(teamDetail);
+  }
+
+  public void saveAll(Iterable<TeamDetail> teamDetails) {
+    teamDetailRepository.saveAll(teamDetails);
+  }
+
+  public TeamDetail getActiveTeamDetailByTeamId(Integer teamId) {
+    return teamDetailRepository.findByTeam_IdAndStatusControlIsTrue(teamId)
+        .orElseThrow(() -> new EntityNotFoundException(String.format("No active TeamDetail for team [%d]", teamId)));
+  }
 }

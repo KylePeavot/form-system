@@ -43,7 +43,6 @@ public class DashboardController {
     @MustBeAuthorized
     @GetMapping("/assigned-tasks")
     public Map<String, ?> getAssignedTasks(@RequestAttribute("User") AppUser appUser) {
-        //formWorkflowService.assignFormToFormFiller(new AppUser("ca469", "ksp5", SamlRole.STAFF), "ksp5", );
         return formWorkflowService.getAllAssignedFormViewsForAssignee(appUser.getUsername()).stream()
             .collect(Collectors.toMap(
                 assignedFormView  -> String.valueOf(assignedFormView.hashCode()),

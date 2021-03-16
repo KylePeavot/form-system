@@ -13,8 +13,10 @@ import co600.weffs.application.internal.model.formResponse.FormResponse;
 import co600.weffs.application.internal.model.formResponse.FormResponseDetail;
 import co600.weffs.application.internal.model.formResponse.QuestionResponse;
 import co600.weffs.application.internal.repository.formResponse.FormResponseDetailRepository;
+import co600.weffs.application.internal.model.team.TeamDetail;
 import co600.weffs.application.internal.repository.formResponse.FormResponseRepository;
 import co600.weffs.application.internal.services.form.QuestionDetailService;
+import co600.weffs.application.internal.services.team.TeamMemberService;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -29,6 +31,8 @@ public class FormResponseService {
   private final FormResponseDetailService formResponseDetailService;
   private final QuestionDetailService questionDetailService;
   private final QuestionResponseService questionResponseService;
+  private FormResponseRepository formResponseRepository;
+  private TeamMemberService teamMemberService;
 
   @Autowired
   public FormResponseService(FormResponseRepository formResponseRepository, FormResponseDetailRepository formResponseDetailRepository, FormResponseDetailService formResponseDetailService,
@@ -40,12 +44,14 @@ public class FormResponseService {
     this.questionResponseService = questionResponseService;
   }
 
-  public FormResponse create(String filler, FormDetail formDetail) {
+  public FormResponse create(String filler, String assigner, TeamDetail assignerTeamDetail, FormDetail formDetail) {
     FormResponse newFormResponse = new FormResponse();
 
     newFormResponse.setFormDetail(formDetail);
     newFormResponse.setAssignedTo(filler);
     newFormResponse.setAssignedTimestamp(Instant.now());
+    newFormResponse.setAssignedBy(teamMemberService.getTeamMemberFromUsernameAndTeamDetail(assigner, assignerTeamDetail));
+    newFormResponse.setAssignedByTeamDetail(assignerTeamDetail);
 
     return formResponseRepository.save(newFormResponse);
   }

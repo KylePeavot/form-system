@@ -51,6 +51,29 @@ const routes: Array<RouteConfig> = [
     })
   },
   {
+    path: Pages.ROUTES.SHOWN_IN_NAVBAR.TEAMS.subRoutes.CREATE_TEAM.url,
+    name: Pages.ROUTES.SHOWN_IN_NAVBAR.TEAMS.subRoutes.CREATE_TEAM.name,
+    component: () => import("../views/teams/TeamCreationScreen.vue"),
+    meta: {
+      loginRequired: true
+    },
+    props: {
+      mode: "CREATE"
+    }
+  },
+  {
+    path: Pages.ROUTES.STATIC.EDIT_TEAM.url,
+    name: Pages.ROUTES.STATIC.EDIT_TEAM.name,
+    component: () => import("../views/teams/TeamCreationScreen.vue"),
+    meta: {
+      loginRequired: true
+    },
+    props: route => ({
+      mode: "EDIT",
+      teamId: route.params.id
+    })
+  },
+  {
     path: Pages.ROUTES.FORM.FILL_FORM.url,
     name: Pages.ROUTES.FORM.FILL_FORM.name,
     component: () => import ("../views/forms/FormView.vue"),

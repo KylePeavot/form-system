@@ -10,10 +10,8 @@ import org.mockito.junit.MockitoJUnitRunner;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class MockitoTest {
-
-  @BeforeEach
-  void mockitoTestSetUpAll() {
-    MockitoAnnotations.initMocks(this);
-  }
-
+    @BeforeEach
+    void mockitoTestSetUpAll() {
+        MockitoAnnotations.initMocks(this);
+    }
 }

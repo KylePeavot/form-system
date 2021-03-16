@@ -15,7 +15,7 @@ import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 export default class EditableComponent extends Vue {
 
   @Prop({required: false})
-  private editComponentCss!: string | undefined;
+  private editComponentCss!: string;
 
   @Prop({required: true})
   private currentFormDisplayMode!: CurrentFormDisplayMode;
@@ -37,6 +37,7 @@ export default class EditableComponent extends Vue {
   finishEditing() {
     this.editingField = false;
     this.$emit('finish-editing', this.value);
+    this.$emit('input', this.value);
   }
 
 }

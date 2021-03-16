@@ -16,4 +16,6 @@ public interface TeamMemberRepository extends CrudRepository<TeamMember, Integer
   List<TeamMember> findAllByTeamDetailInAndStatusControlIsTrue(Collection<TeamDetail> teamDetails);
 
   Optional<TeamMember> findByUsernameAndTeamDetail(String username, TeamDetail teamDetail);
+
+  List<TeamMember> findAllByTeamDetail_Team_IdAndStatusControlIsTrue(Integer teamId);
 }

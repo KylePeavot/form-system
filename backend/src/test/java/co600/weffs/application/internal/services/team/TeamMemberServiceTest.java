@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import co600.weffs.application.MockitoTest;
 import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.auth.SamlRole;
+import co600.weffs.application.internal.model.team.Team;
 import co600.weffs.application.internal.model.team.TeamDetail;
 import co600.weffs.application.internal.model.team.TeamMember;
 import co600.weffs.application.internal.repository.team.TeamMemberRepository;
@@ -32,8 +33,10 @@ class TeamMemberServiceTest extends MockitoTest {
   private AppUser nonAdminUser;
   private AppUser adminUser;
 
-  private TeamDetail nonAdminTeam;
-  private TeamDetail adminTeam;
+  private Team nonAdminTeam;
+  private TeamDetail nonAdminTeamDetail;
+  private Team adminTeam;
+  private TeamDetail adminTeamDetail;
 
   private TeamMember nonAdminMember;
   private TeamMember adminMember;
@@ -43,24 +46,32 @@ class TeamMemberServiceTest extends MockitoTest {
     nonAdminUser = UserTestUtils.createAppUser("non_admin", SamlRole.UNDERGRADUATE);
     adminUser = UserTestUtils.createAppUser("admin", SamlRole.STAFF);
 
-    nonAdminTeam = new TeamDetail();
-    nonAdminTeam.setName("Non Admin");
+    nonAdminTeam = new Team();
+    nonAdminTeam.setId(1);
+    nonAdminTeamDetail = new TeamDetail();
+    nonAdminTeamDetail.setId(1);
+    nonAdminTeamDetail.setName("Non Admin");
+    nonAdminTeamDetail.setTeam(nonAdminTeam);
 
-    adminTeam = new TeamDetail();
-    adminTeam.setName("Admin");
+    adminTeam = new Team();
+    adminTeam.setId(2);
+    adminTeamDetail = new TeamDetail();
+    adminTeamDetail.setName("Admin");
+    adminTeamDetail.setId(2);
+    adminTeamDetail.setTeam(adminTeam);
 
     nonAdminMember = new TeamMember();
-    nonAdminMember.setTeamDetail(nonAdminTeam);
+    nonAdminMember.setTeamDetail(nonAdminTeamDetail);
     adminMember = new TeamMember();
-    adminMember.setTeamDetail(adminTeam);
+    adminMember.setTeamDetail(adminTeamDetail);
 
-    when(teamMemberRepository.findAllByTeamDetailInAndStatusControlIsTrue(eq(Set.of(nonAdminTeam))))
+    when(teamMemberRepository.findAllByTeamDetailInAndStatusControlIsTrue(eq(Set.of(nonAdminTeamDetail))))
         .thenReturn(List.of(nonAdminMember));
 
-    when(teamMemberRepository.findAllByTeamDetailInAndStatusControlIsTrue(eq(Set.of(adminTeam))))
+    when(teamMemberRepository.findAllByTeamDetailInAndStatusControlIsTrue(eq(Set.of(adminTeamDetail))))
         .thenReturn(List.of(adminMember));
 
-    when(teamMemberRepository.findAllByTeamDetailInAndStatusControlIsTrue(eq(Set.of(adminTeam, nonAdminTeam))))
+    when(teamMemberRepository.findAllByTeamDetailInAndStatusControlIsTrue(eq(Set.of(adminTeamDetail, nonAdminTeamDetail))))
         .thenReturn(List.of(adminMember, nonAdminMember));
   }
 
@@ -83,14 +94,14 @@ class TeamMemberServiceTest extends MockitoTest {
     when(teamMemberRepository.findAllByUsernameAndStatusControlIsTrue(nonAdminUser.getUsername()))
         .thenReturn(List.of(nonAdminMember));
     var result = teamMemberService.getTeamViewForUsername(nonAdminUser.getUsername());
-    assertThat(result).extracting(TeamView::getTeamDetail)
-        .containsExactly(nonAdminTeam);
+    assertThat(result).extracting(TeamView::getTeamId)
+        .containsExactly(nonAdminTeam.getId());
 
     verify(teamMemberRepository, times(1))
         .findAllByUsernameAndStatusControlIsTrue(nonAdminUser.getUsername());
 
     verify(teamMemberRepository, times(1))
-        .findAllByTeamDetailInAndStatusControlIsTrue(Set.of(nonAdminTeam));
+        .findAllByTeamDetailInAndStatusControlIsTrue(Set.of(nonAdminTeamDetail));
   }
 
   @Test
@@ -102,14 +113,14 @@ class TeamMemberServiceTest extends MockitoTest {
         .thenReturn(List.of(nonAdminMember, adminMember));
 
     var result = teamMemberService.getTeamViewForUsername(adminUser.getUsername());
-    assertThat(result).extracting(TeamView::getTeamDetail)
-        .containsExactlyInAnyOrder(adminTeam, nonAdminTeam);
+    assertThat(result).extracting(TeamView::getTeamId)
+        .containsExactlyInAnyOrder(adminTeam.getId(), nonAdminTeam.getId());
 
     verify(teamMemberRepository, times(1))
         .findAllByUsernameAndStatusControlIsTrue(adminUser.getUsername());
 
     verify(teamMemberRepository, times(1))
-        .findAllByTeamDetailInAndStatusControlIsTrue(eq(Set.of(adminTeam, nonAdminTeam)));
+        .findAllByTeamDetailInAndStatusControlIsTrue(eq(Set.of(adminTeamDetail, nonAdminTeamDetail)));
 
     verify(teamMemberRepository, times(1)).findAll();
   }
