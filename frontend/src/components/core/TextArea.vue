@@ -4,7 +4,7 @@
       <button class="popover-menu__item">Move</button>
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
-    <textarea class="question__text-area" name="fieldResponse" rows="4" :disabled="!currentFormDisplayMode.isFill" v-model="textValue.value"/>
+    <textarea :class="{'question__text-area':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" name="fieldResponse" rows="4" :disabled="!currentFormDisplayMode.isFill" v-model="textValue.value"/>
   </div>
 </template>
 

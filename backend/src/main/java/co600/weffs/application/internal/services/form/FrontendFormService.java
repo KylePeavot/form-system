@@ -1,5 +1,6 @@
 package co600.weffs.application.internal.services.form;
 
+import co600.weffs.application.internal.model.error.NoQuestionFoundException;
 import co600.weffs.application.internal.model.form.FormDetail;
 import co600.weffs.application.internal.model.form.frontend.FrontendComponent;
 import co600.weffs.application.internal.model.form.frontend.FrontendComponentTypes;
@@ -43,6 +44,7 @@ public class FrontendFormService {
 
     List<FrontendComponent> frontendComponents = new ArrayList<>();
 
+
     for (QuestionDetail questionDetail : questions) {
       FrontendComponent componentToAdd = new FrontendComponent();
 
@@ -51,15 +53,16 @@ public class FrontendFormService {
       componentProps.put("guidance", questionDetail.getGuidance());
 
       if (FrontendComponentTypes.hasSingleNestedQuestion(questionDetail.getQuestionType())) {
+        try {
+          QuestionDetail nestedQuestion = nestedQuestions.stream()
+            .filter(nestedQuestionDetail -> nestedQuestionDetail.getParentQuestion().getId().equals(questionDetail.getId()))
+            .findFirst()
+            .orElseThrow(() -> new NoQuestionFoundException("No nested question found for QuestionDetail with id: " + questionDetail.getId()));
 
-        QuestionDetail nestedQuestion = nestedQuestions.stream()
-          .filter(nestedQuestionDetail -> nestedQuestionDetail.getParentQuestion().getId().equals(questionDetail.getId()))
-          .findFirst()
-          .get();
-
-        componentProps.put("selectionValue", new FrontendSelectionValue(nestedQuestion.getTitle(), false));
-
-
+            componentProps.put("selectionValue", new FrontendSelectionValue(nestedQuestion.getTitle(), false));
+        } catch (NoQuestionFoundException e) {
+          e.printStackTrace();
+        }
       } else if (FrontendComponentTypes.hasMultipleNestedQuestions(questionDetail.getQuestionType())) {
         ArrayList<FrontendSelectionValue> frontendSelectionValues = new ArrayList<>();
         nestedQuestions.stream()
