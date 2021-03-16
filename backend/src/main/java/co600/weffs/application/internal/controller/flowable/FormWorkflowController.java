@@ -64,7 +64,6 @@ public class FormWorkflowController {
     formResponseDetailService.create(formResponse);
 
     formWorkflowService.assignFormToFormFiller(assigner, filler, formResponse);
-
   }
 
   @MustBeAuthorized

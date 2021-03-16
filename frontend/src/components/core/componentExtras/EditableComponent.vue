@@ -1,5 +1,5 @@
 <template>
-  <div class="flex editable-element">
+  <div class="flex">
     <div v-show="!editingField">
       <slot></slot>
     </div>

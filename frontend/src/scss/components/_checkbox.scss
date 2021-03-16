@@ -5,11 +5,6 @@
 
   &__container {
     @apply py-2 max-w-sm flex;
-    &:hover, &:focus-within {
-      .hidden-button {
-        @apply visible inline;
-      }
-    }
   }
 
   &__label {

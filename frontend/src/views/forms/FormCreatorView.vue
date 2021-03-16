@@ -1,12 +1,11 @@
 <template>
   <div>
-    <TwoColumnStyleLayout title="Create a new form" :selected-page="page">
-      <EditableComponent edit-component-css="question__title question__edit text-3xl font-semibold" v-model="formName">
+    <TwoColumnStyleLayout :selected-page="page">
+      <EditableComponent edit-component-css="question__title question__edit text-3xl font-semibold" v-model="formName" :current-form-display-mode="currentFormDisplayMode">
         <Heading class="question__title" :level=1>
           {{ this.formName }}
         </Heading>
       </EditableComponent>
-      <br/>
       <template v-slot:sidebar>
         <SidebarGroup title="Components">
           <button name="addTextField" type="button" class="sidebar-group__item-button" @click="addComponentToList">Text field</button>
@@ -62,7 +61,7 @@ export default class FormCreatorView extends Vue {
   private nextComponentId = 1;
   private currentFormDisplayMode: CurrentFormDisplayMode = new CurrentFormDisplayMode(false, true, false);
   private redirectUrl = Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD.url;
-  private formName = "Enter form name here";
+  private formName = "Untitled form";
 
   saveForm(){
     const form = new Form(this.formName,this.components);
