@@ -23,11 +23,9 @@ public class FormResponseDetailService {
     this.formResponseDetailRepository = formResponseDetailRepository;
   }
 
-  public FormResponseDetail create(FormResponse formResponse, String assigner, TeamDetail assignerTeamDetail) {
+  public FormResponseDetail create(FormResponse formResponse) {
     FormResponseDetail newFormResponseDetail = new FormResponseDetail();
 
-    newFormResponseDetail.setAssigner(teamMemberService.getTeamMemberFromUsernameAndTeamDetail(assigner, assignerTeamDetail));
-    newFormResponseDetail.setAssignerTeamDetail(assignerTeamDetail);
     newFormResponseDetail.setFormResponse(formResponse);
     newFormResponseDetail.setStatusControl(true);
     newFormResponseDetail.setLastUpdatedTimestamp(Instant.now());

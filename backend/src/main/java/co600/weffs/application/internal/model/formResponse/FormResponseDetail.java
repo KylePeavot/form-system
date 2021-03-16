@@ -32,14 +32,6 @@ public class FormResponseDetail {
   @JoinColumn(name = "form_response_id")
   private FormResponse formResponse;
 
-  @ManyToOne
-  @JoinColumn(name = "assigner_team_member_id")
-  private TeamMember assigner;
-
-  @ManyToOne
-  @JoinColumn(name = "assigner_team_detail_id")
-  private TeamDetail assignerTeamDetail;
-
   private Instant lastUpdatedTimestamp;
 
   private Boolean statusControl;

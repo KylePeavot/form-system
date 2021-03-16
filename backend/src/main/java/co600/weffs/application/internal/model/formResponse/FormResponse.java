@@ -1,6 +1,8 @@
 package co600.weffs.application.internal.model.formResponse;
 
 import co600.weffs.application.internal.model.form.FormDetail;
+import co600.weffs.application.internal.model.team.TeamDetail;
+import co600.weffs.application.internal.model.team.TeamMember;
 import java.time.Instant;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +26,15 @@ public class FormResponse {
   @ManyToOne
   @JoinColumn(name = "form_detail_id")
   private FormDetail formDetail;
+
+
+  @ManyToOne
+  @JoinColumn(name = "assigner_team_member_id")
+  private TeamMember assignedBy;
+
+  @ManyToOne
+  @JoinColumn(name = "assigner_team_detail_id")
+  private TeamDetail assignedByTeamDetail;
 
   private String assignedTo;
 
