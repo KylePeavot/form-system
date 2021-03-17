@@ -15,9 +15,14 @@ public class QuestionDetailService {
         this.questionDetailRepository = questionDetailRepository;
     }
 
-    public QuestionDetail getFormById(Integer id){
+    public QuestionDetail getQuestionDetailById(Integer id){
         return questionDetailRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Unable to find form entity with id " + id));
+    }
+
+    public QuestionDetail getCurrentQuestionDetailByQuestionId(int questionId) {
+        return questionDetailRepository.findByQuestion_IdAndStatusControlIsTrue(questionId)
+            .orElseThrow(() -> new EntityNotFoundException("No QuestionDetail found with question ID: " + questionId));
     }
 
     public void save(QuestionDetail questionDetail){

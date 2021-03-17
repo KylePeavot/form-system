@@ -1,14 +1,14 @@
 <template>
   <div class="question">
-    <div class="question__title-row editable-element">
+    <div class="question__title-row">
       <div class="flex flex-1">
-        <EditableComponent edit-component-css="question__title question__edit text-2xl" v-model="baseQuestionProps.title" @finish-editing="editTitle">
+        <EditableComponent edit-component-css="question__title question__edit text-2xl" :current-form-display-mode="currentFormDisplayMode" v-model="baseQuestionProps.title" @finish-editing="editTitle" >
           <Heading class="question__title" :level="baseQuestionProps.level">
             {{ baseQuestionProps.title }}
           </Heading>
         </EditableComponent>
       </div>
-      <div class="question__popup">
+      <div class="question__popup" v-if="currentFormDisplayMode.isEdit">
         <Popover>
           <button class="popover-menu__item" v-show="!guidanceTextExists" @click="addGuidance">Add guidance</button>
           <button class="popover-menu__item" v-show="guidanceTextExists" @click="removeGuidance">Remove guidance</button>
@@ -19,8 +19,8 @@
         </Popover>
       </div>
     </div>
-    <div v-if="baseQuestionProps.guidance.length !== 0" class="question__guidance-container editable-element">
-      <EditableComponent edit-component-css="question__guidance-text question__edit" v-model="baseQuestionProps.guidance" @finish-editing="editGuidance">
+    <div v-if="baseQuestionProps.guidance.length !== 0" class="question__guidance-container">
+      <EditableComponent edit-component-css="question__guidance-text question__edit" :current-form-display-mode="currentFormDisplayMode" v-model="baseQuestionProps.guidance" @finish-editing="editGuidance" >
         <p class="question__guidance-text">
           {{ baseQuestionProps.guidance }}
         </p>
@@ -36,6 +36,7 @@ import Heading from "@/components/core/componentExtras/Heading.vue";
 import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 import Popover from "@/components/core/Popover.vue";
 import EditableComponent from "@/components/core/componentExtras/EditableComponent.vue";
+import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 
 @Component({
   components: {EditableComponent, Popover, Heading}
@@ -44,6 +45,9 @@ export default class BaseQuestion extends Vue {
 
   @Prop({required: true})
   private baseQuestionProps!: BaseQuestionProps;
+
+  @Prop({required: true})
+  private currentFormDisplayMode!: CurrentFormDisplayMode;
 
   private guidanceTextExists = this.baseQuestionProps.guidance.length !== 0;
 

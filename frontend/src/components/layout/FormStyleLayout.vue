@@ -25,7 +25,7 @@ import Navbar from "@/components/layout/Navigation/Navbar.vue";
 @Component({
   components: {Navbar, Heading}
 })
-export default class SingleNavigationLayout extends Vue {
+export default class FormStyleLayout extends Vue {
 
   @Prop({default: ""})
   private title!: string;

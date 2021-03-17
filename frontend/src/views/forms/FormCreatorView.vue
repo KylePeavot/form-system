@@ -1,12 +1,11 @@
 <template>
   <div>
-    <TwoColumnStyleLayout title="Create a new form" :selected-page="page">
-      <EditableComponent edit-component-css="question__title question__edit text-3xl font-semibold" v-model="formName">
+    <TwoColumnStyleLayout :selected-page="page">
+      <EditableComponent edit-component-css="question__title question__edit text-3xl font-semibold" v-model="formName" :current-form-display-mode="currentFormDisplayMode">
         <Heading class="question__title" :level=1>
           {{ this.formName }}
         </Heading>
       </EditableComponent>
-      <br/>
       <template v-slot:sidebar>
         <SidebarGroup title="Components">
           <button name="addTextField" type="button" class="sidebar-group__item-button" @click="addComponentToList">Text field</button>
@@ -21,13 +20,15 @@
           <component
               :is="component.componentType"
               v-bind="component.componentProps"
-              @delete-component="removeFromLayout(component)"
+             :current-form-display-mode="currentFormDisplayMode" @delete-component="removeFromLayout(component)"
               @props-updated="updateComponentProps($event, component)"
               @move-component="moveComponent($event, index)"
           />
         </div>
       </slot>
-      <button class="button button--primary" @click="saveForm">Save Form</button>
+      <router-link :to="redirectUrl">
+        <button class="button button--primary" @click="saveForm">Save Form</button>
+      </router-link>
     </TwoColumnStyleLayout>
   </div>
 </template>
@@ -38,7 +39,7 @@ import Pages from "@/models/navigation/Pages";
 import TwoColumnStyleLayout from "@/components/layout/TwoColumnStyleLayout.vue";
 import TextField from "@/components/core/TextField.vue";
 import TextValue from "@/models/form/TextValue";
-import FormCreationComponent from "@/models/form/FormCreationComponent";
+import FormComponent from "@/models/form/FormComponent";
 import TextArea from "@/components/core/TextArea.vue";
 import SidebarGroup from "@/components/layout/Navigation/SidebarGroup.vue";
 import CheckboxQuestion from "@/components/core/checkbox/CheckboxQuestion.vue";
@@ -47,6 +48,7 @@ import SelectionValue from "@/models/form/SelectionValue";
 import RadioGroup from "@/components/core/radio/RadioGroup.vue";
 import Form from "@/models/form/Form";
 import WebRequestUtils from "@/utils/WebRequestUtils";
+import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 import Heading from "@/components/core/componentExtras/Heading.vue";
 import EditableComponent from "@/components/core/componentExtras/EditableComponent.vue";
 
@@ -61,13 +63,16 @@ import EditableComponent from "@/components/core/componentExtras/EditableCompone
 
 export default class FormCreatorView extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.NEW_FORM;
-  private components: FormCreationComponent[] = new Array<FormCreationComponent>();
+  private components: FormComponent[] = new Array<FormComponent>();
   private nextComponentId = 1;
-  private formName = "Enter form name here";
+  private currentFormDisplayMode: CurrentFormDisplayMode = new CurrentFormDisplayMode(false, true, false);
+  private redirectUrl = Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD.url;
+  private formName = "Untitled form";
 
   saveForm(){
     const form = new Form(this.formName,this.components);
     WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form/save`,form);
+
   }
 
   addComponentToList(event: Event) {
@@ -110,7 +115,7 @@ export default class FormCreatorView extends Vue {
           title: 'Question title',
           guidance: 'Question guidance',
           level: 2,
-          value: new SelectionValue("Add a checkbox option here", false)
+          selectionValue: new SelectionValue("Add a checkbox option here", false)
         };
         break;
       }
@@ -121,7 +126,7 @@ export default class FormCreatorView extends Vue {
           title: 'Question title',
           guidance: 'Question guidance',
           level: 2,
-          value: [
+          selectionValues: [
               new SelectionValue("Add a response here", false),
               new SelectionValue("Add a different response here", false)
           ]
@@ -135,7 +140,7 @@ export default class FormCreatorView extends Vue {
           idPrefix: 'rg-' + this.nextComponentId,
           title: 'Question title',
           guidance: 'Question guidance',
-          value: [
+          selectionValues: [
             new SelectionValue("Add a response here", false),
             new SelectionValue("Add a different response here", false)
           ]
@@ -144,14 +149,14 @@ export default class FormCreatorView extends Vue {
       }
     }
 
-    this.components.push(new FormCreationComponent(
+    this.components.push(new FormComponent(
         componentType,
         componentProps,
         order
     ));
   }
 
-  removeFromLayout(componentToDelete: FormCreationComponent) {
+  removeFromLayout(componentToDelete: FormComponent) {
     this.components = this.components.filter(item => {
       return item !== componentToDelete;
     })
@@ -171,7 +176,7 @@ export default class FormCreatorView extends Vue {
     }
   }
 
-  updateComponentProps(newProp: any, component: FormCreationComponent) {
+  updateComponentProps(newProp: any, component: FormComponent) {
     const unsafeComponent = component as any;
     Object.keys(newProp).forEach(key => {
       unsafeComponent.componentProps[key] = newProp[key];
