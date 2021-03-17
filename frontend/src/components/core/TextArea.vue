@@ -4,7 +4,7 @@
       <button class="popover-menu__item">Move</button>
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
-    <textarea :class="{'question__text-area':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" name="fieldResponse" rows="4" :disabled="!currentFormDisplayMode.isFill" v-model="textValue.value"/>
+    <textarea :class="{'question__text-area':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" name="fieldResponse" rows="4" :disabled="!currentFormDisplayMode.isFill" v-model="textValue._value" @input="updateProps"/>
   </div>
 </template>
 
@@ -41,15 +41,15 @@ import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
     created() {
       this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
 
-      this.textValue = TextValue.mapTextValueInterfaceToTextValue(this.textValue);
+      // this.textValue = TextValue.mapTextValueInterfaceToTextValue(this.textValue);
     }
 
     deleteComponent() {
       this.$emit("delete-component");
     }
 
-    updateProps(baseQuestionProps: BaseQuestionProps) {
-      this.$emit('props-updated', {title: baseQuestionProps.title, guidance: baseQuestionProps.guidance});
+    updateProps() {
+      this.$emit('props-updated', this.$props);
     }
   }
 

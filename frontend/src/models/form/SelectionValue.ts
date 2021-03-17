@@ -14,7 +14,7 @@ export default class SelectionValue {
 
   static mapSelectionValueInterfaceToSelectionValue(selectionValueInterface: any): SelectionValue {
     selectionValueInterface = selectionValueInterface as SelectionValueInterface;
-    return new SelectionValue(selectionValueInterface._label, selectionValueInterface._value);
+    return new SelectionValue(selectionValueInterface._label, selectionValueInterface._value, selectionValueInterface._questionDetailId);
   }
 
   get label(): string {

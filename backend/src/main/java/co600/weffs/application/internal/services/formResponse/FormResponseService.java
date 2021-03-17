@@ -8,18 +8,22 @@ import co600.weffs.application.internal.model.form.frontend.FrontendComponentPro
 import co600.weffs.application.internal.model.form.frontend.FrontendComponentTypes;
 import co600.weffs.application.internal.model.form.frontend.FrontendForm;
 import co600.weffs.application.internal.model.form.frontend.FrontendSelectionValue;
-import co600.weffs.application.internal.model.form.frontend.FrontendTextValue;
 import co600.weffs.application.internal.model.formResponse.FormResponse;
 import co600.weffs.application.internal.model.formResponse.FormResponseDetail;
 import co600.weffs.application.internal.model.formResponse.QuestionResponse;
-import co600.weffs.application.internal.repository.formResponse.FormResponseDetailRepository;
 import co600.weffs.application.internal.model.team.TeamDetail;
+import co600.weffs.application.internal.repository.formResponse.FormResponseDetailRepository;
 import co600.weffs.application.internal.repository.formResponse.FormResponseRepository;
 import co600.weffs.application.internal.services.form.QuestionDetailService;
 import co600.weffs.application.internal.services.team.TeamMemberService;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.transaction.Transactional;
+import net.bytebuddy.dynamic.scaffold.MethodGraph.Linked;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,17 +35,17 @@ public class FormResponseService {
   private final FormResponseDetailService formResponseDetailService;
   private final QuestionDetailService questionDetailService;
   private final QuestionResponseService questionResponseService;
-  private FormResponseRepository formResponseRepository;
-  private TeamMemberService teamMemberService;
+  private final TeamMemberService teamMemberService;
 
   @Autowired
   public FormResponseService(FormResponseRepository formResponseRepository, FormResponseDetailRepository formResponseDetailRepository, FormResponseDetailService formResponseDetailService,
-      QuestionDetailService questionDetailService, QuestionResponseService questionResponseService) {
+      QuestionDetailService questionDetailService, QuestionResponseService questionResponseService, TeamMemberService teamMemberService) {
     this.formResponseRepository = formResponseRepository;
     this.formResponseDetailRepository = formResponseDetailRepository;
     this.formResponseDetailService = formResponseDetailService;
     this.questionDetailService = questionDetailService;
     this.questionResponseService = questionResponseService;
+    this.teamMemberService = teamMemberService;
   }
 
   public FormResponse create(String filler, String assigner, TeamDetail assignerTeamDetail, FormDetail formDetail) {
@@ -56,8 +60,8 @@ public class FormResponseService {
     return formResponseRepository.save(newFormResponse);
   }
 
-  public void submitFormResponse(FrontendForm frontendForm, int formResponseId) {
-    FormResponse formResponse = getFormResponseById(formResponseId);
+  @Transactional
+  public void saveResponseToForm(FrontendForm frontendForm, FormResponse formResponse) {
     FormResponseDetail newFormResponseDetail = new FormResponseDetail();
     Optional<FormResponseDetail> oldFormResponseDetailOptional = formResponseDetailService.findCurrentDetailByFormResponse(formResponse);
 
@@ -66,27 +70,22 @@ public class FormResponseService {
       formResponseDetailService.save(oldFormResponseDetail);
 
       newFormResponseDetail.setFormResponse(formResponse);
-      //TODO FS-86 remove this once FS-52 is merged
-      newFormResponseDetail.setAssigner(oldFormResponseDetail.getAssigner());
-      //TODO FS-86 and this
-      newFormResponseDetail.setAssignerTeamDetail(oldFormResponseDetail.getAssignerTeamDetail());
       newFormResponseDetail.setLastUpdatedTimestamp(Instant.now());
       newFormResponseDetail.setStatusControl(true);
-    }, () -> {
+    },
+    () -> {
       newFormResponseDetail.setFormResponse(formResponse);
-      //TODO FS-86 remove this once FS-52 is merged
-      newFormResponseDetail.setAssigner(null);
-      //TODO FS-86 and this
-      newFormResponseDetail.setAssignerTeamDetail(null);
       newFormResponseDetail.setLastUpdatedTimestamp(Instant.now());
       newFormResponseDetail.setStatusControl(true);
     });
+
+    formResponseDetailService.save(newFormResponseDetail);
 
     for (FrontendComponent frontendComponent : frontendForm.get_componentList()) {
 
       if (FrontendComponentTypes.hasSingleNestedQuestion((frontendComponent.get_componentType()))) {
         QuestionResponse questionResponse = new QuestionResponse();
-        FrontendSelectionValue nestedQuestionSelectorValue = (FrontendSelectionValue) frontendComponent.get_componentProps().get(FrontendComponentProps.SELECTION_VALUE.getFrontendName());
+        FrontendSelectionValue nestedQuestionSelectorValue = FrontendSelectionValue.fromLinkedHashMap((LinkedHashMap) frontendComponent.get_componentProps().get(FrontendComponentProps.SELECTION_VALUE.getFrontendName()));
 
         questionResponse.setResponse(String.valueOf(nestedQuestionSelectorValue.is_value()));
         questionResponse.setQuestionDetail(questionDetailService.getQuestionDetailById(nestedQuestionSelectorValue.get_questionDetailId()));
@@ -94,7 +93,9 @@ public class FormResponseService {
 
         questionResponseService.save(questionResponse);
       } else if (FrontendComponentTypes.hasMultipleNestedQuestions(frontendComponent.get_componentType())) {
-        ArrayList<FrontendSelectionValue> nestedQuestionSelectorValues = (ArrayList<FrontendSelectionValue>) frontendComponent.get_componentProps().get(FrontendComponentProps.SELECTION_VALUES.getFrontendName());
+        List<FrontendSelectionValue> nestedQuestionSelectorValues = ((ArrayList<LinkedHashMap>) frontendComponent.get_componentProps().get(FrontendComponentProps.SELECTION_VALUES.getFrontendName())).stream()
+            .map(linkedHashMap -> FrontendSelectionValue.fromLinkedHashMap((linkedHashMap)))
+            .collect(Collectors.toList());
 
         for (FrontendSelectionValue frontendSelectionValue : nestedQuestionSelectorValues) {
           QuestionResponse questionResponse = new QuestionResponse();
@@ -108,11 +109,13 @@ public class FormResponseService {
       } else if (FrontendComponentTypes.isText(frontendComponent.get_componentType())) {
         QuestionResponse questionResponse = new QuestionResponse();
 
-        FrontendTextValue frontendTextValue = (FrontendTextValue) frontendComponent.get_componentProps().get(FrontendComponentProps.TEXT_VALUE);
+        String response = ((LinkedHashMap<String, String>) frontendComponent.get_componentProps().get(FrontendComponentProps.TEXT_VALUE.getFrontendName())).get("_value");
 
-        questionResponse.setResponse(frontendTextValue.get_value());
+        questionResponse.setResponse(response);
         questionResponse.setFormResponseDetail(newFormResponseDetail);
         questionResponse.setQuestionDetail(questionDetailService.getQuestionDetailById((Integer) frontendComponent.get_componentProps().get(BackendComponentProps.QUESTION_DETAIL_ID.getName())));
+
+        questionResponseService.save(questionResponse);
       }
     }
   }

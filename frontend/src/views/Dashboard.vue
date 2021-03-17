@@ -7,11 +7,6 @@
         Awaiting dashboard items
       </p>
       <p v-else-if="Object.keys(response).length === 0">You have no forms to respond to</p>
-      <router-link :to="getUrlForResponse()" v-else>{{ response }}</router-link>
-
-<!--      FS-86 TODO remove this-->
-      <br />
-      <button @click="assignFormTestRemoveMe">Assign form</button>
     </BaseStyleLayout>
   </div>
 </template>
@@ -53,15 +48,6 @@ export default class Dashboard extends Vue {
     })
     .finally(() => this.loaded = true);
     this.$forceUpdate();
-    console.log(this.response);
-  }
-  //FS-86 TODO remove this
-  assignFormTestRemoveMe() {
-    WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/flowable/workflow/form/start`, new AssignWorkflowVariables("kp535", {id: 1, name: "Admin"} , "ksp5", 1));
-  }
-
-  getUrlForResponse(): string {
-    return Pages.ROUTES.FORM.FILL_FORM.url.replace(":id", "1");
   }
 }
 

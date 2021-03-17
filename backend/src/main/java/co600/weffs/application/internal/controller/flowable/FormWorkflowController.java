@@ -59,7 +59,7 @@ public class FormWorkflowController {
     FormResponse formResponse = formResponseService.create(
         filler,
         assigner,
-        frontendAssignWorkflowVariables.get_assignerTeamDetail(),
+        teamDetailService.getTeamDetailById(frontendAssignWorkflowVariables.get_assignerTeamDetail().getId()),
         formDetailService.getFormDetailByForm(formService.getFormById(frontendAssignWorkflowVariables.get_formId()))
     );
 

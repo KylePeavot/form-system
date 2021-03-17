@@ -6,7 +6,10 @@ public enum FrontendComponentProps {
   //how do we do text fields rn??
   SELECTION_VALUE("selectionValue"),
   SELECTION_VALUES("selectionValues"),
-  TEXT_VALUE("textValue");
+  TEXT_VALUE("textValue"),
+  LABEL("_label"),
+  VALUE("_value"),
+  QUESTION_DETAIL_ID("_questionDetailId");
 
   private String frontendName;
 

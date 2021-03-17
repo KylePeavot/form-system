@@ -9,7 +9,7 @@ public class FrontendAssignWorkflowVariables {
 
   private String _assigner;
   //FS-55 TODO fix this to correctly receive stuff (might need to update the frontend version of this class too
-  private Map<String, ?> _assignerTeamDetail;
+  private FrontendTeam _assignerTeamDetail;
   private String _targetUser;
   private int _formId;
 

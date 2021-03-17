@@ -9,6 +9,7 @@ import co600.weffs.application.internal.model.form.frontend.FrontendComponentPro
 import co600.weffs.application.internal.model.form.frontend.FrontendComponentTypes;
 import co600.weffs.application.internal.model.form.frontend.FrontendForm;
 import co600.weffs.application.internal.model.form.frontend.FrontendSelectionValue;
+import co600.weffs.application.internal.model.form.frontend.FrontendTextValue;
 import co600.weffs.application.internal.model.formResponse.FormResponse;
 import co600.weffs.application.internal.model.formResponse.FormResponseDetail;
 import co600.weffs.application.internal.model.formResponse.QuestionResponse;
@@ -16,8 +17,11 @@ import co600.weffs.application.internal.repository.formResponse.QuestionResponse
 import co600.weffs.application.internal.services.form.FrontendFormService;
 import co600.weffs.application.internal.services.form.QuestionDetailService;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import liquibase.pro.packaged.F;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,43 +59,62 @@ public class QuestionResponseService {
           //Single checkbox
           if (FrontendComponentTypes.hasSingleNestedQuestion(parentQuestionDetail.getQuestionType())) {
 
-            frontendForm.get_componentList().stream()
-                .filter(frontendComponent -> frontendComponent.get_componentProps().get(BackendComponentProps.QUESTION_DETAIL_ID.getName()).equals(parentQuestionDetail.getId()))
-                .map(frontendComponent -> frontendComponent.get_componentProps().put(FrontendComponentProps.SELECTION_VALUE.getFrontendName(), questionResponse.getResponse()));
+            frontendForm.set_componentList(frontendForm.get_componentList().stream()
+              .map(frontendComponent -> {
+                if (frontendComponent.get_componentProps().get(BackendComponentProps.QUESTION_DETAIL_ID.getName()).equals(parentQuestionDetail.getId())) {
+                  FrontendSelectionValue frontendSelectionValue = (FrontendSelectionValue) frontendComponent.get_componentProps().get(FrontendComponentProps.SELECTION_VALUE.getFrontendName());
+                  frontendSelectionValue.set_value(Boolean.valueOf(questionResponse.getResponse()));
+                  frontendComponent.get_componentProps().put(FrontendComponentProps.SELECTION_VALUE.getFrontendName(), frontendSelectionValue);
+                }
+                return frontendComponent;
+              })
+              .collect(Collectors.toList())
+            );
 
             //checkbox/radio group
           } else if (FrontendComponentTypes.hasMultipleNestedQuestions(parentQuestionDetail.getQuestionType())) {
-            // arrayList of FrontendSelectionValues
-            frontendForm.get_componentList().stream()
-              .filter(frontendComponent -> frontendComponent.get_componentProps().get(BackendComponentProps.QUESTION_DETAIL_ID.getName()).equals(parentQuestionDetail.getId()))
-              .map(frontendComponent -> {
-                  Map<String, Object> newComponentProps = frontendComponent.get_componentProps();
+            frontendForm.set_componentList(
+              frontendForm.get_componentList().stream()
+                .map(frontendComponent -> {
+                  FrontendComponent updatedFrontendComponent = new FrontendComponent(frontendComponent.get_componentType(), frontendComponent.get_componentProps(), frontendComponent.get_order());
 
-                  ((ArrayList<FrontendSelectionValue>) newComponentProps.get(FrontendComponentProps.SELECTION_VALUES.getFrontendName())).stream()
-                      .filter(frontendSelectionValue -> frontendSelectionValue.get_label().equals(questionResponse.getQuestionDetail().getTitle()))
-                      .map(frontendSelectionValue -> new FrontendSelectionValue(frontendSelectionValue.get_label(), Boolean.valueOf(questionResponse.getResponse()), frontendSelectionValue.get_questionDetailId()));
+                  if (frontendComponent.get_componentProps().get(BackendComponentProps.QUESTION_DETAIL_ID.getName()).equals(parentQuestionDetail.getId())) {
+                    //update the component props with the new frontendSelectionValue
+                    List<FrontendSelectionValue> newSelectionValues = ((ArrayList<FrontendSelectionValue>) updatedFrontendComponent.get_componentProps().get(FrontendComponentProps.SELECTION_VALUES.getFrontendName()))
+                      .stream()
+                      .map(frontendSelectionValue -> {
+                        FrontendSelectionValue updatedFrontendSelectionValue = new FrontendSelectionValue(frontendSelectionValue.get_label(), frontendSelectionValue.is_value(), frontendSelectionValue.get_questionDetailId());
+                        if (updatedFrontendSelectionValue.get_questionDetailId() == questionResponse.getQuestionDetail().getId()) {
+                          updatedFrontendSelectionValue.set_value(Boolean.valueOf(questionResponse.getResponse()));
+                        }
+                        return updatedFrontendSelectionValue;
+                      })
+                      .collect(Collectors.toList());
 
-                  return new FrontendComponent(
-                      frontendComponent.get_componentType(),
-                      newComponentProps,
-                      frontendComponent.get_order()
-                  );
-                }
+                    updatedFrontendComponent.get_componentProps().put(FrontendComponentProps.SELECTION_VALUES.getFrontendName(), newSelectionValues);
+                  }
+
+                  return updatedFrontendComponent;
+                })
+                .collect(Collectors.toList())
               );
-            //Text field/area
+            }
+          //Text field/area
           } else if (FrontendComponentTypes.isText(questionResponseType)) {
-            frontendForm.get_componentList().stream()
-                .filter(frontendComponent -> frontendComponent.get_componentProps().get(BackendComponentProps.QUESTION_DETAIL_ID.getName()).equals(parentQuestionDetail.getId()))
-                .map(frontendComponent -> frontendComponent.get_componentProps().put(FrontendComponentProps.TEXT_VALUE.getFrontendName(), questionResponse.getResponse()));
-
+            frontendForm.set_componentList(frontendForm.get_componentList().stream()
+              .map(frontendComponent -> {
+                if (frontendComponent.get_componentProps().get(BackendComponentProps.QUESTION_DETAIL_ID.getName()).equals(questionResponse.getQuestionDetail().getId())) {
+                  frontendComponent.get_componentProps().put(FrontendComponentProps.TEXT_VALUE.getFrontendName(), new FrontendTextValue(questionResponse.getResponse()));
+                }
+                return frontendComponent;
+              })
+            .collect(Collectors.toList()));
           } else {
             throw new NoComponentTypeFoundException("No matching component type found for QuestionResponse with id: " + questionResponse.getId());
           }
+        } catch (NoComponentTypeFoundException e) {
+          e.printStackTrace();
         }
-      } catch (NoComponentTypeFoundException e) {
-        e.printStackTrace();
-      }
-
     }
   }
 

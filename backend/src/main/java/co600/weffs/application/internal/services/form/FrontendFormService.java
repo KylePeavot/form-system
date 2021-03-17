@@ -44,9 +44,6 @@ public class FrontendFormService {
     List<QuestionDetail> questions = questionsAndNestedQuestions.get(0);
     List<QuestionDetail> nestedQuestions = questionsAndNestedQuestions.get(1);
 
-    List<FrontendComponent> frontendComponents = new ArrayList<>();
-
-
     for (QuestionDetail questionDetail : questions) {
       Map<String, Object> componentProps = new HashMap<>();
       componentProps.put("title", questionDetail.getTitle());

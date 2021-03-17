@@ -5,7 +5,7 @@
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
     <div v-for="(checkbox, index) of selectionValues" :key="`${idPrefix}-${index}`">
-      <Checkbox :id="`${idPrefix}-${index}`" :selection-value="checkbox" :can-remove="true" @deleteCheckbox="deleteCheckbox(checkbox)" :current-form-display-mode="currentFormDisplayMode"/>
+      <Checkbox :id="`${idPrefix}-${index}`" :selection-value="checkbox" :can-remove="true" @props-updated="updateProps" @deleteCheckbox="deleteCheckbox(checkbox)" :current-form-display-mode="currentFormDisplayMode"/>
     </div>
     <button v-if="currentFormDisplayMode.isEdit" type="button" class="text-blue-500" @click="addNewCheckbox">+ Add new checkbox</button>
   </div>
@@ -48,7 +48,7 @@ export default class CheckboxGroup extends Vue {
 
   created() {
     this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
-    this.selectionValues = this.selectionValues.map(value => SelectionValue.mapSelectionValueInterfaceToSelectionValue(value));
+    // this.selectionValues = this.selectionValues.map(value => SelectionValue.mapSelectionValueInterfaceToSelectionValue(value));
   }
 
   addNewCheckbox() {
@@ -62,8 +62,8 @@ export default class CheckboxGroup extends Vue {
     this.$emit('props-updated', {selectionValues: newValues});
   }
 
-  updateProps(baseQuestionProps: BaseQuestionProps) {
-    this.$emit('props-updated', {title: baseQuestionProps.title, guidance: baseQuestionProps.guidance});
+  updateProps() {
+    this.$emit('props-updated', this.$props);
   }
 
   deleteComponent() {
