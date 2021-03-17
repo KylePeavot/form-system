@@ -16,10 +16,20 @@
         </SidebarGroup>
       </template>
       <slot>
+        <Heading :level="2">Who will own this form?</Heading>
+        <select v-model="selectedTeam">
+          <option v-for="(team) in availableTeams" :key="`${team.teamName}-${team.teamId}`">
+            {{ team.teamName }}
+          </option>
+        </select>
+        <br/><br/>
+        <hr/>
+        <br/>
         <div :v-if="components !== undefined" v-for="component in components" :key="component.order" >
           <component :is="component.componentType" v-bind="component.componentProps" :current-form-display-mode="currentFormDisplayMode" @delete-component="removeFromLayout(component)" @props-updated="updateComponentProps($event, component)"/>
         </div>
       </slot>
+      <br/>
       <router-link :to="redirectUrl">
         <button class="button button--primary" @click="saveForm">Save Form</button>
       </router-link>
@@ -45,6 +55,7 @@ import WebRequestUtils from "@/utils/WebRequestUtils";
 import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 import Heading from "@/components/core/componentExtras/Heading.vue";
 import EditableComponent from "@/components/core/componentExtras/EditableComponent.vue";
+import TeamView from "@/models/team/TeamView";
 
 @Component({
   components: {
@@ -62,11 +73,25 @@ export default class FormCreatorView extends Vue {
   private currentFormDisplayMode: CurrentFormDisplayMode = new CurrentFormDisplayMode(false, true, false);
   private redirectUrl = Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD.url;
   private formName = "Untitled form";
+  private availableTeams: TeamView[] = [];
+  private selectedTeam: string | null = null;
 
   saveForm(){
-    const form = new Form(this.formName,this.components);
-    WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form/save`,form);
-
+    if (this.formName.length > 0 && this.selectedTeam !== null && this.components.length > 0) {
+      const form = new Form(this.formName, this.availableTeams.find(value => value.teamName === this.selectedTeam)!, this.components);
+      WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form/save`, form)
+        .then(value => value.json())
+        .then(value => {
+          if (value.success) {
+            this.$router.push(Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.SEARCH_FORMS.url);
+          }
+        })
+        .catch(e => {
+          // TODO (Add jira key) Yikes, you made validation go wack
+        });
+    } else {
+      // TODO (Add jira key) Need to validate
+    }
   }
 
   addComponentToList(event: Event) {
@@ -162,6 +187,14 @@ export default class FormCreatorView extends Vue {
       unsafeComponent.componentProps[key] = newProp[key];
       unsafeComponent.componentProps = (() => unsafeComponent.componentProps)();
     })
+  }
+
+  mounted() {
+    WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/teams?canModifyForms=true`, true)
+      .then(value => value.json())
+      .then(v => v as TeamView[])
+      .then(v => this.availableTeams = v);
+
   }
 
 }

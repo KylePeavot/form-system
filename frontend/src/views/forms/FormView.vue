@@ -1,10 +1,15 @@
 <template>
   <div>
     <FormStyleLayout :selected-page="page" :title="title">
-      <Heading :level="1">{{ form.name }}</Heading>
-      <div v-for="(component, index) in form.componentList" :key="component.order">
-        <component :is="component.componentType" v-bind="component.componentProps" :level="2" :id="index" :id-prefix="index" :current-form-display-mode="currentFormDisplayMode"/>
-      </div>
+      <template v-if="form !== null">
+        <Heading :level="1">{{ form.name }}</Heading>
+        <div v-for="(component, index) in form.componentList" :key="component.order">
+          <component :is="component.componentType" v-bind="component.componentProps" :level="2" :id="index" :id-prefix="index" :current-form-display-mode="currentFormDisplayMode"/>
+        </div>
+      </template>
+      <template v-else>
+        <Heading :level="1">Awaiting form</Heading>
+      </template>
     </FormStyleLayout>
   </div>
 </template>
@@ -34,7 +39,7 @@ export default class FormView extends Vue {
 
   private title: string | undefined;
 
-  private form = new Form("Awaiting form", []);
+  private form: Form | null = null;
 
   private currentFormDisplayMode: CurrentFormDisplayMode = new CurrentFormDisplayMode(false, false, false);
 

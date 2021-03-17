@@ -2,36 +2,38 @@ package co600.weffs.application.internal.services.team;
 
 import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.error.InvalidSizeException;
+import co600.weffs.application.internal.model.form.FormView;
 import co600.weffs.application.internal.model.team.TeamDetail;
 import co600.weffs.application.internal.model.team.TeamMember;
 import co600.weffs.application.internal.repository.team.TeamMemberRepository;
+import co600.weffs.application.internal.services.form.FormDetailService;
 import co600.weffs.application.internal.view.team.TeamView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class TeamMemberService {
 
   private final TeamMemberRepository teamMemberRepository;
-  private final TeamDetailService teamDetailService;
+  private final FormDetailService formDetailService;
 
   @Autowired
-  public TeamMemberService(TeamMemberRepository teamMemberRepository,
-      TeamDetailService teamDetailService) {
+  public TeamMemberService(TeamMemberRepository teamMemberRepository, FormDetailService formDetailService) {
     this.teamMemberRepository = teamMemberRepository;
-    this.teamDetailService = teamDetailService;
+    this.formDetailService = formDetailService;
   }
 
   public List<TeamMember> getMembersInTeamDetail(TeamDetail teamDetail) {
     return teamMemberRepository.findAllByTeamDetailInAndStatusControlIsTrue(List.of(teamDetail));
   }
 
-  public TeamView getTeamViewByIdForUser(Integer id) {
+  public TeamView getTeamViewById(Integer id) {
     var membersInTeam = teamMemberRepository.findAllByTeamDetail_Team_IdAndStatusControlIsTrue(id);
     var teamDetail = membersInTeam.stream()
         .map(TeamMember::getTeamDetail)
@@ -41,10 +43,25 @@ public class TeamMemberService {
   }
 
   public Boolean canUserManageTeamView(AppUser appUser, TeamView teamView) {
+    return canUsernameManageTeamView(appUser.getUsername(), teamView);
+  }
+
+  private Boolean canUsernameManageTeamView(String username, TeamView teamView) {
     return teamView.getTeamMembers()
         .stream()
-        .anyMatch(member -> member.getUsername().equals(appUser.getUsername()) && member
+        .anyMatch(member -> member.getUsername().equals(username) && member
             .getCanManageTeam());
+  }
+
+  public Boolean canUserModifyFormsForTeamView(AppUser appUser, TeamView teamView) {
+    return canUsernameModifyFormsForTeamView(appUser.getUsername(), teamView);
+  }
+
+  private Boolean canUsernameModifyFormsForTeamView(String username, TeamView teamView) {
+    return teamView.getTeamMembers()
+            .stream()
+            .anyMatch(member -> member.getUsername().equals(username) && member
+                    .getCanModifyForms());
   }
 
   public List<TeamView> getTeamViewForUsername(String username) {
@@ -85,5 +102,16 @@ public class TeamMemberService {
 
   public void saveAll(List<TeamMember> teamMembers) {
     teamMemberRepository.saveAll(teamMembers);
+  }
+
+  public List<FormView> getActiveViewableForms(AppUser appUser) {
+    var teamViews = getTeamViewForUsername(appUser.getUsername());
+    return formDetailService.getActiveFormViews()
+            .stream()
+            .peek(formView -> {
+              System.out.println();
+            })
+            .filter(formView -> teamViews.stream().anyMatch(teamView -> teamView.getTeamId().equals(formView.getTeamId())))
+            .collect(Collectors.toList());
   }
 }

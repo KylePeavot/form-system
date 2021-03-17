@@ -17,6 +17,7 @@ public class FormView {
     private String createdWhen;
     private String lastUpdatedBy;
     private String lastUpdatedWhen;
+    private Integer teamId;
 
     public FormView(FormDetail formDetail){
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
@@ -25,6 +26,7 @@ public class FormView {
         this.createdBy = formDetail.getForm().getCreatedBy();
         this.createdWhen = formatter.format(Date.from(formDetail.getForm().getCreatedTimestamp()));
         this.lastUpdatedBy = formDetail.getLastUpdatedBy();
-        this.lastUpdatedWhen= formatter.format(Date.from(formDetail.getLastUpdatedTimestamp()));
+        this.lastUpdatedWhen = formatter.format(Date.from(formDetail.getLastUpdatedTimestamp()));
+        this.teamId = formDetail.getTeam().getId();
     }
 }

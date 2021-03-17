@@ -83,7 +83,7 @@ class FormControllerTest extends TestableController {
         var formView = new FormView(formDetail);
         when(formDetailService.getActiveFormViews()).thenReturn(List.of(formView));
         var response = mockMvc.perform(
-                get(Router.determineRoute(on(FormController.class).getForm()))
+                get(Router.determineRoute(on(FormController.class).getForm(null)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jacksonMapper.writeValueAsString(formDetail))
                 )

@@ -1,5 +1,6 @@
 package co600.weffs.application.internal.model.form;
 
+import co600.weffs.application.internal.model.team.Team;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,6 +18,11 @@ public class FormDetail {
     @ManyToOne
     @JoinColumn(name = "form_id")
     private Form form;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
+
     private String name;
     private Instant lastUpdatedTimestamp;
     private String lastUpdatedBy;

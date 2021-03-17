@@ -1,20 +1,26 @@
 package co600.weffs.application.internal.services.form;
 
 import co600.weffs.application.internal.model.auth.AppUser;
-import co600.weffs.application.internal.model.form.*;
+import co600.weffs.application.internal.model.error.NotAuthorizedException;
+import co600.weffs.application.internal.model.form.Form;
+import co600.weffs.application.internal.model.form.FormDetail;
+import co600.weffs.application.internal.model.form.Question;
+import co600.weffs.application.internal.model.form.QuestionDetail;
 import co600.weffs.application.internal.model.form.frontend.FrontendComponent;
 import co600.weffs.application.internal.model.form.frontend.FrontendComponentProps;
 import co600.weffs.application.internal.model.form.frontend.FrontendComponentTypes;
 import co600.weffs.application.internal.model.form.frontend.FrontendForm;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import co600.weffs.application.internal.services.team.TeamMemberService;
+import co600.weffs.application.internal.services.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class FormCreationService {
@@ -23,13 +29,17 @@ public class FormCreationService {
     private final FormDetailService formDetailService;
     private final QuestionService questionService;
     private final QuestionDetailService questionDetailService;
+    private final TeamMemberService teamMemberService;
+    private final TeamService teamService;
 
     @Autowired
-    public FormCreationService(FormService formService, FormDetailService formDetailService, QuestionService questionService, QuestionDetailService questionDetailService) {
+    public FormCreationService(FormService formService, FormDetailService formDetailService, QuestionService questionService, QuestionDetailService questionDetailService, TeamMemberService teamMemberService, TeamService teamService) {
         this.formService = formService;
         this.formDetailService = formDetailService;
         this.questionService = questionService;
         this.questionDetailService = questionDetailService;
+        this.teamMemberService = teamMemberService;
+        this.teamService = teamService;
     }
 
     @Transactional
@@ -45,6 +55,11 @@ public class FormCreationService {
         formDetail.setLastUpdatedBy(appUser.getUsername());
         formDetail.setLastUpdatedTimestamp(Instant.now());
         formDetail.setStatusControl(true);
+        var teamView = teamMemberService.getTeamViewById(frontendForm.get_team().getTeamId());
+        if (!teamMemberService.canUserModifyFormsForTeamView(appUser, teamView)) {
+            throw new NotAuthorizedException(String.format("User [%s] is not authorized to create a form for this team", appUser.getUsername()));
+        }
+        formDetail.setTeam(teamService.getById(teamView.getTeamId()));
         formDetailService.save(formDetail);
         frontendForm.get_componentList().forEach(frontendComponent -> createQuestion(appUser, frontendComponent, formDetail));
     }

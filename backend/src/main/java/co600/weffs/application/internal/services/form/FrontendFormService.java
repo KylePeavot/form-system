@@ -1,20 +1,16 @@
 package co600.weffs.application.internal.services.form;
 
 import co600.weffs.application.internal.model.error.NoQuestionFoundException;
-import co600.weffs.application.internal.model.form.FormDetail;
-import co600.weffs.application.internal.model.form.frontend.FrontendComponent;
-import co600.weffs.application.internal.model.form.frontend.FrontendComponentTypes;
-import co600.weffs.application.internal.model.form.frontend.FrontendForm;
-import co600.weffs.application.internal.model.form.frontend.FrontendSelectionValue;
 import co600.weffs.application.internal.model.form.QuestionDetail;
-import co600.weffs.application.internal.model.form.frontend.FrontendTextValue;
+import co600.weffs.application.internal.model.form.frontend.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class FrontendFormService {
