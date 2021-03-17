@@ -7,6 +7,7 @@
         Awaiting dashboard items
       </p>
       <p v-else-if="Object.keys(response).length === 0">You have no forms to respond to</p>
+      <p v-else>{{ response }}</p>
     </BaseStyleLayout>
   </div>
 </template>
@@ -31,7 +32,6 @@ import {User} from "@auth0/auth0-spa-js";
 })
 export default class Dashboard extends Vue {
 
-  private text = 'test';
   private response: string | undefined;
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD;
   private loaded = false;
@@ -47,7 +47,6 @@ export default class Dashboard extends Vue {
       this.response = await value.json();
     })
     .finally(() => this.loaded = true);
-    this.$forceUpdate();
   }
 }
 

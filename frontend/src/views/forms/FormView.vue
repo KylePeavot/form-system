@@ -5,8 +5,10 @@
       <div v-for="(component, index) in form.componentList" :key="component.order">
         <component :is="component.componentType" v-bind="component.componentProps" :level="2" :id="index" :id-prefix="index" :current-form-display-mode="currentFormDisplayMode" @props-updated="updateComponentProps($event, component)"/>
       </div>
-      <button v-if="currentFormDisplayMode.isFill" class="button my-5 p-2 rounded hover:bg-gray-100" @click="submitFormResponseAsDraft">Save as draft</button>
-      <button v-if="currentFormDisplayMode.isFill" class="button--primary my-5 p-2 rounded" @click="submitFormResponse">Submit form</button>
+      <router-link :to="getDashboardUrl()">
+        <button v-if="currentFormDisplayMode.isFill" class="button my-5 p-2 rounded hover:bg-gray-100" @click="submitFormResponseAsDraft">Save as draft</button>
+        <button v-if="currentFormDisplayMode.isFill" class="button--primary my-5 p-2 rounded" @click="submitFormResponse">Submit form</button>
+      </router-link>
     </FormStyleLayout>
   </div>
 </template>
@@ -86,6 +88,10 @@ export default class FormView extends Vue {
 
   submitFormResponse() {
     WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form-response/submit/${this.id}`, this.form);
+  }
+
+  getDashboardUrl(): string {
+    return Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD.url;
   }
 }
 </script>

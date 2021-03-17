@@ -46,8 +46,8 @@ public class FormResponseController {
     FormResponse formResponse = formResponseService.getFormResponseById(formResponseId);
 
     formResponseService.saveResponseToForm(frontendForm, formResponse);
-    //TODO FS-86 Uncomment this and make sure it works
-//    formWorkflowService.submitFormResponse(formResponse.getAssignedTo(), formResponse);
+
+    formWorkflowService.submitFormResponse(formResponse.getAssignedTo(), formResponse);
   }
 
   @PostMapping("/save-draft/{formResponseId}")
