@@ -17,8 +17,14 @@
         </SidebarGroup>
       </template>
       <slot>
-        <div :v-if="components !== undefined" v-for="component in components" :key="component.order" >
-          <component :is="component.componentType" v-bind="component.componentProps" @delete-component="removeFromLayout(component)" @propsUpdated="updateComponentProps($event, component)"/>
+        <div :v-if="components !== undefined" v-for="(component, index) in components" :key="component.order" >
+          <component
+              :is="component.componentType"
+              v-bind="component.componentProps"
+              @delete-component="removeFromLayout(component)"
+              @props-updated="updateComponentProps($event, component)"
+              @move-component="moveComponent($event, index)"
+          />
         </div>
       </slot>
       <button class="button button--primary" @click="saveForm">Save Form</button>
@@ -149,6 +155,20 @@ export default class FormCreatorView extends Vue {
     this.components = this.components.filter(item => {
       return item !== componentToDelete;
     })
+  }
+
+  moveComponent(direction: string, index: number) {
+    if (direction === 'up') {
+      this.components[index].order += 100;
+      if (index !== this.components.length) {
+        this.components[index + 1].order -= 100;
+      }
+    } else if (direction === 'down') {
+      this.components[index].order -= 100;
+      if (index !== 0) {
+        this.components[index - 1].order += 100;
+      }
+    }
   }
 
   updateComponentProps(newProp: any, component: FormCreationComponent) {

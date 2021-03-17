@@ -1,9 +1,6 @@
 <template>
   <div name="text-field-container" class="question__text-field-container">
-    <BaseQuestion :base-question-props="baseQuestionProps">
-      <button class="popover-menu__item">Move</button>
-      <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
-    </BaseQuestion>
+    <BaseQuestion :base-question-props="baseQuestionProps" @move-component="moveComponent($event)" @delete-component="deleteComponent" />
     <input class="question__text-field" type="text" name="fieldResponse" placeholder=" " v-model="textValue.value"/>
   </div>
 </template>
@@ -37,6 +34,10 @@ import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 
     created() {
       this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
+    }
+
+    moveComponent(direction: string) {
+      this.$emit('move-component', direction);
     }
 
     deleteComponent() {
