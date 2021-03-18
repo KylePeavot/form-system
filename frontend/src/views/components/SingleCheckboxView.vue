@@ -28,7 +28,7 @@ export default class SingleCheckboxView extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.COMPONENTS.subRoutes.SINGLE_CHECKBOX;
   private inputValue = new SelectionValue("I accept the terms and conditions", true);
 
-  private currentFormDisplayMode = new CurrentFormDisplayMode(false, true, true);
+  private currentFormDisplayMode = new CurrentFormDisplayMode(false, false, true);
 
 }
 

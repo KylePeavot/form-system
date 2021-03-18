@@ -31,6 +31,6 @@ import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
     private textValueQ1 = new TextValue("");
     private textValueQ2 = new TextValue("");
 
-    private currentFormDisplayMode = new CurrentFormDisplayMode(false, true, true);
+    private currentFormDisplayMode = new CurrentFormDisplayMode(false, false, true);
   }
 </script>

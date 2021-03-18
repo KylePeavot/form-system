@@ -7,13 +7,13 @@
     <div v-for="(radio, index) of selectionValues" :key="`${idPrefix}-${index}`">
       <div class="radio__container">
         <input :id="`${idPrefix}-${index}`" :class="{'radio__item':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" type="radio" :disabled="!currentFormDisplayMode.isFill" :value="radio.label" v-model="selected">
-        <EditableComponent edit-component-css="radio__label-edit" :value="radio.label" @finish-editing="updateLabel($event, radio)">
+        <EditableComponent edit-component-css="radio__label-edit" :value="radio.label" @finish-editing="updateLabel($event, radio)" :current-form-display-mode="currentFormDisplayMode">
           <label :for="`${idPrefix}-${index}`">{{radio.label}}</label>
         </EditableComponent>
-        <button type="button" class="hidden-button ph-trash" @click="deleteRadioOption(radio)" />
+        <button v-if="currentFormDisplayMode.isEdit" type="button" class="hidden-button ph-trash" @click="deleteRadioOption(radio)" />
       </div>
     </div>
-    <button type="button" class="text-blue-500" @click="addNewRadioOption">+ Add new radio option</button>
+    <button v-if="currentFormDisplayMode.isEdit" type="button" class="text-blue-500" @click="addNewRadioOption">+ Add new radio option</button>
   </div>
 </template>
 
@@ -57,7 +57,6 @@ export default class RadioGroup extends Vue {
 
   created() {
     this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
-    this.selectionValues = this.selectionValues.map(value => SelectionValue.mapSelectionValueInterfaceToSelectionValue(value));
   }
 
   @Watch("selected")

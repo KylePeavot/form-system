@@ -30,7 +30,7 @@ export default class GroupedRadioView extends Vue {
     new SelectionValue("No",false)
   ];
 
-  private currentFormDisplayMode = new CurrentFormDisplayMode(false, true, true);
+  private currentFormDisplayMode = new CurrentFormDisplayMode(false, false, true);
 }
 
 </script>
