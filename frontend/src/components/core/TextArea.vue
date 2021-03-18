@@ -40,8 +40,6 @@ import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 
     created() {
       this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
-
-      this.textValue = TextValue.mapTextValueInterfaceToTextValue(this.textValue);
     }
 
     deleteComponent() {
