@@ -16,14 +16,13 @@
         </SidebarGroup>
       </template>
       <slot>
-        <div :v-if="components !== undefined" v-for="(component, index) in componentsFromStore" :key="`${component.order}-${new Date().getUTCMilliseconds()}`" >
-          {{ component.order }}
+        <div :v-if="components !== undefined" v-for="(component, index) in components" :key="`${component.order}-${new Date().getUTCMilliseconds()}`">
           <component
-              :is="component.componentType"
-              v-bind="component.componentProps"
-              :current-form-display-mode="currentFormDisplayMode" @delete-component="removeFromLayout(component)"
-              @props-updated="updateComponentProps($event, component)"
-              @move-component="moveComponent($event, index)"
+            :is="component.componentType"
+            v-bind="component.componentProps"
+            :current-form-display-mode="currentFormDisplayMode" @delete-component="removeFromLayout(component)"
+            @props-updated="updateComponentProps($event, component)"
+            @move-component="moveComponent($event, index)"
           />
         </div>
       </slot>
@@ -153,8 +152,6 @@ export default class FormCreatorView extends Vue {
         componentProps,
         order
     ));
-
-    this.$store.dispatch("updateCreatedFormComponents", this.components);
   }
 
   get componentsFromStore(): FormComponent[] {
@@ -203,12 +200,12 @@ export default class FormCreatorView extends Vue {
     const oldComponents: FormComponent[] = [];
     this.components.forEach(value => oldComponents.push(value));
     this.components = [];
+
     for (let i = 0; i < oldComponents.length; i++) {
       const updatedComponent = oldComponents[i];
       updatedComponent.order = ((i + 1) * 100);
       this.components.push(updatedComponent);
     }
-    this.$store.dispatch("updateCreatedFormComponents", this.components);
   }
 
   updateComponentProps(newProp: any, component: FormComponent) {
@@ -217,12 +214,6 @@ export default class FormCreatorView extends Vue {
       unsafeComponent.componentProps[key] = newProp[key];
       unsafeComponent.componentProps = (() => unsafeComponent.componentProps)();
     });
-    this.$store.dispatch("updateCreatedFormComponents", this.components);
   }
-
-  created() {
-    this.$store.dispatch("updateCreatedFormComponents", []);
-  }
-
 }
 </script>
