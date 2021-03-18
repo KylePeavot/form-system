@@ -95,10 +95,10 @@ export default class FormCreatorView extends Vue {
           }
         })
         .catch(e => {
-          // TODO (Add jira key) Yikes, you made validation go wack
+          // TODO FS-39 - Either validation expired or user changed post values to something invalid.
         });
     } else {
-      // TODO (Add jira key) Need to validate
+      // TODO FS-39 - Show users errors (No components? No form name? No selected team?)
     }
   }
 
