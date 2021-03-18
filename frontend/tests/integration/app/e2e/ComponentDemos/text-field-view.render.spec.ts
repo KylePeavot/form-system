@@ -20,16 +20,4 @@ describe("Text field demo page", () => {
       cy.get('input').eq(0).should('exist');
     });
   });
-
-  it("has two three button popover's that are clickable and contain the correct menu items", () => {
-    cy.get('[name="text-field-container"]').eq(0).within(() => {
-      cy.get('[name="popper-menu"]').should('not.be.visible');
-      cy.get('[name="popper-button"]').click();
-      cy.get('[name="popper-menu"]').should('be.visible').within(() => {
-        cy.get('button').eq(2).contains("Move");
-        cy.get('button').eq(3).contains("Delete");
-      });
-    });
-  });
-
 })

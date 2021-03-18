@@ -48,9 +48,6 @@ import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 
     created() {
       this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
-
-      //Required to map from raw JSON to an interface to a class
-      // this.selectionValue = SelectionValue.mapSelectionValueInterfaceToSelectionValue(this.selectionValue);
     }
 
     updateProps() {

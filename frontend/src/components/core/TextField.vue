@@ -42,7 +42,6 @@ import SelectionValue from "@/models/form/SelectionValue";
 
     created() {
       this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
-      // this.textValue = TextValue.mapTextValueInterfaceToTextValue(this.textValue);
     }
 
     deleteComponent() {

@@ -35,7 +35,7 @@ export default class GroupedCheckboxView extends Vue {
 
   private inputValues = this.colours.map(colour => new SelectionValue(`I like the colour ${colour}`, false));
 
-  private currentFormDisplayMode = new CurrentFormDisplayMode(false, true, true);
+  private currentFormDisplayMode = new CurrentFormDisplayMode(false, false, true);
 
 }
 

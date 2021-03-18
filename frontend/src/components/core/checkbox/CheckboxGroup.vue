@@ -48,7 +48,6 @@ export default class CheckboxGroup extends Vue {
 
   created() {
     this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
-    // this.selectionValues = this.selectionValues.map(value => SelectionValue.mapSelectionValueInterfaceToSelectionValue(value));
   }
 
   addNewCheckbox() {
