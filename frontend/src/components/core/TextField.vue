@@ -1,6 +1,6 @@
 <template>
   <div name="text-field-container" class="question__text-field-container">
-    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" @move-component="moveComponent($event)" :current-form-display-mode="currentFormDisplayMode" />
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" @delete-component="deleteComponent" @move-component="moveComponent($event)" :current-form-display-mode="currentFormDisplayMode" />
     <input :class="{'question__text-field':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" type="text" name="fieldResponse" :disabled="!currentFormDisplayMode.isFill" placeholder=" " v-model="textValue.value"/>
   </div>
 </template>

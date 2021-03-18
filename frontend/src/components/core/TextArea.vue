@@ -1,6 +1,6 @@
 <template>
   <div name="text-area-container" class="question__text-area-container">
-    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" @move-component="moveComponent($event)" :current-form-display-mode="currentFormDisplayMode"/>
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" @move-component="moveComponent($event)" @delete-component="deleteComponent" :current-form-display-mode="currentFormDisplayMode"/>
     <textarea :class="{'question__text-area':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" name="fieldResponse" rows="4" :disabled="!currentFormDisplayMode.isFill" v-model="textValue.value"/>
   </div>
 </template>
