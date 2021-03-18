@@ -54,7 +54,7 @@ export default class FormView extends Vue {
       this.title = Pages.ROUTES.FORM.FILL_FORM.name;
       this.page = Pages.ROUTES.FORM.FILL_FORM.url.replace(":id", this.id.toString());
 
-      WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/form-response/get/${this.id}`, true)
+      WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/form-response/${this.id}`, true)
       .then(async value => await value.json())
       .then(value => value as FormInterface)
       .then(value => this.form = Form.mapFormInterfaceToForm(value));
@@ -87,7 +87,7 @@ export default class FormView extends Vue {
   }
 
   submitFormResponse() {
-    WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form-response/submit/${this.id}`, this.form);
+    WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form-response/submit`, {responseId: this.id, form: this.form});
   }
 
   getDashboardUrl(): string {

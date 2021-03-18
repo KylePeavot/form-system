@@ -76,7 +76,7 @@ export default class RadioGroup extends Vue {
   }
 
   updateLabel(newLabel: string, radio: SelectionValue) {
-    this.value.map(value => {
+    this.selectionValues.map(value => {
       if (value === radio) {
         value.label = newLabel;
       }
@@ -84,11 +84,11 @@ export default class RadioGroup extends Vue {
   }
 
   addNewRadioOption() {
-    this.value.push(new SelectionValue("Add a response here", false));
+    this.selectionValues.push(new SelectionValue("Add a response here", false));
   }
 
   deleteRadioOption(radioToDelete: SelectionValue) {
-    const newValues = this.value.filter(value => {
+    const newValues = this.selectionValues.filter(value => {
       return radioToDelete !== value;
     })
     this.$emit('propsUpdated', {value: newValues});

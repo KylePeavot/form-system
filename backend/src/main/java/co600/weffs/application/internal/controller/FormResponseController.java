@@ -1,5 +1,6 @@
 package co600.weffs.application.internal.controller;
 
+import co600.weffs.application.internal.model.flowable.frontend.FormResponseSubmissionVariables;
 import co600.weffs.application.internal.model.form.frontend.FrontendForm;
 import co600.weffs.application.internal.model.formResponse.FormResponse;
 import co600.weffs.application.internal.services.flowable.FormWorkflowService;
@@ -30,7 +31,7 @@ public class FormResponseController {
     this.formWorkflowService = formWorkflowService;
   }
 
-  @GetMapping("/get/{formResponseId}")
+  @GetMapping("/{formResponseId}")
   public FrontendForm getForm(@PathVariable("formResponseId") int formResponseId) {
     FormResponse formResponse = formResponseService.getFormResponseById(formResponseId);
 
@@ -41,11 +42,11 @@ public class FormResponseController {
     return frontendForm;
   }
 
-  @PostMapping("/submit/{formResponseId}")
-  public void submitFormResponse(@RequestBody FrontendForm frontendForm, @PathVariable("formResponseId") int formResponseId) {
-    FormResponse formResponse = formResponseService.getFormResponseById(formResponseId);
+  @PostMapping("/submit")
+  public void submitFormResponse(@RequestBody FormResponseSubmissionVariables formResponseSubmissionVariables) {
+    FormResponse formResponse = formResponseService.getFormResponseById(formResponseSubmissionVariables.getResponseId());
 
-    formResponseService.saveResponseToForm(frontendForm, formResponse);
+    formResponseService.saveResponseToForm(formResponseSubmissionVariables.getForm(), formResponse);
 
     formWorkflowService.submitFormResponse(formResponse.getAssignedTo(), formResponse);
   }
