@@ -15,7 +15,7 @@
           <button name="addRadioGroup" type="button" class="sidebar-group__item-button" @click="addComponentToList">Radio group</button>
         </SidebarGroup>
       </template>
-      <slot>
+      <slot v-if="teamsLoaded && availableTeams.length > 0">
         <Heading :level="2">Who will own this form?</Heading>
         <select v-model="selectedTeam">
           <option v-for="(team) in availableTeams" :key="`${team.teamName}-${team.teamId}`">
@@ -28,11 +28,18 @@
         <div :v-if="components !== undefined" v-for="component in components" :key="component.order" >
           <component :is="component.componentType" v-bind="component.componentProps" :current-form-display-mode="currentFormDisplayMode" @delete-component="removeFromLayout(component)" @props-updated="updateComponentProps($event, component)"/>
         </div>
+        <br/>
+        <router-link :to="redirectUrl">
+          <button class="button button--primary" @click="saveForm">Save Form</button>
+        </router-link>
       </slot>
-      <br/>
-      <router-link :to="redirectUrl">
-        <button class="button button--primary" @click="saveForm">Save Form</button>
-      </router-link>
+      <slot v-else-if="teamsLoaded">
+        <p>You don't have permissions to modify any forms within any team.</p>
+        <p>You can <router-link :to="createTeamLink" class="text-blue-700 underline"><a>create your own team</a></router-link> or ask a team manager for access.</p>
+      </slot>
+      <slot v-else>
+        <i class="animate-spin ph-arrow-clockwise"/><span>Getting suitable teams</span>
+      </slot>
     </TwoColumnStyleLayout>
   </div>
 </template>
@@ -75,6 +82,7 @@ export default class FormCreatorView extends Vue {
   private formName = "Untitled form";
   private availableTeams: TeamView[] = [];
   private selectedTeam: string | null = null;
+  private teamsLoaded = false;
 
   saveForm(){
     if (this.formName.length > 0 && this.selectedTeam !== null && this.components.length > 0) {
@@ -193,8 +201,13 @@ export default class FormCreatorView extends Vue {
     WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/teams?canModifyForms=true`, true)
       .then(value => value.json())
       .then(v => v as TeamView[])
-      .then(v => this.availableTeams = v);
+      .then(v => this.availableTeams = v)
+      .then(() => this.teamsLoaded = true);
 
+  }
+
+  get createTeamLink() {
+    return Pages.ROUTES.SHOWN_IN_NAVBAR.TEAMS.subRoutes.CREATE_TEAM.url;
   }
 
 }

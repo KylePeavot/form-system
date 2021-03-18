@@ -1,6 +1,7 @@
 package co600.weffs.application.internal.controller;
 
 import co600.weffs.application.internal.model.auth.AppUser;
+import co600.weffs.application.internal.model.error.InsufficientParametersException;
 import co600.weffs.application.internal.model.form.FormView;
 import co600.weffs.application.internal.model.form.frontend.FrontendForm;
 import co600.weffs.application.internal.security.jwt.MustBeAuthorized;
@@ -34,7 +35,10 @@ public class FormController {
 
   @MustBeAuthorized
   @PostMapping("/save")
-  public Map<String, ?> saveForm(@RequestAttribute("User") AppUser appUser, @RequestBody FrontendForm frontendForm) {
+  public Map<String, ?> saveForm(@RequestAttribute("User") AppUser appUser, @RequestBody FrontendForm frontendForm) throws InsufficientParametersException {
+    if (frontendForm == null || frontendForm.get_team() == null) {
+      throw new InsufficientParametersException("FrontendForm is not valid.");
+    }
     formCreationService.createForm(appUser, frontendForm);
     return Map.of("success", true);
   }
