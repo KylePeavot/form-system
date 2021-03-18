@@ -36,10 +36,6 @@ export default class Checkbox extends Vue {
   updateLabel(newLabel: string) {
     this.selectionValue.label = newLabel;
   }
-
-  updateProps(baseQuestionProps: BaseQuestionProps) {
-    this.$emit('props-updated', {title: baseQuestionProps.title, guidance: baseQuestionProps.guidance});
-  }
 }
 
 </script>

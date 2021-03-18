@@ -1,7 +1,7 @@
 <template>
   <div>
     <BaseStyleLayout title="Grouped checkbox demo" :selected-page="page">
-      <CheckboxGroup id-prefix="cg-col" title="Example checkbox group" guidance="Tick all that apply" :level="2" v-model="inputValues"/>
+      <CheckboxGroup id-prefix="cg-col" title="Example checkbox group" guidance="Tick all that apply" :level="2" v-model="inputValues" :current-form-display-mode="currentFormDisplayMode"/>
       <hr class="my-2"/>
       <div v-for="(colour, index) of colours" :key="`value-${colour}`">
         <p v-if="inputValues[index].value" :id="`likes-${colour}`">You like the colour {{ colour }}</p>
@@ -18,6 +18,7 @@ import SelectionValue from "../../models/form/SelectionValue";
 import Pages from "@/models/navigation/Pages";
 import BaseStyleLayout from "@/components/layout/BaseStyleLayout.vue";
 import CheckboxGroup from "@/components/core/checkbox/CheckboxGroup.vue";
+import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 
 @Component({
   components: {
@@ -33,6 +34,8 @@ export default class GroupedCheckboxView extends Vue {
   private colours = ["red", "green", "blue"]
 
   private inputValues = this.colours.map(colour => new SelectionValue(`I like the colour ${colour}`, false));
+
+  private currentFormDisplayMode = new CurrentFormDisplayMode(false, true, true);
 
 }
 
