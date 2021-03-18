@@ -21,8 +21,7 @@ public class TeamMemberService {
   private final TeamDetailService teamDetailService;
 
   @Autowired
-  public TeamMemberService(
-      TeamMemberRepository teamMemberRepository,
+  public TeamMemberService(TeamMemberRepository teamMemberRepository,
       TeamDetailService teamDetailService) {
     this.teamMemberRepository = teamMemberRepository;
     this.teamDetailService = teamDetailService;
@@ -78,6 +77,10 @@ public class TeamMemberService {
     return teamMemberRepository.findAllByTeamDetailInAndStatusControlIsTrue(details)
         .stream()
         .collect(Collectors.groupingBy(TeamMember::getTeamDetail));
+  }
+
+  public TeamMember getTeamMemberFromUsernameAndTeamDetail(String username, TeamDetail teamDetail) {
+    return teamMemberRepository.findByUsernameAndTeamDetail(username, teamDetail);
   }
 
   public void saveAll(List<TeamMember> teamMembers) {

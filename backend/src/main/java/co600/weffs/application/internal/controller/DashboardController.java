@@ -3,6 +3,7 @@ package co600.weffs.application.internal.controller;
 import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.security.jwt.MustBeAuthorized;
 import co600.weffs.application.internal.services.flowable.FormWorkflowService;
+import co600.weffs.application.internal.services.form.FormService;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,12 @@ import java.util.Map;
 @RequestMapping("/api")
 public class DashboardController {
 
-    @Autowired
     private FormWorkflowService formWorkflowService;
+
+    @Autowired
+    public DashboardController(FormWorkflowService formWorkflowService) {
+        this.formWorkflowService = formWorkflowService;
+    }
 
     @GetMapping
     public Map<String, ?> getDashboardHello() {

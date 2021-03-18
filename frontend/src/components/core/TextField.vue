@@ -1,10 +1,10 @@
 <template>
   <div name="text-field-container" class="question__text-field-container">
-    <BaseQuestion :base-question-props="baseQuestionProps">
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" :current-form-display-mode="currentFormDisplayMode">
       <button class="popover-menu__item">Move</button>
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
-    <input class="question__text-field" type="text" name="fieldResponse" placeholder=" " v-model="textValue.value"/>
+    <input :class="{'question__text-field':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" type="text" name="fieldResponse" :disabled="!currentFormDisplayMode.isFill" placeholder=" " v-model="textValue.value"/>
   </div>
 </template>
 
@@ -16,6 +16,7 @@ import BaseQuestion from "@/components/core/BaseQuestion.vue";
 import TextValue from "@/models/form/TextValue";
 import Popover from "@/components/core/Popover.vue";
 import BaseQuestionProps from "@/models/form/BaseQuestionProps";
+import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 
 @Component({
     components: {Popover, BaseQuestion, Heading}
@@ -33,6 +34,9 @@ import BaseQuestionProps from "@/models/form/BaseQuestionProps";
     @Prop({required: true})
     private textValue!: TextValue;
 
+    @Prop({required: true})
+    private currentFormDisplayMode!: CurrentFormDisplayMode;
+
     private baseQuestionProps: BaseQuestionProps | undefined;
 
     created() {
@@ -41,6 +45,10 @@ import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 
     deleteComponent() {
       this.$emit("delete-component");
+    }
+
+    updateProps(baseQuestionProps: BaseQuestionProps) {
+      this.$emit('props-updated', {title: baseQuestionProps.title, guidance: baseQuestionProps.guidance});
     }
   }
 

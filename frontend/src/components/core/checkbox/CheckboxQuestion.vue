@@ -1,10 +1,10 @@
 <template>
   <div name="checkbox-question-container">
-    <BaseQuestion :base-question-props="baseQuestionProps">
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" :current-form-display-mode="currentFormDisplayMode">
       <button class="popover-menu__item">Move</button>
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
-    <Checkbox :id="id" :checkbox-value="value" :can-remove="false"/>
+    <Checkbox :id="id" :selection-value="selectionValue" :current-form-display-mode="currentFormDisplayMode" :is-deletable="false" :can-remove="false"/>
   </div>
 </template>
 
@@ -16,6 +16,11 @@ import Heading from "@/components/core/componentExtras/Heading.vue";
 import SelectionValue from "@/models/form/SelectionValue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
 import BaseQuestionProps from "@/models/form/BaseQuestionProps";
+import SelectionValueInterface from "@/models/form/interfaces/SelectionValueInterface";
+import {FormDisplayModeEnum} from "@/models/form/FormDisplayModeEnum";
+import currentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
+import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
+
 @Component({
   components: {BaseQuestion, Heading, Checkbox}
 })
@@ -34,12 +39,19 @@ import BaseQuestionProps from "@/models/form/BaseQuestionProps";
     private level!: number;
 
     @Model("input", {required: true})
-    private value!: SelectionValue;
+    private selectionValue!: SelectionValue;
+
+    @Prop({required: true})
+    private currentFormDisplayMode!: CurrentFormDisplayMode;
 
     private baseQuestionProps: BaseQuestionProps | undefined;
 
     created() {
       this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
+    }
+
+    updateProps(baseQuestionProps: BaseQuestionProps) {
+      this.$emit('props-updated', {title: baseQuestionProps.title, guidance: baseQuestionProps.guidance});
     }
 
     deleteComponent() {

@@ -1,62 +1,65 @@
 <template>
   <div>
-    <BaseStyleLayout title="Browse forms available to you" :selected-page="page">
-      <table v-if="loaded" class="results-table">
-        <thead class="results-table__thead">
-        <tr>
-          <th class="results-table__th">Name</th>
-          <th></th>
-          <th class="results-table__th">Created</th>
-          <th class="results-table__th">Updated</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="form in forms" :key="form.id" class="results-table__tr">
-          <td colspan="2" class="results-table__td results-table__td--name">{{ form.name }}</td>
-          <td class="results-table__td">Created by {{ form.createdBy }} on {{ form.createdWhen }}</td>
-          <td class="results-table__td">Updated by {{ form.lastUpdatedBy }} on {{ form.lastUpdatedWhen }}</td>
-        </tr>
-        </tbody>
-      </table>
-      <div v-else>
-        <span>
-          <i class="animate-spin ph-arrow-clockwise text-xl">
-          </i>Loading
-        </span>
+    <FormStyleLayout :selected-page="page" :title="title">
+      <Heading :level="1">{{ form.name }}</Heading>
+      <div v-for="(component, index) in form.componentList" :key="component.order">
+        <component :is="component.componentType" v-bind="component.componentProps" :level="2" :id="index" :id-prefix="index" :current-form-display-mode="currentFormDisplayMode"/>
       </div>
-    </BaseStyleLayout>
+    </FormStyleLayout>
   </div>
-
 </template>
+
 <script lang="ts">
 
-import {Component, Vue} from "vue-property-decorator";
+import {Component, Prop, Vue} from "vue-property-decorator";
+import FormStyleLayout from "@/components/layout/FormStyleLayout.vue";
+import Heading from "@/components/core/componentExtras/Heading.vue";
+import {FormDisplayModeEnum} from "@/models/form/FormDisplayModeEnum";
 import Pages from "@/models/navigation/Pages";
-import BaseStyleLayout from "@/components/layout/BaseStyleLayout.vue";
+import Form from "@/models/form/Form";
 import WebRequestUtils from "@/utils/WebRequestUtils";
-import FormViewInterface from "@/models/form/FormViewInterface";
+import FormInterface from "@/models/form/interfaces/FormInterface";
+import TextField from "@/components/core/TextField.vue";
+import TextArea from "@/components/core/TextArea.vue";
+import CheckboxQuestion from "@/components/core/checkbox/CheckboxQuestion.vue";
+import CheckboxGroup from "@/components/core/checkbox/CheckboxGroup.vue";
+import RadioGroup from "@/components/core/radio/RadioGroup.vue";
+import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 
 @Component({
-  components: {
-    BaseStyleLayout,
-  }
+  components: {FormStyleLayout, Heading, TextField, TextArea, CheckboxQuestion, CheckboxGroup, RadioGroup}
 })
-
 export default class FormView extends Vue {
-  private page = Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.SEARCH_FORMS;
-  private forms: FormViewInterface[] = [];
-  private loaded = false;
+  private page: string | undefined;
+
+  private title: string | undefined;
+
+  private form = new Form("Awaiting form", []);
+
+  private currentFormDisplayMode: CurrentFormDisplayMode = new CurrentFormDisplayMode(false, false, false);
+
+  @Prop({required: true})
+  private mode!: FormDisplayModeEnum;
+
+  @Prop({required: true})
+  private id!: number;
 
   created() {
-    this.getForms();
-  }
+    if (this.mode === FormDisplayModeEnum.FORM_FILLING) {
+      this.title = Pages.ROUTES.FORM.FILL_FORM.name;
+      this.page = Pages.ROUTES.FORM.FILL_FORM.url.replace(":id", this.id.toString());
+      //TODO FS-86 do this bit
+    } else if (this.mode === FormDisplayModeEnum.READ_ONLY) {
+      this.title = Pages.ROUTES.FORM.VIEW_FORM.name;
+      this.page = Pages.ROUTES.FORM.VIEW_FORM.url.replace(":id", this.id.toString());
 
-  getForms() {
-    WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/form/browse`, true)
-        .then(value => value.json())
-        .then(value => value as FormViewInterface[])
-        .then(value => this.forms = value)
-        .then(() => this.loaded = true);
+      WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/form/get/${this.id}`, true)
+        .then(async value => await value.json())
+        .then(value => value as FormInterface)
+        .then(value => this.form = Form.mapFormInterfaceToForm(value));
+
+      this.currentFormDisplayMode = new CurrentFormDisplayMode(true, false, false);
+    }
   }
 }
 </script>

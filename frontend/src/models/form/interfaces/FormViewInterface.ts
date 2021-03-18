@@ -1,5 +1,5 @@
 export default interface FormViewInterface {
-  id: number;
+  formDetailId: number;
   name: string;
   createdBy: string;
   createdWhen: string;

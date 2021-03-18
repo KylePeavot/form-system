@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter, {RouteConfig} from 'vue-router'
 import Pages from "@/models/navigation/Pages";
 import AuthenticationUtils from "@/utils/AuthenticationUtils";
+import {FormDisplayModeEnum} from "@/models/form/FormDisplayModeEnum";
 
 Vue.use(VueRouter)
 
@@ -36,6 +37,18 @@ const routes: Array<RouteConfig> = [
     meta: {
       loginRequired: true
     }
+  },
+  {
+    path: Pages.ROUTES.FORM.VIEW_FORM.url,
+    name: Pages.ROUTES.FORM.VIEW_FORM.name,
+    component: () => import ("../views/forms/FormView.vue"),
+    meta: {
+      loginRequired: true
+    },
+    props: route => ({
+      mode: FormDisplayModeEnum.READ_ONLY,
+      id: route.params.id
+    })
   },
   {
     path: Pages.ROUTES.SHOWN_IN_NAVBAR.TEAMS.subRoutes.CREATE_TEAM.url,
@@ -88,7 +101,7 @@ const routes: Array<RouteConfig> = [
   {
     path: Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.SEARCH_FORMS.url,
     name: Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.SEARCH_FORMS.name,
-    component: () => import("../views/forms/FormView.vue")
+    component: () => import("../views/forms/BrowseFormsView.vue")
   }
 ]
 

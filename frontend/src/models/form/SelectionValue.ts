@@ -1,3 +1,5 @@
+import SelectionValueInterface from "@/models/form/interfaces/SelectionValueInterface";
+
 export default class SelectionValue {
 
   private _label: string;
@@ -6,6 +8,11 @@ export default class SelectionValue {
   constructor(label: string, value: boolean) {
     this._label = label;
     this._value = value;
+  }
+
+  static mapSelectionValueInterfaceToSelectionValue(selectionValueInterface: any): SelectionValue {
+    selectionValueInterface = selectionValueInterface as SelectionValueInterface;
+    return new SelectionValue(selectionValueInterface._label, selectionValueInterface._value);
   }
 
   get label(): string {
