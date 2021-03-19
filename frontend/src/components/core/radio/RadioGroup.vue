@@ -6,7 +6,7 @@
     </BaseQuestion>
     <div v-for="(radio, index) of selectionValues" :key="`${idPrefix}-${index}`">
       <div class="radio__container">
-        <input :id="`${idPrefix}-${index}`" :class="{'radio__item':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" type="radio" :disabled="!currentFormDisplayMode.isFill" :value="radio.label" v-model="selected">
+        <input :id="`${idPrefix}-${index}`" :class="{'radio__item':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" type="radio" :disabled="!currentFormDisplayMode.isFill" :value="radio.label" v-model="selected" @input="updateProps">
         <EditableComponent edit-component-css="radio__label-edit" :value="radio.label" @finish-editing="updateLabel($event, radio)" :current-form-display-mode="currentFormDisplayMode">
           <label :for="`${idPrefix}-${index}`">{{radio.label}}</label>
         </EditableComponent>
@@ -57,6 +57,11 @@ export default class RadioGroup extends Vue {
 
   created() {
     this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
+    this.selectionValues.filter(value => {
+      return value.value;
+    }).forEach(value => {
+      this.selected = value.label;
+    });
   }
 
   @Watch("selected")
@@ -66,12 +71,12 @@ export default class RadioGroup extends Vue {
     });
   }
 
-  updateProps(baseQuestionProps: BaseQuestionProps) {
-    this.$emit('props-updated', {title: baseQuestionProps.title, guidance: baseQuestionProps.guidance});
+  updateProps() {
+    this.$emit('props-updated', this.$props);
   }
 
   updateLabel(newLabel: string, radio: SelectionValue) {
-    this.value.map(value => {
+    this.selectionValues.map(value => {
       if (value === radio) {
         value.label = newLabel;
       }
@@ -79,11 +84,11 @@ export default class RadioGroup extends Vue {
   }
 
   addNewRadioOption() {
-    this.value.push(new SelectionValue("Add a response here", false));
+    this.selectionValues.push(new SelectionValue("Add a response here", false));
   }
 
   deleteRadioOption(radioToDelete: SelectionValue) {
-    const newValues = this.value.filter(value => {
+    const newValues = this.selectionValues.filter(value => {
       return radioToDelete !== value;
     })
     this.$emit('propsUpdated', {value: newValues});

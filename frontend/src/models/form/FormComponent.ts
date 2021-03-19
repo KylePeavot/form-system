@@ -2,6 +2,7 @@ import FormComponentInterface from "@/models/form/interfaces/FormComponentInterf
 import TextValue from "@/models/form/TextValue";
 import SelectionValue from "@/models/form/SelectionValue";
 import SelectionValueInterface from "@/models/form/interfaces/SelectionValueInterface";
+import TextValueInterface from "@/models/form/interfaces/TextValueInterface";
 
 export default class FormComponent {
   private readonly _componentType: string;
