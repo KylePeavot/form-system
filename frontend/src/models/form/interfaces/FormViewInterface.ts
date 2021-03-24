@@ -5,4 +5,5 @@ export default interface FormViewInterface {
   createdWhen: string;
   lastUpdatedBy: string;
   lastUpdatedWhen: string;
+  canModifyForm: boolean;
 }

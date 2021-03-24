@@ -5,11 +5,10 @@ import co600.weffs.application.internal.model.form.Form;
 import co600.weffs.application.internal.model.form.FormDetail;
 import co600.weffs.application.internal.model.form.FormView;
 import co600.weffs.application.internal.repository.form.FormDetailRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class FormDetailService {
@@ -27,6 +26,7 @@ public class FormDetailService {
 
     public List<FormView> getActiveFormViews() {
         var formDetailList = formDetailRepository.findAllByStatusControlIsTrue();
+
         return formDetailList.stream()
                 .map(FormView::new)
                 .collect(Collectors.toList());

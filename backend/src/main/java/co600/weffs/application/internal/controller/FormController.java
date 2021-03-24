@@ -52,6 +52,8 @@ public class FormController {
   @MustBeAuthorized
   @GetMapping("/get/{formDetailId}")
   public FrontendForm getForm(@PathVariable("formDetailId") int formDetailId) {
+    // Ensure FormDetail exists
+    formDetailService.getFormDetailById(formDetailId);
     return frontendFormService.getFrontendFormFromFormDetailId(formDetailId);
   }
 

@@ -1,27 +1,5 @@
 package co600.weffs.application.internal.controller;
 
-import co600.weffs.application.TestableController;
-import co600.weffs.application.internal.model.form.Form;
-import co600.weffs.application.internal.model.form.FormDetail;
-import co600.weffs.application.internal.model.form.FormView;
-import co600.weffs.application.internal.model.form.frontend.FrontendForm;
-import co600.weffs.application.internal.services.form.FormCreationService;
-import co600.weffs.application.internal.services.form.FormDetailService;
-import co600.weffs.application.internal.services.form.FrontendFormService;
-import co600.weffs.application.utils.UserTestUtils;
-import co600.weffs.application.utils.ValueMapUtils;
-import co600.weffs.application.utils.routes.Router;
-import lombok.SneakyThrows;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -29,6 +7,29 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.on;
+
+import co600.weffs.application.TestableController;
+import co600.weffs.application.internal.model.form.Form;
+import co600.weffs.application.internal.model.form.FormDetail;
+import co600.weffs.application.internal.model.form.FormView;
+import co600.weffs.application.internal.model.form.frontend.FrontendForm;
+import co600.weffs.application.internal.model.team.Team;
+import co600.weffs.application.internal.services.form.FormCreationService;
+import co600.weffs.application.internal.services.form.FormDetailService;
+import co600.weffs.application.internal.services.form.FrontendFormService;
+import co600.weffs.application.internal.services.team.TeamMemberService;
+import co600.weffs.application.utils.UserTestUtils;
+import co600.weffs.application.utils.ValueMapUtils;
+import co600.weffs.application.utils.routes.Router;
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
+import lombok.SneakyThrows;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 
 @WebMvcTest(
         controllers = FormController.class,
@@ -38,10 +39,15 @@ class FormControllerTest extends TestableController {
 
     @MockBean
     private FormCreationService formCreationService;
+
     @MockBean
     private FormDetailService formDetailService;
+
     @MockBean
     private FrontendFormService frontendFormService;
+
+    @MockBean
+    private TeamMemberService teamMemberService;
 
     @SneakyThrows
     @Test
@@ -80,6 +86,9 @@ class FormControllerTest extends TestableController {
         form.setCreatedTimestamp(Instant.now());
         form.setId(1);
         formDetail.setForm(form);
+        var team = new Team();
+        team.setId(1);
+        formDetail.setTeam(team);
         var formView = new FormView(formDetail);
         when(formDetailService.getActiveFormViews()).thenReturn(List.of(formView));
         var response = mockMvc.perform(

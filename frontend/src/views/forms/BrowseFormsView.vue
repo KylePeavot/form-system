@@ -16,7 +16,14 @@
           <td colspan="2" class="results-table__td results-table__td--name">{{ form.name }}</td>
           <td class="results-table__td">Created by {{ form.createdBy }} on {{ form.createdWhen }}</td>
           <td class="results-table__td">Updated by {{ form.lastUpdatedBy }} on {{ form.lastUpdatedWhen }}</td>
-          <td class="results-table__td"><router-link :to="getViewFormUrl(form.formDetailId)"><a>View</a></router-link></td>
+          <td class="results-table__td">
+            <router-link :to="getViewFormUrl(form.formDetailId)">
+              <button class="button button--action">View</button>
+            </router-link>
+            <router-link :to="getSendFormUrl(form.formDetailId)" v-if="form.canModifyForm">
+              <button class="button button--action">Send</button>
+            </router-link>
+          </td>
         </tr>
         </tbody>
       </table>
@@ -66,6 +73,10 @@ export default class BrowseFormsView extends Vue {
 
   getViewFormUrl(id: number): string {
     return Pages.ROUTES.FORM.VIEW_FORM.url.replace(":id", id.toString());
+  }
+
+  getSendFormUrl(id: number): string {
+    return Pages.ROUTES.FORM.SEND_FORM.url.replace(":id", id.toString());
   }
 }
 </script>

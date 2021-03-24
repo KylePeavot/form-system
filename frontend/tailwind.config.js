@@ -24,6 +24,7 @@ module.exports = {
             red: colors.rose,
             pink: colors.fuchsia,
             white: '#fff',
+            green: colors.green
         },
         minHeight: {
             '0': '0',

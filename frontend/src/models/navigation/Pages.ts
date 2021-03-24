@@ -51,6 +51,10 @@ export default class Pages {
             FILL_FORM: {
                 name: "Fill form",
                 url: "/forms/respond/:id"
+            },
+            SEND_FORM: {
+                name: "Send form to users",
+                url: "/forms/send/:id"
             }
         },
         AUTHENTICATION: {

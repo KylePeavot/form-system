@@ -1,6 +1,7 @@
 package co600.weffs.application.internal.services.team;
 
 import co600.weffs.application.internal.model.auth.AppUser;
+import co600.weffs.application.internal.model.error.EntityNotFoundException;
 import co600.weffs.application.internal.model.error.InvalidSizeException;
 import co600.weffs.application.internal.model.form.FormView;
 import co600.weffs.application.internal.model.team.TeamDetail;
@@ -106,12 +107,36 @@ public class TeamMemberService {
 
   public List<FormView> getActiveViewableForms(AppUser appUser) {
     var teamViews = getTeamViewForUsername(appUser.getUsername());
-    return formDetailService.getActiveFormViews()
+    var activeFormViews = formDetailService.getActiveFormViews()
             .stream()
-            .peek(formView -> {
-              System.out.println();
-            })
+            // We only care about active forms that the user can view.
             .filter(formView -> teamViews.stream().anyMatch(teamView -> teamView.getTeamId().equals(formView.getTeamId())))
             .collect(Collectors.toList());
+    return activeFormViews.stream()
+        // Group by teamId to reduce DB overhead.
+        .collect(Collectors.groupingBy(FormView::getTeamId))
+        .entrySet()
+        .stream()
+        .map(teamIdAndFormView -> {
+          var teamView = teamViews.stream()
+              // Get team from FormView::teamId.
+              // If team doesn't exist then something has gone horribly wrong because the FormView is set with that ID.
+              .filter(filterTeamView -> filterTeamView.getTeamId().equals(teamIdAndFormView.getKey()))
+              .findFirst()
+              .orElseThrow(() -> new EntityNotFoundException(String.format("No TeamView found with team ID [%d]", teamIdAndFormView.getKey())));
+          if (canUserModifyFormsForTeamView(appUser, teamView)) {
+            var formViews = teamIdAndFormView.getValue()
+                .stream()
+                // User can modify form, so re-create FormView with modify permission.
+                .map(formView -> new FormView(formView, true))
+                .collect(Collectors.toList());
+            teamIdAndFormView.setValue(formViews);
+          }
+          return teamIdAndFormView;
+        })
+        // Resolve Set<Entry<Integer, List<FormView>> to List<FormView>.
+        .flatMap(entry -> entry.getValue().stream())
+        .collect(Collectors.toList());
   }
+
 }
