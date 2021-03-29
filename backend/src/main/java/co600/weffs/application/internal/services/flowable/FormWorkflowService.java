@@ -25,7 +25,8 @@ public class FormWorkflowService {
   private FormResponseService formResponseService;
 
   @Autowired
-  public FormWorkflowService(RuntimeService runtimeService, TaskService taskService, FormResponseService formResponseService) {
+  public FormWorkflowService(RuntimeService runtimeService, TaskService taskService,
+      FormResponseService formResponseService) {
     this.runtimeService = runtimeService;
     this.taskService = taskService;
     this.formResponseService = formResponseService;
@@ -35,13 +36,14 @@ public class FormWorkflowService {
   public void assignFormToFormFiller(String assigner, String filler, FormResponse formResponse) {
     // start the process
     Map<String, Object> variables = Map.of(
-      "assigner", assigner,
-      "filler", filler,
-      "formResponseId", formResponse.getId()
+        "assigner", assigner,
+        "filler", filler,
+        "formResponseId", formResponse.getId(),
+        "formId", formResponse.getFormDetail().getForm().getId()
     );
 
     //if the form is already assigned to the filler, return
-    if (isFormResponseAssignedToUser(filler, formResponse.getId())) {
+    if (isFormResponseAssignedToUser(filler, formResponse.getFormDetail().getForm().getId())) {
       return;
     }
 
@@ -56,7 +58,7 @@ public class FormWorkflowService {
 
     //check that the task is in the "fillingForm" stage
     //if it is, transition it with variables
-    if(task != null && task.getName().equals(WorkflowTask.FILL_FORM.getTaskName())) {
+    if (task != null && task.getName().equals(WorkflowTask.FILL_FORM.getTaskName())) {
       taskService.complete(task.getId(), variables);
     }
   }
@@ -66,7 +68,7 @@ public class FormWorkflowService {
 
     Map<String, Object> variables = Map.of("nextStage", WorkflowTask.FORM_SUBMITTED.getTaskName());
 
-    if(task != null && task.getName().equals(WorkflowTask.FILL_FORM.getTaskName())) {
+    if (task != null && task.getName().equals(WorkflowTask.FILL_FORM.getTaskName())) {
       taskService.complete(task.getId(), variables);
     }
   }
@@ -75,7 +77,19 @@ public class FormWorkflowService {
     return taskService.createTaskQuery().list().stream()
         .filter(taskToReturn -> {
           Map<String, Object> processVariables = taskService.getVariables(taskToReturn.getId());
-          return assignee.equals(taskToReturn.getAssignee()) && processVariables.get("formResponseId").equals(formResponseId);
+          return assignee.equals(taskToReturn.getAssignee()) && processVariables
+              .get("formResponseId").equals(formResponseId);
+        })
+        .findFirst()
+        .orElse(null);
+  }
+
+  public Task getAssignedTasksForFormId(String assignee, int formId) {
+    return taskService.createTaskQuery().list().stream()
+        .filter(taskToReturn -> {
+          Map<String, Object> processVariables = taskService.getVariables(taskToReturn.getId());
+          return assignee.equals(taskToReturn.getAssignee()) && processVariables
+              .get("formId").equals(formId);
         })
         .findFirst()
         .orElse(null);
@@ -89,18 +103,19 @@ public class FormWorkflowService {
 
   public List<AssignedFormView> getAllAssignedFormViewsForAssignee(String assignee) {
     return getAllAssignedTasksForAssignee(assignee).stream()
-      .map(task -> {
-        FormResponse formResponse = formResponseService.getFormResponseById((Integer) taskService.getVariables(task.getId()).get("formResponseId"));
-        return new AssignedFormView(
-            formResponse,
-            WorkflowTask.getWorkflowTaskFromTaskName(task.getName())
-        );
-      })
-      .sorted(Comparator.comparing(o -> o.getFormResponse().getAssignedTimestamp()))
-      .collect(Collectors.toList());
+        .map(task -> {
+          FormResponse formResponse = formResponseService.getFormResponseById(
+              (Integer) taskService.getVariables(task.getId()).get("formResponseId"));
+          return new AssignedFormView(
+              formResponse,
+              WorkflowTask.getWorkflowTaskFromTaskName(task.getName())
+          );
+        })
+        .sorted(Comparator.comparing(o -> o.getFormResponse().getAssignedTimestamp()))
+        .collect(Collectors.toList());
   }
 
-  public boolean isFormResponseAssignedToUser(String assignee, int formResponseId) {
-    return getAssignedTaskForFormResponse(assignee, formResponseId) != null;
+  public boolean isFormResponseAssignedToUser(String assignee, int formId) {
+    return getAssignedTasksForFormId(assignee, formId) != null;
   }
 }
