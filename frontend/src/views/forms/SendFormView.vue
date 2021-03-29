@@ -80,7 +80,6 @@ export default class SendFormView extends Vue {
     .then(value => value as FormInterface)
     .then(value => this.form = Form.mapFormInterfaceToForm(value))
     .catch((e: Error) => {
-      console.log("Error", e);
       FlashUtils.flash(FlashType.ERROR, "Failed to retrieve form information", e.message);
       this.$router.back();
     })
@@ -92,7 +91,6 @@ export default class SendFormView extends Vue {
 
   private sendForms() {
     const usernames = this.selectedUsers.map(value => value.id);
-    console.log(this.currentUser, this.formDetailId);
     const workflowVars = new AssignWorkflowVariables(this.currentUser!.name, usernames, this.formDetailId);
     WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/flowable/workflow/form/start`, workflowVars)
       .then(() => {

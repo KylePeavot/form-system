@@ -78,7 +78,6 @@ public class FrontendFormService {
     }
 
     FrontendForm frontendForm = new FrontendForm();
-    //TODO FS-52 merge in name branch
     frontendForm.set_name(formDetailService.getFormDetailById(formDetailId).getName());
     frontendForm.set_componentList(frontendComponents);
 
