@@ -15,7 +15,8 @@
         <div>
           <div class="text-right">
             <button class="button button--action mt-2">Respond</button>
-            <button class="button button--danger mt-1">Withdraw</button>
+            <button class="button button--danger mt-1" @click="withdraw" v-if="!isWithdrawing">Withdraw</button>
+            <button class="button button--danger mt-1" v-else-if="isWithdrawing"><i class="animate-spin ph-arrow-clockwise " /></button>
           </div>
         </div>
       </div>
@@ -29,6 +30,7 @@ import {Component, Prop, Vue} from "vue-property-decorator";
 import FormResponse from "../../../models/form/FormResponse";
 import Heading from "@/components/core/componentExtras/Heading.vue";
 import moment from 'moment';
+import WebRequestUtils from "@/utils/WebRequestUtils";
 
 @Component({
   components: {Heading}
@@ -38,9 +40,16 @@ export default class DashboardItem extends Vue {
   @Prop({required: true})
   private response!: FormResponse;
 
+  private isWithdrawing = false;
+
   get convertedDate() {
     const date = new Date(this.response.assignedTimestamp);
     return moment(date).format("MMMM Do YYYY");
+  }
+
+  private withdraw() {
+    this.isWithdrawing = true;
+    WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/flowable/workflow/form/delete/${this.response.id}`, {});
   }
 
 }
