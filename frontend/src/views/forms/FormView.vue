@@ -37,7 +37,15 @@ import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 import FormComponent from "@/models/form/FormComponent";
 
 @Component({
-  components: {FormStyleLayout, Heading, TextField, TextArea, CheckboxQuestion, CheckboxGroup, RadioGroup}
+  components: {
+    FormStyleLayout,
+    Heading,
+    TextField,
+    TextArea,
+    CheckboxQuestion,
+    CheckboxGroup,
+    RadioGroup
+  }
 })
 export default class FormView extends Vue {
   private page: string | undefined;
@@ -88,7 +96,7 @@ export default class FormView extends Vue {
   }
 
   submitFormResponseAsDraft() {
-    WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form-response/save-draft/${this.id}`, this.form);
+    WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form-response/save-draft/${this.id}`, this.form!);
   }
 
   submitFormResponse() {

@@ -11,6 +11,9 @@ import co600.weffs.application.internal.services.form.FormService;
 import co600.weffs.application.internal.services.formResponse.FormResponseDetailService;
 import co600.weffs.application.internal.services.formResponse.FormResponseService;
 import co600.weffs.application.internal.services.team.TeamDetailService;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,19 +56,24 @@ public class FormWorkflowController {
   @MustBeAuthorized
   @PostMapping("/start")
   public void assignFormToUser(@RequestBody FrontendAssignWorkflowVariables frontendAssignWorkflowVariables) {
+
+    var formDetail = formDetailService.getFormDetailById(frontendAssignWorkflowVariables.get_formDetailId());
+    var latestTeamDetail = teamDetailService.getActiveTeamDetailByTeamId(formDetail.getTeam().getId());
+
     String assigner = frontendAssignWorkflowVariables.get_assigner();
-    String filler = frontendAssignWorkflowVariables.get_targetUser();
+    List<FormResponse> responses = Arrays.stream(frontendAssignWorkflowVariables.get_targetUsers())
+        .map(filler ->
+            formResponseService.create(
+                filler,
+                assigner,
+                latestTeamDetail,
+                formDetail))
+        .collect(Collectors.toList());
 
-    FormResponse formResponse = formResponseService.create(
-        filler,
-        assigner,
-        teamDetailService.getTeamDetailById(frontendAssignWorkflowVariables.get_assignerTeamDetail().getId()),
-        formDetailService.getFormDetailByForm(formService.getFormById(frontendAssignWorkflowVariables.get_formId()))
-    );
+    formResponseDetailService.create(responses);
 
-    formResponseDetailService.create(formResponse);
-
-    formWorkflowService.assignFormToFormFiller(assigner, filler, formResponse);
+    responses.forEach(formResponse ->
+        formWorkflowService.assignFormToFormFiller(assigner, formResponse.getAssignedTo(), formResponse));
   }
 
   @MustBeAuthorized

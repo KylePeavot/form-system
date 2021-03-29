@@ -13,6 +13,7 @@ import org.flowable.engine.TaskService;
 import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class FormWorkflowService {
@@ -30,6 +31,7 @@ public class FormWorkflowService {
     this.formResponseService = formResponseService;
   }
 
+  @Transactional
   public void assignFormToFormFiller(String assigner, String filler, FormResponse formResponse) {
     // start the process
     Map<String, Object> variables = Map.of(

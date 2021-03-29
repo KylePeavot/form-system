@@ -93,7 +93,7 @@ const routes: Array<RouteConfig> = [
       loginRequired: true
     },
     props: route => ({
-      formId: route.params.id
+      formDetailId: route.params.id
     })
   },
   {

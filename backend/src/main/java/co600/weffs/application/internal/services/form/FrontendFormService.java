@@ -16,18 +16,23 @@ import java.util.stream.Collectors;
 public class FrontendFormService {
 
 
-  private QuestionDetailService questionDetailService;
-  private QuestionService questionService;
+  private final QuestionDetailService questionDetailService;
+  private final QuestionService questionService;
+  private final FormDetailService formDetailService;
 
   @Autowired
   public FrontendFormService(QuestionDetailService questionDetailService,
-      QuestionService questionService) {
+      QuestionService questionService,
+      FormDetailService formDetailService) {
     this.questionDetailService = questionDetailService;
     this.questionService = questionService;
+    this.formDetailService = formDetailService;
   }
 
   public FrontendForm getFrontendFormFromFormDetailId(int formDetailId) {
     List<FrontendComponent> frontendComponents = new ArrayList<>();
+
+
 
     //partitioningBy returns two lists of QuestionDetail. The elements are added to the second list if the expression in partitioningBy is true, the first if false
     List<List<QuestionDetail>> questionsAndNestedQuestions = new ArrayList<>(
@@ -74,7 +79,7 @@ public class FrontendFormService {
 
     FrontendForm frontendForm = new FrontendForm();
     //TODO FS-52 merge in name branch
-    frontendForm.set_name("Form name");
+    frontendForm.set_name(formDetailService.getFormDetailById(formDetailId).getName());
     frontendForm.set_componentList(frontendComponents);
 
     return frontendForm;
