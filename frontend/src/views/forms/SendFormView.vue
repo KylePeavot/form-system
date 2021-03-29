@@ -94,7 +94,10 @@ export default class SendFormView extends Vue {
     const usernames = this.selectedUsers.map(value => value.id);
     console.log(this.currentUser, this.formDetailId);
     const workflowVars = new AssignWorkflowVariables(this.currentUser!.name, usernames, this.formDetailId);
-    WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/flowable/workflow/form/start`, workflowVars);
+    WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/flowable/workflow/form/start`, workflowVars)
+      .then(() => {
+        this.$router.back();
+      });
   }
 
 }

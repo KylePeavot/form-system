@@ -14,7 +14,9 @@
         </div>
         <div>
           <div class="text-right">
-            <button class="button button--action mt-2">Respond</button>
+            <router-link :to="respondUrl(response.id)">
+              <button class="button button--action mt-2">Respond</button>
+            </router-link>
             <button class="button button--danger mt-1" @click="withdraw" v-if="!isWithdrawing">Withdraw</button>
             <button class="button button--danger mt-1" v-else-if="isWithdrawing"><i class="animate-spin ph-arrow-clockwise " /></button>
           </div>
@@ -31,6 +33,7 @@ import FormResponse from "../../../models/form/FormResponse";
 import Heading from "@/components/core/componentExtras/Heading.vue";
 import moment from 'moment';
 import WebRequestUtils from "@/utils/WebRequestUtils";
+import Pages from "@/models/navigation/Pages";
 
 @Component({
   components: {Heading}
@@ -50,6 +53,10 @@ export default class DashboardItem extends Vue {
   private withdraw() {
     this.isWithdrawing = true;
     WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/flowable/workflow/form/delete/${this.response.id}`, {});
+  }
+
+  private respondUrl() {
+    return Pages.ROUTES.FORM.FILL_FORM.url.replace(":id", this.response.id);
   }
 
 }

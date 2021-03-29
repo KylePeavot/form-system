@@ -45,7 +45,7 @@ export default class Dashboard extends Vue {
     this.refreshInterval = setInterval(this.getDashboardContents, 100);
   }
 
-  unmounted() {
+  beforeUnmount() {
     clearInterval(this.refreshInterval);
     this.refreshInterval = undefined;
   }
@@ -61,9 +61,11 @@ export default class Dashboard extends Vue {
         return aDate.toLocaleDateString().localeCompare(bDate.toLocaleDateString());
       });
     })
+    .catch(() => {
+      this.response = [];
+    })
     .finally(() => {
       this.loaded = true;
-      console.log(this.response);
     });
   }
 }
