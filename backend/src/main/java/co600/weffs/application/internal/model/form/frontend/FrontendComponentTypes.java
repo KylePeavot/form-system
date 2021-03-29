@@ -29,4 +29,8 @@ public enum FrontendComponentTypes {
   public static boolean isText(String componentType) {
     return TEXT_FIELD.componentType.equals(componentType) || TEXT_AREA.componentType.equals(componentType);
   }
+
+  public static boolean isNestedQuestion(String componentType) {
+    return NESTED_QUESTION.componentType.equals(componentType);
+  }
 }

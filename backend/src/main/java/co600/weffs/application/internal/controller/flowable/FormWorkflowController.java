@@ -1,20 +1,18 @@
 package co600.weffs.application.internal.controller.flowable;
 
-import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.flowable.frontend.FrontendAssignWorkflowVariables;
 import co600.weffs.application.internal.model.flowable.frontend.FrontendDeleteWorkflowVariables;
 import co600.weffs.application.internal.model.flowable.frontend.FrontendSubmitWorkflowVariables;
 import co600.weffs.application.internal.model.formResponse.FormResponse;
-import co600.weffs.application.internal.model.formResponse.FormResponseDetail;
 import co600.weffs.application.internal.security.jwt.MustBeAuthorized;
 import co600.weffs.application.internal.services.flowable.FormWorkflowService;
 import co600.weffs.application.internal.services.form.FormDetailService;
 import co600.weffs.application.internal.services.form.FormService;
 import co600.weffs.application.internal.services.formResponse.FormResponseDetailService;
 import co600.weffs.application.internal.services.formResponse.FormResponseService;
+import co600.weffs.application.internal.services.team.TeamDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,18 +32,22 @@ public class FormWorkflowController {
 
   private FormResponseDetailService formResponseDetailService;
 
+  private TeamDetailService teamDetailService;
+
   @Autowired
   public FormWorkflowController(
       FormWorkflowService formWorkflowService,
       FormService formService,
       FormResponseService formResponseService,
       FormDetailService formDetailService,
-      FormResponseDetailService formResponseDetailService) {
+      FormResponseDetailService formResponseDetailService,
+      TeamDetailService teamDetailService) {
     this.formWorkflowService = formWorkflowService;
     this.formService = formService;
     this.formResponseService = formResponseService;
     this.formDetailService = formDetailService;
     this.formResponseDetailService = formResponseDetailService;
+    this.teamDetailService = teamDetailService;
   }
 
   @MustBeAuthorized
@@ -57,7 +59,7 @@ public class FormWorkflowController {
     FormResponse formResponse = formResponseService.create(
         filler,
         assigner,
-        frontendAssignWorkflowVariables.get_assignerTeamDetail(),
+        teamDetailService.getTeamDetailById(frontendAssignWorkflowVariables.get_assignerTeamDetail().getId()),
         formDetailService.getFormDetailByForm(formService.getFormById(frontendAssignWorkflowVariables.get_formId()))
     );
 

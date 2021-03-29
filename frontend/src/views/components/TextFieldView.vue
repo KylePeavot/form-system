@@ -1,8 +1,8 @@
 <template>
   <div>
     <BaseStyleLayout title="Text field demo" :selected-page="page">
-      <TextField :level="2" title="Full name" guidance="Please enter your first name, surname, and any middle names" :text-value="textValueQ1"/>
-      <TextField :level="3" title="Mother's maiden name" guidance="Please enter your mother's maiden name for... security reasons" :text-value="textValueQ2"/>
+      <TextField :level="2" title="Full name" guidance="Please enter your first name, surname, and any middle names" :text-value="textValueQ1" :current-form-display-mode="currentFormDisplayMode"/>
+      <TextField :level="3" title="Mother's maiden name" guidance="Please enter your mother's maiden name for... security reasons" :text-value="textValueQ2" :current-form-display-mode="currentFormDisplayMode"/>
     </BaseStyleLayout>
   </div>
 </template>
@@ -15,6 +15,7 @@ import BaseStyleLayout from "../../components/layout/BaseStyleLayout.vue";
 import Pages from "../../models/navigation/Pages";
 import TextField from "@/components/core/TextField.vue";
 import TextValue from "@/models/form/TextValue";
+import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 
 
 @Component({
@@ -30,6 +31,8 @@ import TextValue from "@/models/form/TextValue";
 
     private textValueQ1 = new TextValue("");
     private textValueQ2 = new TextValue("");
+
+    private currentFormDisplayMode = new CurrentFormDisplayMode(false, false, true);
 
   }
 

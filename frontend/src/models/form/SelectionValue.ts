@@ -2,17 +2,19 @@ import SelectionValueInterface from "@/models/form/interfaces/SelectionValueInte
 
 export default class SelectionValue {
 
+  private _questionDetailId: number | null;
   private _label: string;
   private _value: boolean;
 
-  constructor(label: string, value: boolean) {
+  constructor(label: string, value: boolean, questionDetailId?: number) {
     this._label = label;
     this._value = value;
+    this._questionDetailId = questionDetailId || -1;
   }
 
   static mapSelectionValueInterfaceToSelectionValue(selectionValueInterface: any): SelectionValue {
     selectionValueInterface = selectionValueInterface as SelectionValueInterface;
-    return new SelectionValue(selectionValueInterface._label, selectionValueInterface._value);
+    return new SelectionValue(selectionValueInterface._label, selectionValueInterface._value, selectionValueInterface._questionDetailId);
   }
 
   get label(): string {
