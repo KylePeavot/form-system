@@ -56,7 +56,7 @@ export default class DashboardItem extends Vue {
   }
 
   private respondUrl() {
-    return Pages.ROUTES.FORM.FILL_FORM.url.replace(":id", this.response.id);
+    return Pages.ROUTES.FORM.FILL_FORM.url.replace(":id", this.response.id.toString());
   }
 
 }
