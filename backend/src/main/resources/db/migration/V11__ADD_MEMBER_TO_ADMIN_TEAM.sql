@@ -1,0 +1,2 @@
+INSERT INTO team_member(team_detail_id, username, can_modify_forms, can_manage_team, created_timestamp, created_by, status_control)
+VALUES (1, 'kp535', true, true, CURRENT_TIMESTAMP, 'weffs_system', true);

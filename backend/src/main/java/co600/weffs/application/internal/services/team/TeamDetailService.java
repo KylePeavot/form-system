@@ -17,6 +17,11 @@ public class TeamDetailService {
     this.teamDetailRepository = teamDetailRepository;
   }
 
+  public TeamDetail getTeamDetailById(int id) {
+    return teamDetailRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("No TeamDetail found with id: " + id));
+  }
+
   public void save(TeamDetail teamDetail) {
     teamDetailRepository.save(teamDetail);
   }

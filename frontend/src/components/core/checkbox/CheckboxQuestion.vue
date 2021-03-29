@@ -4,7 +4,7 @@
       <button class="popover-menu__item">Move</button>
       <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
     </BaseQuestion>
-    <Checkbox :id="id" :selection-value="selectionValue" :current-form-display-mode="currentFormDisplayMode" :is-deletable="false" :can-remove="false"/>
+    <Checkbox :id="id" :selection-value="selectionValue" :current-form-display-mode="currentFormDisplayMode" :is-deletable="false" :can-remove="false" @props-updated="updateProps"/>
   </div>
 </template>
 
@@ -48,13 +48,10 @@ import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 
     created() {
       this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
-
-      //Required to map from raw JSON to an interface to a class
-      this.selectionValue = SelectionValue.mapSelectionValueInterfaceToSelectionValue(this.selectionValue);
     }
 
-    updateProps(baseQuestionProps: BaseQuestionProps) {
-      this.$emit('props-updated', {title: baseQuestionProps.title, guidance: baseQuestionProps.guidance});
+    updateProps() {
+      this.$emit('props-updated', this.$props);
     }
 
     deleteComponent() {

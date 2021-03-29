@@ -74,6 +74,18 @@ const routes: Array<RouteConfig> = [
     })
   },
   {
+    path: Pages.ROUTES.FORM.FILL_FORM.url,
+    name: Pages.ROUTES.FORM.FILL_FORM.name,
+    component: () => import ("../views/forms/FormView.vue"),
+    meta: {
+      loginRequired: true
+    },
+    props: route => ({
+      mode: FormDisplayModeEnum.FORM_FILLING,
+      id: route.params.id
+    })
+  },
+  {
     path: Pages.ROUTES.FORM.SEND_FORM.url,
     name: Pages.ROUTES.FORM.SEND_FORM.name,
     component: () => import("../views/forms/SendFormView.vue"),

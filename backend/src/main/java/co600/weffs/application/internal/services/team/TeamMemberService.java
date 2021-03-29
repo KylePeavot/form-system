@@ -1,5 +1,6 @@
 package co600.weffs.application.internal.services.team;
 
+import co600.weffs.application.internal.model.error.EntityNotFoundException;
 import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.error.EntityNotFoundException;
 import co600.weffs.application.internal.model.error.InvalidSizeException;
@@ -98,7 +99,8 @@ public class TeamMemberService {
   }
 
   public TeamMember getTeamMemberFromUsernameAndTeamDetail(String username, TeamDetail teamDetail) {
-    return teamMemberRepository.findByUsernameAndTeamDetail(username, teamDetail);
+    return teamMemberRepository.findByUsernameAndTeamDetail(username, teamDetail)
+        .orElseThrow(() -> new EntityNotFoundException("No TeamMember found with username: " + username + " and teamDetail_Id: " + teamDetail.getId()));
   }
 
   public void saveAll(List<TeamMember> teamMembers) {
