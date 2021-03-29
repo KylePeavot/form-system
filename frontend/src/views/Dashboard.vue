@@ -38,8 +38,16 @@ export default class Dashboard extends Vue {
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD;
   private loaded = false;
 
+  private refreshInterval: number | undefined = undefined;
+
   mounted() {
     this.getDashboardContents();
+    this.refreshInterval = setInterval(this.getDashboardContents, 100);
+  }
+
+  unmounted() {
+    clearInterval(this.refreshInterval);
+    this.refreshInterval = undefined;
   }
 
   getDashboardContents() {

@@ -1,7 +1,7 @@
 package co600.weffs.application.internal.controller.flowable;
 
+import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.flowable.frontend.FrontendAssignWorkflowVariables;
-import co600.weffs.application.internal.model.flowable.frontend.FrontendDeleteWorkflowVariables;
 import co600.weffs.application.internal.model.flowable.frontend.FrontendSubmitWorkflowVariables;
 import co600.weffs.application.internal.model.formResponse.FormResponse;
 import co600.weffs.application.internal.security.jwt.MustBeAuthorized;
@@ -15,7 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -77,11 +79,11 @@ public class FormWorkflowController {
   }
 
   @MustBeAuthorized
-  @PostMapping("/delete")
-  public void deleteForm(@RequestBody FrontendDeleteWorkflowVariables frontendDeleteWorkflowVariables) {
+  @PostMapping("/delete/{id}")
+  public void deleteForm(@RequestAttribute("User") AppUser appUser, @PathVariable("id") Integer id) {
     formWorkflowService.deleteFormResponse(
-        frontendDeleteWorkflowVariables.get_fillerUsername(),
-        formResponseService.getFormResponseById(frontendDeleteWorkflowVariables.get_formResponseId())
+        appUser.getUsername(),
+        formResponseService.getFormResponseById(id)
     );
   }
 
