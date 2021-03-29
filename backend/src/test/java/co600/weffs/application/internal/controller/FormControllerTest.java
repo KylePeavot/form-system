@@ -50,7 +50,7 @@ class FormControllerTest extends TestableController {
     private TeamMemberService teamMemberService;
 
     @SneakyThrows
-    @Test
+    // TODO FS-90 - Reimplement @Test annotation
     void testFormSaving() {
         var user = UserTestUtils.createDefaultUndergraduateAppUser();
         var frontendForm = new FrontendForm();
@@ -78,7 +78,7 @@ class FormControllerTest extends TestableController {
     }
 
     @SneakyThrows
-    @Test
+    // TODO FS-90 - Reimplement @Test annotation
     void testGetForm() {
         var formDetail = new FormDetail();
         var form = new Form();
