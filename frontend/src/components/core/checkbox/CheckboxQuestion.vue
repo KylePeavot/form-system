@@ -1,7 +1,7 @@
 <template>
   <div name="checkbox-question-container">
     <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" @move-component="moveComponent($event)" @delete-component="deleteComponent" :current-form-display-mode="currentFormDisplayMode" />
-    <Checkbox :id="id" :selection-value="selectionValue" :current-form-display-mode="currentFormDisplayMode" :is-deletable="false" :can-remove="false"/>
+    <Checkbox :id="id" :selection-value="selectionValue" :current-form-display-mode="currentFormDisplayMode" :is-deletable="false" :can-remove="false" @props-updated="updateProps"/>
   </div>
 </template>
 
@@ -45,13 +45,10 @@ import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 
     created() {
       this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
-
-      //Required to map from raw JSON to an interface to a class
-      this.selectionValue = SelectionValue.mapSelectionValueInterfaceToSelectionValue(this.selectionValue);
     }
 
-    updateProps(baseQuestionProps: BaseQuestionProps) {
-      this.$emit('props-updated', {title: baseQuestionProps.title, guidance: baseQuestionProps.guidance});
+    updateProps() {
+      this.$emit('props-updated', this.$props);
     }
 
     moveComponent(direction: string) {
