@@ -1,9 +1,6 @@
 <template>
   <div name="text-field-container" class="question__text-field-container">
-    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" :current-form-display-mode="currentFormDisplayMode">
-      <button class="popover-menu__item">Move</button>
-      <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
-    </BaseQuestion>
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" @delete-component="deleteComponent" @move-component="moveComponent($event)" :current-form-display-mode="currentFormDisplayMode" />
     <input :class="{'question__text-field':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" type="text" name="fieldResponse" :disabled="!currentFormDisplayMode.isFill" placeholder=" " v-model="textValue._value" @input="updateProps"/>
   </div>
 </template>
@@ -42,6 +39,10 @@ import SelectionValue from "@/models/form/SelectionValue";
 
     created() {
       this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
+    }
+
+    moveComponent(direction: string) {
+      this.$emit('move-component', direction);
     }
 
     deleteComponent() {

@@ -44,11 +44,11 @@ export default class FormComponent {
     this._componentProps = value;
   }
 
-  get order(): number {
+  public get order(): number {
     return this._order;
   }
 
-  set order(value: number) {
+  public set order(value: number) {
     this._order = value;
   }
 }

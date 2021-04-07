@@ -16,8 +16,14 @@
         </SidebarGroup>
       </template>
       <slot>
-        <div :v-if="components !== undefined" v-for="component in components" :key="component.order" >
-          <component :is="component.componentType" v-bind="component.componentProps" :current-form-display-mode="currentFormDisplayMode" @delete-component="removeFromLayout(component)" @props-updated="updateComponentProps($event, component)"/>
+        <div :v-if="components !== undefined" v-for="(component, index) in components" :key="`${component.order}-${new Date().getUTCMilliseconds()}`">
+          <component
+            :is="component.componentType"
+            v-bind="component.componentProps"
+            :current-form-display-mode="currentFormDisplayMode" @delete-component="removeFromLayout(component)"
+            @props-updated="updateComponentProps($event, component)"
+            @move-component="moveComponent($event, index)"
+          />
         </div>
       </slot>
       <router-link :to="redirectUrl">
@@ -45,6 +51,7 @@ import WebRequestUtils from "@/utils/WebRequestUtils";
 import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 import Heading from "@/components/core/componentExtras/Heading.vue";
 import EditableComponent from "@/components/core/componentExtras/EditableComponent.vue";
+import Vuex from "vuex";
 
 @Component({
   components: {
@@ -66,7 +73,6 @@ export default class FormCreatorView extends Vue {
   saveForm(){
     const form = new Form(this.formName,this.components);
     WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form/save`,form);
-
   }
 
   addComponentToList(event: Event) {
@@ -75,9 +81,7 @@ export default class FormCreatorView extends Vue {
     let componentType = "";
     let componentProps: any = {};
 
-    for (let i = 0; i < this.components.length; i++) {
-      this.components[i].order = (i + 1) * 100;
-    }
+    this.normaliseComponentsOrder();
 
     const order = (this.components.length + 1) * 100;
 
@@ -150,10 +154,58 @@ export default class FormCreatorView extends Vue {
     ));
   }
 
+  get componentsFromStore(): FormComponent[] {
+    console.log(this.$store.state.createFormComponent);
+    return this.$store.state.createFormComponent;
+  }
+
   removeFromLayout(componentToDelete: FormComponent) {
     this.components = this.components.filter(item => {
       return item !== componentToDelete;
     })
+  }
+
+  moveComponent(direction: string, index: number) {
+    const updatedElement = this.components[index];
+
+    //remove the component
+    this.removeFromLayout(updatedElement);
+
+    //edit the order
+    if (direction === 'up') {
+      updatedElement.order -= 101;
+    } else if (direction === 'down') {
+      updatedElement.order += 101;
+    }
+
+    //add it to the end
+    this.components.push(updatedElement);
+
+    //sort the list by order
+    this.components = this.components.sort((a, b) => {
+      if (a.order < b.order) {
+        return -1;
+      } else if (a.order > b.order) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
+    //normalise the in order list
+    this.normaliseComponentsOrder();
+  }
+
+  normaliseComponentsOrder() {
+    const oldComponents: FormComponent[] = [];
+    this.components.forEach(value => oldComponents.push(value));
+    this.components = [];
+
+    for (let i = 0; i < oldComponents.length; i++) {
+      const updatedComponent = oldComponents[i];
+      updatedComponent.order = ((i + 1) * 100);
+      this.components.push(updatedComponent);
+    }
   }
 
   updateComponentProps(newProp: any, component: FormComponent) {
@@ -161,8 +213,7 @@ export default class FormCreatorView extends Vue {
     Object.keys(newProp).forEach(key => {
       unsafeComponent.componentProps[key] = newProp[key];
       unsafeComponent.componentProps = (() => unsafeComponent.componentProps)();
-    })
+    });
   }
-
 }
 </script>

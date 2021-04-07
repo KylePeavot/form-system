@@ -1,9 +1,6 @@
 <template>
   <div name="text-area-container" class="question__text-area-container">
-    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" :current-form-display-mode="currentFormDisplayMode">
-      <button class="popover-menu__item">Move</button>
-      <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
-    </BaseQuestion>
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" @move-component="moveComponent($event)" @delete-component="deleteComponent" :current-form-display-mode="currentFormDisplayMode"/>
     <textarea :class="{'question__text-area':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" name="fieldResponse" rows="4" :disabled="!currentFormDisplayMode.isFill" v-model="textValue._value" @input="updateProps"/>
   </div>
 </template>
@@ -40,6 +37,10 @@ import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 
     created() {
       this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
+    }
+
+    moveComponent(direction: string) {
+      this.$emit('move-component', direction);
     }
 
     deleteComponent() {
