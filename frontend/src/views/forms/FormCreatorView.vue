@@ -256,7 +256,6 @@ export default class FormCreatorView extends Vue {
       .then(v => v as TeamView[])
       .then(v => this.availableTeams = v)
       .then(() => this.teamsLoaded = true);
-
   }
 
   get createTeamLink() {
