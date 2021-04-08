@@ -16,6 +16,7 @@ import co600.weffs.application.utils.UserTestUtils;
 import co600.weffs.application.utils.ValueMapUtils;
 import co600.weffs.application.utils.forms.FormTestUtils;
 import co600.weffs.application.utils.routes.Router;
+import edu.emory.mathcs.backport.java.util.Collections;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -57,7 +58,7 @@ class FormControllerTest extends TestableController {
         var user = UserTestUtils.createDefaultUndergraduateAppUser();
         var frontendForm = new FrontendForm();
         frontendForm.set_team(new TeamView());
-        frontendForm.set_componentList(List.of(new FrontendComponent()));
+        frontendForm.set_componentList(List.of(new FrontendComponent("Component", Collections.emptyMap(), 1)));
         frontendForm.set_name("Test");
         var response = mockMvc.perform(
                 post(Router.determineRoute(on(FormController.class).saveForm(null, null)))
