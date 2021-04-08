@@ -88,7 +88,7 @@ export default class FormView extends Vue {
   }
 
   submitFormResponseAsDraft() {
-    WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form-response/save-draft/${this.id}`, this.form);
+    WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form-response/save-draft/${this.id}`, this.form!);
   }
 
   submitFormResponse() {
