@@ -1,9 +1,6 @@
 <template>
   <div name="checkbox-group-container" class="pb-5">
-    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" :current-form-display-mode="currentFormDisplayMode">
-      <button class="popover-menu__item">Move</button>
-      <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
-    </BaseQuestion>
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" @move-component="moveComponent($event)" @delete-component="deleteComponent" :current-form-display-mode="currentFormDisplayMode" />
     <div v-for="(checkbox, index) of selectionValues" :key="`${idPrefix}-${index}`">
       <Checkbox :id="`${idPrefix}-${index}`" :selection-value="checkbox" :can-remove="true" @props-updated="updateProps" @deleteCheckbox="deleteCheckbox(checkbox)" :current-form-display-mode="currentFormDisplayMode"/>
     </div>
@@ -63,6 +60,10 @@ export default class CheckboxGroup extends Vue {
 
   updateProps() {
     this.$emit('props-updated', this.$props);
+  }
+
+  moveComponent(direction: string) {
+    this.$emit('move-component', direction);
   }
 
   deleteComponent() {

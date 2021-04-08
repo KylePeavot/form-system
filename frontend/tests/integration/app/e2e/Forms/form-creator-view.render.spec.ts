@@ -96,19 +96,17 @@ describe("Form creator page", () => {
   it("can add and remove checkbox questions to and from a checkbox group", () => {
     cy.get('button').contains("Multiple checkboxes").click();
 
-    cy.get('div[name="checkbox-group-container"]').within(() => {
-      cy.get('button').contains("+ Add new checkbox").click();
-      cy.get('[class="checkbox__container"]').should('have.length', 3);
+    cy.get('div[name="checkbox-group-container"]').get('button').contains("+ Add new checkbox").click();
+    cy.get('[class="checkbox__container"]').should('have.length', 3);
 
-      cy.get('[class="checkbox__container"]').eq(0).within(() => {
-        cy.get('[class="hidden-button ph-pencil"]').click({force: true});
-        cy.get('textarea[class="checkbox__label-edit"]').type(" test {enter}");
-        cy.get('label').contains("Add a response here test");
+    cy.get('[class="checkbox__container"]').eq(0).within(() => {
+      cy.get('[class="hidden-button ph-pencil"]').click({force: true});
+      cy.get('textarea[class="checkbox__label-edit"]').type(" test {enter}");
+      cy.get('label').contains("Add a response here test");
 
-        cy.get('[class="hidden-button ph-trash"]').click({force: true});
-      });
-
-      cy.get('[class="checkbox__container"]').should('have.length', 2);
+      cy.get('[class="hidden-button ph-trash"]').click({force: true});
     });
+
+    cy.get('[class="checkbox__container"]').should('have.length', 2);
   });
 });
