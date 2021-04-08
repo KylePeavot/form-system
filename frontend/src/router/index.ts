@@ -86,6 +86,17 @@ const routes: Array<RouteConfig> = [
     })
   },
   {
+    path: Pages.ROUTES.FORM.SEND_FORM.url,
+    name: Pages.ROUTES.FORM.SEND_FORM.name,
+    component: () => import("../views/forms/SendFormView.vue"),
+    meta: {
+      loginRequired: true
+    },
+    props: route => ({
+      formDetailId: route.params.id
+    })
+  },
+  {
     path: Pages.ROUTES.SHOWN_IN_NAVBAR.COMPONENTS.subRoutes.TEXT_FIELD.url,
     name: Pages.ROUTES.SHOWN_IN_NAVBAR.COMPONENTS.subRoutes.TEXT_FIELD.name,
     component: () => import("../views/components/TextFieldView.vue")

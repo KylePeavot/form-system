@@ -20,4 +20,14 @@
       @apply outline-black;
     }
   }
+
+  &--action {
+    @apply text-white bg-gray-700 border-gray-700;
+    &:focus, &:hover {
+      @apply bg-gray-800 border-gray-800;
+    }
+    &:focus {
+      @apply outline-black;
+    }
+  }
 }

@@ -37,7 +37,15 @@ import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 import FormComponent from "@/models/form/FormComponent";
 
 @Component({
-  components: {FormStyleLayout, Heading, TextField, TextArea, CheckboxQuestion, CheckboxGroup, RadioGroup}
+  components: {
+    FormStyleLayout,
+    Heading,
+    TextField,
+    TextArea,
+    CheckboxQuestion,
+    CheckboxGroup,
+    RadioGroup
+  }
 })
 export default class FormView extends Vue {
   private page: string | undefined;
