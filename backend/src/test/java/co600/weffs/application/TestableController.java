@@ -1,7 +1,10 @@
 package co600.weffs.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -33,6 +36,11 @@ public class TestableController {
     requestServlet = new MockHttpServletRequest();
     requestAttributes = new ServletRequestAttributes(requestServlet);
     RequestContextHolder.setRequestAttributes(requestAttributes);
+  }
+
+  @Test
+  public void dummyTest() {
+    assertThat(true).isTrue();
   }
 
 

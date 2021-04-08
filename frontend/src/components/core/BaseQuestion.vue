@@ -12,6 +12,9 @@
         <Popover>
           <button class="popover-menu__item" v-show="!guidanceTextExists" @click="addGuidance">Add guidance</button>
           <button class="popover-menu__item" v-show="guidanceTextExists" @click="removeGuidance">Remove guidance</button>
+          <button class="popover-menu__item" @click="moveComponent('up')">Move up</button>
+          <button class="popover-menu__item" @click="moveComponent('down')">Move down</button>
+          <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
           <slot></slot>
         </Popover>
       </div>
@@ -76,6 +79,14 @@ export default class BaseQuestion extends Vue {
   removeGuidance() {
     this.baseQuestionProps!.guidance = "";
     this.guidanceTextExists = false;
+  }
+
+  moveComponent(direction: string) {
+    this.$emit('move-component', direction);
+  }
+
+  deleteComponent() {
+    this.$emit('delete-component');
   }
 
 }

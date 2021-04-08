@@ -1,9 +1,6 @@
 <template>
   <div name="radio-group-container">
-    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" :current-form-display-mode="currentFormDisplayMode">
-      <button class="popover-menu__item">Move</button>
-      <button class="popover-menu__item popover-menu__item--danger" @click="deleteComponent">Delete</button>
-    </BaseQuestion>
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" @move-component="moveComponent($event)" @delete-component="deleteComponent" :current-form-display-mode="currentFormDisplayMode" />
     <div v-for="(radio, index) of selectionValues" :key="`${idPrefix}-${index}`">
       <div class="radio__container">
         <input :id="`${idPrefix}-${index}`" :class="{'radio__item':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" type="radio" :disabled="!currentFormDisplayMode.isFill" :value="radio.label" v-model="selected" @input="updateProps">
@@ -92,6 +89,10 @@ export default class RadioGroup extends Vue {
       return radioToDelete !== value;
     })
     this.$emit('propsUpdated', {value: newValues});
+  }
+
+  moveComponent(direction: string) {
+    this.$emit('move-component', direction);
   }
 
   deleteComponent() {

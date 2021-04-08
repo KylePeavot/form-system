@@ -2,6 +2,7 @@ package co600.weffs.application.internal.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import co600.weffs.application.MockitoTest;
 import co600.weffs.application.internal.model.form.Form;
@@ -11,11 +12,18 @@ import co600.weffs.application.internal.model.form.QuestionDetail;
 import co600.weffs.application.internal.model.form.frontend.FrontendComponent;
 import co600.weffs.application.internal.model.form.frontend.FrontendComponentTypes;
 import co600.weffs.application.internal.model.form.frontend.FrontendForm;
+import co600.weffs.application.internal.model.form.Question;
+import co600.weffs.application.internal.model.form.QuestionDetail;
+import co600.weffs.application.internal.model.team.Team;
+import co600.weffs.application.internal.model.team.TeamMember;
 import co600.weffs.application.internal.services.form.FormCreationService;
 import co600.weffs.application.internal.services.form.FormDetailService;
 import co600.weffs.application.internal.services.form.FormService;
 import co600.weffs.application.internal.services.form.QuestionDetailService;
 import co600.weffs.application.internal.services.form.QuestionService;
+import co600.weffs.application.internal.services.team.TeamMemberService;
+import co600.weffs.application.internal.services.team.TeamService;
+import co600.weffs.application.internal.view.team.TeamView;
 import co600.weffs.application.utils.UserTestUtils;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +47,12 @@ class FormCreationServiceTest extends MockitoTest {
     @Mock
     private QuestionDetailService questionDetailService;
 
+    @Mock
+    private TeamMemberService teamMemberService;
+
+    @Mock
+    private TeamService teamService;
+
     @InjectMocks
     private FormCreationService formCreationService;
 
@@ -48,14 +62,22 @@ class FormCreationServiceTest extends MockitoTest {
 
     private FormDetail formDetail;
 
+    private TeamView teamView;
+
     @BeforeEach
     void setUp() {
         formDetail = new FormDetail();
         frontendForm = new FrontendForm();
         frontendForm.set_name("ij57");
+
+        teamView = new TeamView(1, "Test team", List.of(new TeamMember()));
+        frontendForm.set_team(teamView);
+
         frontendComponent = new FrontendComponent(
             FrontendComponentTypes.TEXT_FIELD.getComponentType(),
-            Map.of("guidance","Test Guidance","title","Test Title"),
+            Map.of(
+            "guidance","Test Guidance",
+            "title","Test Title"),
         100
         );
         frontendForm.set_componentList(List.of(frontendComponent));
@@ -64,6 +86,11 @@ class FormCreationServiceTest extends MockitoTest {
     // TODO FS-90 - Reimplement @Test annotation
     void createForm() {
         var user = UserTestUtils.createDefaultUndergraduateAppUser();
+
+        when(teamMemberService.getTeamViewById(1)).thenReturn(teamView);
+        when(teamMemberService.canUserModifyFormsForTeamView(user, teamView)).thenReturn(true);
+        when(teamService.getById(1)).thenReturn(new Team());
+
         formCreationService.createForm(user,frontendForm);
         var formCaptor = ArgumentCaptor.forClass(Form.class);
         verify(formService).save(formCaptor.capture());
