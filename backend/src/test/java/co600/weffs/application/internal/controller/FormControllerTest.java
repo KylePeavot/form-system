@@ -54,9 +54,6 @@ class FormControllerTest extends TestableController {
     @MockBean
     private TeamMemberService teamMemberService;
 
-    @MockBean
-    private TeamMemberService teamMemberService;
-
     @SneakyThrows
     // TODO FS-90 - Reimplement @Test annotation
     void testFormSaving() {
