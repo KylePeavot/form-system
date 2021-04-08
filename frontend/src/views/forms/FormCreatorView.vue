@@ -10,6 +10,7 @@
         <SidebarGroup title="Components">
           <button name="addTextField" type="button" class="sidebar-group__item-button" @click="addComponentToList">Text field</button>
           <button name="addTextArea" type="button" class="sidebar-group__item-button" @click="addComponentToList">Large text field</button>
+          <button name="addDateField" type="button" class="sidebar-group__item-button" @click="addComponentToList">Date field</button>
           <button name="addCheckboxSingle" type="button" class="sidebar-group__item-button" @click="addComponentToList">Single checkbox</button>
           <button name="addCheckboxGroup" type="button" class="sidebar-group__item-button" @click="addComponentToList">Multiple checkboxes</button>
           <button name="addRadioGroup" type="button" class="sidebar-group__item-button" @click="addComponentToList">Radio group</button>
@@ -69,7 +70,7 @@ import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 import Heading from "@/components/core/componentExtras/Heading.vue";
 import EditableComponent from "@/components/core/componentExtras/EditableComponent.vue";
 import TeamView from "@/models/team/TeamView";
-import Vuex from "vuex";
+import DateField from "@/components/core/DateField.vue";
 
 @Component({
   components: {
@@ -77,7 +78,7 @@ import Vuex from "vuex";
     EditableComponent,
     RadioGroup,
     CheckboxGroup,
-    CheckboxQuestion, SidebarGroup, TextArea, TextField, TwoColumnStyleLayout}
+    CheckboxQuestion, SidebarGroup, TextArea, TextField, DateField, TwoColumnStyleLayout}
 })
 
 export default class FormCreatorView extends Vue {
@@ -132,6 +133,16 @@ export default class FormCreatorView extends Vue {
       }
       case "addTextArea": {
         componentType = "TextArea";
+        componentProps = {
+          level: 2,
+          title: 'Question title',
+          guidance: 'Question guidance',
+          textValue: new TextValue("")
+        };
+        break;
+      }
+      case "addDateField": {
+        componentType = "DateField";
         componentProps = {
           level: 2,
           title: 'Question title',
