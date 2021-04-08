@@ -18,7 +18,7 @@
       </template>
       <slot v-if="teamsLoaded && availableTeams.length > 0">
         <Heading :level="2">Who will own this form?</Heading>
-        <select v-model="selectedTeam">
+        <select class="rounded mt-2" v-model="selectedTeam">
           <option v-for="(team) in availableTeams" :key="`${team.teamName}-${team.teamId}`">
             {{ team.teamName }}
           </option>

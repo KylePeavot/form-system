@@ -3,6 +3,7 @@ import TextValue from "@/models/form/TextValue";
 import SelectionValue from "@/models/form/SelectionValue";
 import SelectionValueInterface from "@/models/form/interfaces/SelectionValueInterface";
 import TextValueInterface from "@/models/form/interfaces/TextValueInterface";
+import DateValue from "@/models/form/DateValue";
 
 export default class FormComponent {
   private readonly _componentType: string;
@@ -23,6 +24,8 @@ export default class FormComponent {
     Object.keys(componentProps).forEach(key => {
       if (key === "textValue") {
         Object(componentProps)[key] = TextValue.mapTextValueInterfaceToTextValue(Object(componentProps)[key]);
+      } else if (key === "dateValue") {
+        Object(componentProps)[key] = DateValue.mapDateValueInterfaceToDateValue(Object(componentProps)[key]);
       } else if (key === "selectionValue") {
         Object(componentProps)[key] = SelectionValue.mapSelectionValueInterfaceToSelectionValue(Object(componentProps)[key]);
       } else if (key === "selectionValues") {
