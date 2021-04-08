@@ -15,7 +15,16 @@
           <button name="addRadioGroup" type="button" class="sidebar-group__item-button" @click="addComponentToList">Radio group</button>
         </SidebarGroup>
       </template>
-      <slot>
+      <slot v-if="teamsLoaded && availableTeams.length > 0">
+        <Heading :level="2">Who will own this form?</Heading>
+        <select v-model="selectedTeam">
+          <option v-for="(team) in availableTeams" :key="`${team.teamName}-${team.teamId}`">
+            {{ team.teamName }}
+          </option>
+        </select>
+        <br/><br/>
+        <hr/>
+        <br/>
         <div :v-if="components !== undefined" v-for="(component, index) in components" :key="`${component.order}-${new Date().getUTCMilliseconds()}`">
           <component
             :is="component.componentType"
@@ -25,10 +34,18 @@
             @move-component="moveComponent($event, index)"
           />
         </div>
+        <br/>
+        <router-link :to="redirectUrl">
+          <button class="button button--primary" @click="saveForm">Save Form</button>
+        </router-link>
       </slot>
-      <router-link :to="redirectUrl">
-        <button class="button button--primary" @click="saveForm">Save Form</button>
-      </router-link>
+      <slot v-else-if="teamsLoaded">
+        <p>You don't have permissions to modify any forms within any team.</p>
+        <p>You can <router-link :to="createTeamLink" class="text-blue-700 underline"><a>create your own team</a></router-link> or ask a team manager for access.</p>
+      </slot>
+      <slot v-else>
+        <i class="animate-spin ph-arrow-clockwise"/><span>Getting suitable teams</span>
+      </slot>
     </TwoColumnStyleLayout>
   </div>
 </template>
@@ -51,6 +68,7 @@ import WebRequestUtils from "@/utils/WebRequestUtils";
 import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 import Heading from "@/components/core/componentExtras/Heading.vue";
 import EditableComponent from "@/components/core/componentExtras/EditableComponent.vue";
+import TeamView from "@/models/team/TeamView";
 import Vuex from "vuex";
 
 @Component({
@@ -69,10 +87,26 @@ export default class FormCreatorView extends Vue {
   private currentFormDisplayMode: CurrentFormDisplayMode = new CurrentFormDisplayMode(false, true, false);
   private redirectUrl = Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD.url;
   private formName = "Untitled form";
+  private availableTeams: TeamView[] = [];
+  private selectedTeam: string | null = null;
+  private teamsLoaded = false;
 
   saveForm(){
-    const form = new Form(this.formName,this.components);
-    WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form/save`,form);
+    if (this.formName.length > 0 && this.selectedTeam !== null && this.components.length > 0) {
+      const form = new Form(this.formName, this.availableTeams.find(value => value.teamName === this.selectedTeam)!, this.components);
+      WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form/save`, form)
+        .then(value => value.json())
+        .then(value => {
+          if (value.success) {
+            this.$router.push(Pages.ROUTES.SHOWN_IN_NAVBAR.FORMS.subRoutes.SEARCH_FORMS.url);
+          }
+        })
+        .catch(e => {
+          // TODO FS-39 - Either validation expired or user changed post values to something invalid.
+        });
+    } else {
+      // TODO FS-39 - Show users errors (No components? No form name? No selected team?)
+    }
   }
 
   addComponentToList(event: Event) {
@@ -215,5 +249,18 @@ export default class FormCreatorView extends Vue {
       unsafeComponent.componentProps = (() => unsafeComponent.componentProps)();
     });
   }
+
+  mounted() {
+    WebRequestUtils.get(`${WebRequestUtils.BASE_URL}/api/teams?canModifyForms=true`, true)
+      .then(value => value.json())
+      .then(v => v as TeamView[])
+      .then(v => this.availableTeams = v)
+      .then(() => this.teamsLoaded = true);
+  }
+
+  get createTeamLink() {
+    return Pages.ROUTES.SHOWN_IN_NAVBAR.TEAMS.subRoutes.CREATE_TEAM.url;
+  }
+
 }
 </script>

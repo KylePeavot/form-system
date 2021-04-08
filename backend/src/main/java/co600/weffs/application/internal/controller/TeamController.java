@@ -8,16 +8,13 @@ import co600.weffs.application.internal.services.team.TeamCreationService;
 import co600.weffs.application.internal.services.team.TeamMemberService;
 import co600.weffs.application.internal.validators.teams.TeamCreationValidator;
 import co600.weffs.application.internal.view.team.TeamView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/teams")
@@ -39,8 +36,14 @@ public class TeamController {
 
   @MustBeAuthorized
   @GetMapping
-  public List<TeamView> getAvailableTeams(@RequestAttribute("User") AppUser appUser) {
-    return teamMemberService.getTeamViewForUsername(appUser.getUsername());
+  public List<TeamView> getAvailableTeams(@RequestAttribute("User") AppUser appUser,
+                                          @RequestParam(name = "canModifyForms", required = false) Optional<Boolean> modifyFormsFilter,
+                                          @RequestParam(name = "canManageTeam", required = false) Optional<Boolean> manageTeamFilter) {
+    return teamMemberService.getTeamViewForUsername(appUser.getUsername())
+            .stream()
+            .filter(teamView -> modifyFormsFilter.isEmpty() || teamMemberService.canUserModifyFormsForTeamView(appUser, teamView))
+            .filter(teamView -> manageTeamFilter.isEmpty() || teamMemberService.canUserManageTeamView(appUser, teamView))
+            .collect(Collectors.toList());
   }
 
   @MustBeAuthorized
@@ -65,7 +68,7 @@ public class TeamController {
   public TeamView getTeam(@RequestAttribute("User") AppUser appUser,
       @PathVariable("id") Integer id) {
 
-    var teamView = teamMemberService.getTeamViewByIdForUser(id);
+    var teamView = teamMemberService.getTeamViewById(id);
     if (teamMemberService.canUserManageTeamView(appUser, teamView)) {
       return teamView;
     }
@@ -82,7 +85,7 @@ public class TeamController {
 
     try {
       teamCreationValidator.validate(teamCreation);
-      var teamView = teamMemberService.getTeamViewByIdForUser(id);
+      var teamView = teamMemberService.getTeamViewById(id);
       if (!teamMemberService.canUserManageTeamView(appUser, teamView)) {
         throw new NotAuthorizedException(String.format(
             "User [%s] is not authorized to modify team with ID [%d]",

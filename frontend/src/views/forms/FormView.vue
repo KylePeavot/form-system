@@ -1,14 +1,19 @@
 <template>
   <div>
     <FormStyleLayout :selected-page="page" :title="title">
-      <Heading :level="1">{{ form.name }}</Heading>
-      <div v-for="(component, index) in form.componentList" :key="component.order">
-        <component :is="component.componentType" v-bind="component.componentProps" :level="2" :id="index" :id-prefix="index" :current-form-display-mode="currentFormDisplayMode" @props-updated="updateComponentProps($event, component)"/>
-      </div>
-      <router-link :to="getDashboardUrl()">
-        <button v-if="currentFormDisplayMode.isFill" class="button my-5 p-2 rounded hover:bg-gray-100" @click="submitFormResponseAsDraft">Save as draft</button>
-        <button v-if="currentFormDisplayMode.isFill" class="button--primary my-5 p-2 rounded" @click="submitFormResponse">Submit form</button>
-      </router-link>
+      <template v-if="form !== null">
+        <Heading :level="1">{{ form.name }}</Heading>
+        <div v-for="(component, index) in form.componentList" :key="component.order">
+          <component :is="component.componentType" v-bind="component.componentProps" :level="2" :id="index" :id-prefix="index" :current-form-display-mode="currentFormDisplayMode" @props-updated="updateComponentProps($event, component)"/>
+        </div>
+        <router-link :to="getDashboardUrl()">
+          <button v-if="currentFormDisplayMode.isFill" class="button my-5 p-2 rounded hover:bg-gray-100" @click="submitFormResponseAsDraft">Save as draft</button>
+          <button v-if="currentFormDisplayMode.isFill" class="button--primary my-5 p-2 rounded" @click="submitFormResponse">Submit form</button>
+        </router-link>
+      </template>
+      <template v-else>
+        <Heading :level="1">Awaiting form</Heading>
+      </template>
     </FormStyleLayout>
   </div>
 </template>
@@ -39,7 +44,7 @@ export default class FormView extends Vue {
 
   private title: string | undefined;
 
-  private form = new Form("Awaiting form", []);
+  private form: Form | null = null;
 
   private currentFormDisplayMode: CurrentFormDisplayMode = new CurrentFormDisplayMode(false, false, false);
 
@@ -83,7 +88,7 @@ export default class FormView extends Vue {
   }
 
   submitFormResponseAsDraft() {
-    WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form-response/save-draft/${this.id}`, this.form);
+    WebRequestUtils.post(`${WebRequestUtils.BASE_URL}/api/form-response/save-draft/${this.id}`, this.form!);
   }
 
   submitFormResponse() {

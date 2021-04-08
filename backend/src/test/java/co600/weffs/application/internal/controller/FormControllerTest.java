@@ -4,15 +4,22 @@ import co600.weffs.application.TestableController;
 import co600.weffs.application.internal.model.form.Form;
 import co600.weffs.application.internal.model.form.FormDetail;
 import co600.weffs.application.internal.model.form.FormView;
+import co600.weffs.application.internal.model.form.frontend.FrontendComponent;
 import co600.weffs.application.internal.model.form.frontend.FrontendForm;
+import co600.weffs.application.internal.model.team.TeamMember;
 import co600.weffs.application.internal.services.form.FormCreationService;
 import co600.weffs.application.internal.services.form.FormDetailService;
 import co600.weffs.application.internal.services.form.FrontendFormService;
+import co600.weffs.application.internal.services.team.TeamMemberService;
+import co600.weffs.application.internal.view.team.TeamView;
 import co600.weffs.application.utils.UserTestUtils;
 import co600.weffs.application.utils.ValueMapUtils;
+import co600.weffs.application.utils.forms.FormTestUtils;
 import co600.weffs.application.utils.routes.Router;
+import edu.emory.mathcs.backport.java.util.Collections;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -42,12 +49,17 @@ class FormControllerTest extends TestableController {
     private FormDetailService formDetailService;
     @MockBean
     private FrontendFormService frontendFormService;
+    @MockBean
+    private TeamMemberService teamMemberService;
 
     @SneakyThrows
     @Test
     void testFormSaving() {
         var user = UserTestUtils.createDefaultUndergraduateAppUser();
         var frontendForm = new FrontendForm();
+        frontendForm.set_team(new TeamView());
+        frontendForm.set_componentList(List.of(new FrontendComponent("Component", Collections.emptyMap(), 1)));
+        frontendForm.set_name("Test");
         var response = mockMvc.perform(
                 post(Router.determineRoute(on(FormController.class).saveForm(null, null)))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -74,18 +86,20 @@ class FormControllerTest extends TestableController {
     @SneakyThrows
     @Test
     void testGetForm() {
-        var formDetail = new FormDetail();
-        var form = new Form();
-        formDetail.setLastUpdatedTimestamp(Instant.now());
-        form.setCreatedTimestamp(Instant.now());
-        form.setId(1);
-        formDetail.setForm(form);
+        var user = UserTestUtils.createDefaultUndergraduateAppUser();
+        var form = FormTestUtils.createBasicForm();
+        var formDetail = FormTestUtils.createBasicFormDetail(form);
         var formView = new FormView(formDetail);
-        when(formDetailService.getActiveFormViews()).thenReturn(List.of(formView));
+//        when(formDetailService.getActiveFormViews()).thenReturn(List.of(formView));
+        when(teamMemberService.getActiveViewableForms(user)).thenReturn(List.of(formView));
         var response = mockMvc.perform(
-                get(Router.determineRoute(on(FormController.class).getForm()))
+                get(Router.determineRoute(on(FormController.class).getForm(null)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jacksonMapper.writeValueAsString(formDetail))
+                        .with(mockHttpServletRequest -> {
+                            mockHttpServletRequest.setAttribute("User", user);
+                            return mockHttpServletRequest;
+                        })
                 )
                 .andReturn()
                 .getResponse();

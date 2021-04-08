@@ -25,7 +25,7 @@ export default class Pages {
             },
             FORMS: {
                 name: "Forms",
-                url: "/forms",
+                url: "/forms/browse",
                 subRoutes: {
                     SEARCH_FORMS: {name: "Browse forms", url: "/forms/browse"},
                     NEW_FORM: {name: "Create new form", url: "/forms/new"}

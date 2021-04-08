@@ -1,13 +1,5 @@
 package co600.weffs.application.internal.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.on;
-
 import co600.weffs.application.TestableController;
 import co600.weffs.application.internal.model.auth.AppUser;
 import co600.weffs.application.internal.model.team.TeamMember;
@@ -19,10 +11,6 @@ import co600.weffs.application.internal.view.team.TeamView;
 import co600.weffs.application.utils.UserTestUtils;
 import co600.weffs.application.utils.ValueMapUtils;
 import co600.weffs.application.utils.routes.Router;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,6 +19,19 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.on;
 
 
 @WebMvcTest(
@@ -64,7 +65,7 @@ class TeamControllerTest extends TestableController {
         .thenReturn(List.of(teamView));
 
     var response = mockMvc.perform(
-        get(Router.determineRoute(on(TeamController.class).getAvailableTeams(null)))
+        get(Router.determineRoute(on(TeamController.class).getAvailableTeams(null, null, null)))
             .with(mockHttpServletRequest -> {
               mockHttpServletRequest.setAttribute("User", user);
               return mockHttpServletRequest;
@@ -89,7 +90,7 @@ class TeamControllerTest extends TestableController {
         .thenReturn(List.of(teamView));
 
     mockMvc.perform(
-        get(Router.determineRoute(on(TeamController.class).getAvailableTeams(null))))
+        get(Router.determineRoute(on(TeamController.class).getAvailableTeams(null, null, null))))
         .andExpect(status().is4xxClientError());
   }
 
@@ -185,7 +186,7 @@ class TeamControllerTest extends TestableController {
   void updateTeam_valid() {
     var teamCreation = new FrontendTeamCreation();
     var teamView = new TeamView();
-    when(teamMemberService.getTeamViewByIdForUser(1)).thenReturn(teamView);
+    when(teamMemberService.getTeamViewById(1)).thenReturn(teamView);
     when(teamMemberService.canUserManageTeamView(user, teamView)).thenReturn(true);
 
     var response = mockMvc.perform(
@@ -208,7 +209,7 @@ class TeamControllerTest extends TestableController {
   void updateTeam_invalidData() {
     var teamCreation = new FrontendTeamCreation();
     var teamView = new TeamView();
-    when(teamMemberService.getTeamViewByIdForUser(1)).thenReturn(teamView);
+    when(teamMemberService.getTeamViewById(1)).thenReturn(teamView);
     when(teamMemberService.canUserManageTeamView(user, teamView)).thenReturn(true);
 
     doAnswer(invocationOnMock -> {
@@ -235,7 +236,7 @@ class TeamControllerTest extends TestableController {
   void updateTeam_cantManageTeam() {
     var teamCreation = new FrontendTeamCreation();
     var teamView = new TeamView();
-    when(teamMemberService.getTeamViewByIdForUser(1)).thenReturn(teamView);
+    when(teamMemberService.getTeamViewById(1)).thenReturn(teamView);
     when(teamMemberService.canUserManageTeamView(user, teamView)).thenReturn(false);
 
     var response = mockMvc.perform(
@@ -258,7 +259,7 @@ class TeamControllerTest extends TestableController {
   void updateTeam_noTeamView() {
     var teamCreation = new FrontendTeamCreation();
     var teamView = new TeamView();
-    when(teamMemberService.getTeamViewByIdForUser(1)).thenAnswer(invocationOnMock -> {
+    when(teamMemberService.getTeamViewById(1)).thenAnswer(invocationOnMock -> {
       throw new Exception("Internal error");
     });
     when(teamMemberService.canUserManageTeamView(user, teamView)).thenReturn(true);

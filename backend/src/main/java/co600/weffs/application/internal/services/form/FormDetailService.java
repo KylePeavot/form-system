@@ -28,7 +28,7 @@ public class FormDetailService {
     public List<FormView> getActiveFormViews() {
         var formDetailList = formDetailRepository.findAllByStatusControlIsTrue();
         return formDetailList.stream()
-                .map(formDetail -> new FormView(formDetail))
+                .map(FormView::new)
                 .collect(Collectors.toList());
     }
 

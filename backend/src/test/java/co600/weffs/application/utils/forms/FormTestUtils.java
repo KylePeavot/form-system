@@ -3,6 +3,7 @@ package co600.weffs.application.utils.forms;
 import co600.weffs.application.internal.model.form.Form;
 import co600.weffs.application.internal.model.form.FormDetail;
 
+import co600.weffs.application.internal.model.team.Team;
 import java.time.Instant;
 
 public class FormTestUtils {
@@ -15,11 +16,15 @@ public class FormTestUtils {
             form.setCreatedTimestamp(Instant.now());
             return form;
         }
+        public static FormDetail createBasicFormDetail() {
+          return createBasicFormDetail(createBasicForm());
+        }
         public static FormDetail createBasicFormDetail(Form form) {
             FormDetail formDetail = new FormDetail();
             formDetail.setId(formDetailId++);
             formDetail.setName("The Name");
             formDetail.setForm(form);
+            formDetail.setTeam(new Team());
             formDetail.setLastUpdatedBy("test_user");
             formDetail.setLastUpdatedTimestamp(Instant.now());
             formDetail.setStatusControl(true);

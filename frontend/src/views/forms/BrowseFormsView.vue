@@ -1,7 +1,7 @@
 <template>
   <div>
-    <BaseStyleLayout title="Get forms available to you" :selected-page="page">
-      <table v-if="loaded" class="results-table">
+    <BaseStyleLayout title="Forms within your teams" :selected-page="page">
+      <table v-if="loaded && forms.length > 0" class="results-table">
         <thead class="results-table__thead">
         <tr>
           <th class="results-table__th">Name</th>
@@ -20,7 +20,10 @@
         </tr>
         </tbody>
       </table>
-      <div v-else>
+      <div v-else-if="loaded">
+        <p>You don't have any forms accessible.</p>
+      </div>
+      <div v-else-if="!loaded">
         <span>
           <i class="animate-spin ph-arrow-clockwise text-xl">
           </i>Loading
