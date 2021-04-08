@@ -8,6 +8,8 @@ import co600.weffs.application.MockitoTest;
 import co600.weffs.application.internal.model.form.Form;
 import co600.weffs.application.internal.model.form.FormDetail;
 import co600.weffs.application.internal.model.form.frontend.FrontendComponent;
+import co600.weffs.application.internal.model.form.frontend.FrontendComponentProps;
+import co600.weffs.application.internal.model.form.frontend.FrontendComponentTypes;
 import co600.weffs.application.internal.model.form.frontend.FrontendForm;
 import co600.weffs.application.internal.model.form.Question;
 import co600.weffs.application.internal.model.form.QuestionDetail;
@@ -70,13 +72,13 @@ class FormCreationServiceTest extends MockitoTest {
         teamView = new TeamView(1, "Test team", List.of(new TeamMember()));
         frontendForm.set_team(teamView);
 
-        frontendComponent = new FrontendComponent();
-        frontendComponent.set_componentType("TextField");
-        frontendComponent.set_componentProps(Map.of(
+        frontendComponent = new FrontendComponent(
+            FrontendComponentTypes.TEXT_FIELD.getComponentType(),
+            Map.of(
             "guidance","Test Guidance",
-            "title","Test Title"
-        ));
-        frontendComponent.set_order(100);
+            "title","Test Title"),
+        100
+        );
         frontendForm.set_componentList(List.of(frontendComponent));
     }
 

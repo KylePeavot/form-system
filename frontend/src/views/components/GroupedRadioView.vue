@@ -1,7 +1,7 @@
 <template>
   <div>
     <BaseStyleLayout title="Grouped radio demo" :selected-page="page">
-      <RadioGroup title="Radio group" guidance="Radio selection" id-prefix="rg" v-model="radioValues"/>
+      <RadioGroup title="Radio group" guidance="Radio selection" id-prefix="rg" v-model="radioValues" :current-form-display-mode="currentFormDisplayMode"/>
     </BaseStyleLayout>
   </div>
 </template>
@@ -13,6 +13,7 @@ import Pages from "@/models/navigation/Pages";
 import BaseStyleLayout from "@/components/layout/BaseStyleLayout.vue";
 import RadioGroup from "../../components/core/radio/RadioGroup.vue";
 import SelectionValue from "@/models/form/SelectionValue";
+import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 
 
 @Component({
@@ -28,6 +29,8 @@ export default class GroupedRadioView extends Vue {
     new SelectionValue("Yes",false),
     new SelectionValue("No",false)
   ];
+
+  private currentFormDisplayMode = new CurrentFormDisplayMode(false, false, true);
 }
 
 </script>

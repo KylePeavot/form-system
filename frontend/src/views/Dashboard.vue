@@ -20,6 +20,9 @@ import BaseStyleLayout from "../components/layout/BaseStyleLayout.vue";
 import WebRequestUtils from "../utils/WebRequestUtils";
 import Pages from "../models/navigation/Pages";
 import AuthenticationUtils from "@/utils/AuthenticationUtils";
+import AssignWorkflowVariables from "@/models/workflow/AssignWorkflowVariables";
+import Team from "@/models/team/Team";
+import {User} from "@auth0/auth0-spa-js";
 
 @Component({
   components: {
@@ -29,7 +32,6 @@ import AuthenticationUtils from "@/utils/AuthenticationUtils";
 })
 export default class Dashboard extends Vue {
 
-  private text = 'test';
   private response: string | undefined;
   private page = Pages.ROUTES.SHOWN_IN_NAVBAR.DASHBOARD;
   private loaded = false;
@@ -45,8 +47,6 @@ export default class Dashboard extends Vue {
       this.response = await value.json();
     })
     .finally(() => this.loaded = true);
-    this.$forceUpdate();
-    console.log(this.response);
   }
 }
 

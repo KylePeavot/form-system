@@ -29,4 +29,6 @@ public class QuestionResponse {
   @JoinColumn(name = "question_detail_id")
   private QuestionDetail questionDetail;
 
+  private String response;
+  
 }
