@@ -1,23 +1,24 @@
 import DateValueInterface from "@/models/form/interfaces/DateValueInterface";
+import moment from "moment";
 
 export default class DateValue {
 
-  private _value: Date;
+  public _value: string;
 
-  constructor(value: Date) {
+  constructor(value: string) {
     this._value = value;
   }
 
   static mapDateValueInterfaceToDateValue(dateValueInterface: any): DateValue {
     dateValueInterface = dateValueInterface as DateValueInterface;
-    return new DateValue(dateValueInterface._value);
+    return new DateValue(moment(dateValueInterface._value).format("YYYY-MM-DD"));
   }
 
-  get value(): Date {
+  get value(): string {
     return this._value;
   }
 
-  set value(value: Date) {
+  set value(value: string) {
     this._value = value;
   }
 }

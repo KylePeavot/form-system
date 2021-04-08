@@ -1,3 +1,3 @@
 export default interface DateValueInterface {
-  _value: Date;
+  _value: string;
 }

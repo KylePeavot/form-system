@@ -3,6 +3,7 @@ package co600.weffs.application.internal.model.form.frontend;
 public enum FrontendComponentTypes {
   TEXT_FIELD("TextField"),
   TEXT_AREA("TextArea"),
+  DATE_FIELD("DateField"),
   CHECKBOX_QUESTION("CheckboxQuestion"),
   CHECKBOX_GROUP("CheckboxGroup"),
   RADIO_GROUP("RadioGroup"),
@@ -13,6 +14,7 @@ public enum FrontendComponentTypes {
   FrontendComponentTypes(String componentType) {
     this.componentType = componentType;
   }
+
 
   public String getComponentType() {
     return componentType;
@@ -28,6 +30,10 @@ public enum FrontendComponentTypes {
 
   public static boolean isText(String componentType) {
     return TEXT_FIELD.componentType.equals(componentType) || TEXT_AREA.componentType.equals(componentType);
+  }
+
+  public static boolean isDate(String componentType) {
+    return DATE_FIELD.componentType.equals(componentType);
   }
 
   public static boolean isNestedQuestion(String componentType) {

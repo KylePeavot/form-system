@@ -1,7 +1,7 @@
 <template>
   <div name="text-field-container" class="question__text-field-container">
     <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" @delete-component="deleteComponent" @move-component="moveComponent($event)" :current-form-display-mode="currentFormDisplayMode" />
-    <input :class="{'question__text-field':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" type="date" name="fieldResponse" :disabled="!currentFormDisplayMode.isFill" placeholder=" " v-model="textValue._value" @input="updateProps"/>
+    <input :class="{'question__text-field':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" type="date" name="fieldResponse" :disabled="!currentFormDisplayMode.isFill" placeholder=" " v-model="dateValue._value" @input="updateProps"/>
   </div>
 </template>
 
@@ -15,6 +15,7 @@ import Popover from "@/components/core/Popover.vue";
 import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 import SelectionValue from "@/models/form/SelectionValue";
+import moment from "moment";
 
 @Component({
     components: {Popover, BaseQuestion, Heading}
@@ -30,7 +31,7 @@ import SelectionValue from "@/models/form/SelectionValue";
     private guidance!: string;
 
     @Model("input", {required: true})
-    private textValue!: TextValue;
+    private dateValue!: DateValue;
 
     @Prop({required: true})
     private currentFormDisplayMode!: CurrentFormDisplayMode;
@@ -39,6 +40,7 @@ import SelectionValue from "@/models/form/SelectionValue";
 
     created() {
       this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
+      console.log(this.dateValue);
     }
 
     moveComponent(direction: string) {
