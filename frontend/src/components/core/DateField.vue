@@ -10,12 +10,10 @@
 import {Component, Model, Prop, Vue} from "vue-property-decorator";
 import Heading from "./componentExtras/Heading.vue";
 import BaseQuestion from "@/components/core/BaseQuestion.vue";
-import TextValue from "@/models/form/TextValue";
+import DateValue from "@/models/form/DateValue";
 import Popover from "@/components/core/Popover.vue";
 import BaseQuestionProps from "@/models/form/BaseQuestionProps";
 import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
-import SelectionValue from "@/models/form/SelectionValue";
-import moment from "moment";
 
 @Component({
     components: {Popover, BaseQuestion, Heading}
