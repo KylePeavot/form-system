@@ -71,6 +71,7 @@ import Heading from "@/components/core/componentExtras/Heading.vue";
 import EditableComponent from "@/components/core/componentExtras/EditableComponent.vue";
 import TeamView from "@/models/team/TeamView";
 import DateField from "@/components/core/DateField.vue";
+import DateValue from "@/models/form/DateValue";
 
 @Component({
   components: {
@@ -147,7 +148,7 @@ export default class FormCreatorView extends Vue {
           level: 2,
           title: 'Question title',
           guidance: 'Question guidance',
-          textValue: new TextValue("")
+          dateValue: new DateValue("")
         };
         break;
       }

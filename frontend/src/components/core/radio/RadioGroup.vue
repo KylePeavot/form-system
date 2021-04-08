@@ -1,6 +1,6 @@
 <template>
   <div name="radio-group-container">
-    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" @move-component="moveComponent($event)" @delete-component="deleteComponent" :current-form-display-mode="currentFormDisplayMode" />
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateBaseQuestionProps($event)" @move-component="moveComponent($event)" @delete-component="deleteComponent" :current-form-display-mode="currentFormDisplayMode" />
     <div v-for="(radio, index) of selectionValues" :key="`${idPrefix}-${index}`">
       <div class="radio__container">
         <input :id="`${idPrefix}-${index}`" :class="{'radio__item':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" type="radio" :disabled="!currentFormDisplayMode.isFill" :value="radio.label" v-model="selected" @input="updateProps">
@@ -70,6 +70,12 @@ export default class RadioGroup extends Vue {
 
   updateProps() {
     this.$emit('props-updated', this.$props);
+  }
+
+  updateBaseQuestionProps(newProps: BaseQuestionProps) {
+    this.title = newProps.title;
+    this.guidance = newProps.guidance
+    this.updateProps();
   }
 
   updateLabel(newLabel: string, radio: SelectionValue) {

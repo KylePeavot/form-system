@@ -1,6 +1,6 @@
 <template>
   <div name="text-field-container" class="question__text-field-container">
-    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" @delete-component="deleteComponent" @move-component="moveComponent($event)" :current-form-display-mode="currentFormDisplayMode" />
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateBaseQuestionProps($event)" @delete-component="deleteComponent" @move-component="moveComponent($event)" :current-form-display-mode="currentFormDisplayMode" />
     <input :class="{'question__text-field':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" type="date" name="fieldResponse" :disabled="!currentFormDisplayMode.isFill" placeholder=" " v-model="dateValue._value" @input="updateProps"/>
   </div>
 </template>
@@ -40,7 +40,6 @@ import moment from "moment";
 
     created() {
       this.baseQuestionProps = new BaseQuestionProps(this.level, this.title, this.guidance);
-      console.log(this.dateValue);
     }
 
     moveComponent(direction: string) {
@@ -54,5 +53,12 @@ import moment from "moment";
     updateProps() {
       this.$emit('props-updated', this.$props);
     }
+
+    updateBaseQuestionProps(newProps: BaseQuestionProps) {
+      this.title = newProps.title;
+      this.guidance = newProps.guidance
+      this.updateProps();
+    }
+
   }
 </script>

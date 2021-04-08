@@ -37,6 +37,7 @@ import FlashUtils, {FlashType} from "@/utils/FlashUtils";
 import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
 import TextField from "@/components/core/TextField.vue";
 import TextArea from "@/components/core/TextArea.vue";
+import DateField from "@/components/core/DateField.vue";
 import CheckboxQuestion from "@/components/core/checkbox/CheckboxQuestion.vue";
 import CheckboxGroup from "@/components/core/checkbox/CheckboxGroup.vue";
 import RadioGroup from "@/components/core/radio/RadioGroup.vue";
@@ -47,6 +48,7 @@ import AuthenticationUtils from "@/utils/AuthenticationUtils";
   components: {
     TextField,
     TextArea,
+    DateField,
     CheckboxQuestion,
     CheckboxGroup,
     RadioGroup,
