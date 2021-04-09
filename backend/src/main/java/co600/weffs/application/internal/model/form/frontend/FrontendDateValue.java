@@ -1,10 +1,11 @@
 package co600.weffs.application.internal.model.form.frontend;
 
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class FrontendTextValue {
-  private String _value;
+public class FrontendDateValue {
+  private Date _value;
 }

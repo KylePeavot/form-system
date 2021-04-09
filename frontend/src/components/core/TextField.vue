@@ -1,6 +1,6 @@
 <template>
   <div name="text-field-container" class="question__text-field-container">
-    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" @delete-component="deleteComponent" @move-component="moveComponent($event)" :current-form-display-mode="currentFormDisplayMode" />
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateBaseQuestionProps($event)" @delete-component="deleteComponent" @move-component="moveComponent($event)" :current-form-display-mode="currentFormDisplayMode" />
     <input :class="{'question__text-field':true, 'bg-gray-100':(!currentFormDisplayMode.isFill)}" type="text" name="fieldResponse" :disabled="!currentFormDisplayMode.isFill" placeholder=" " v-model="textValue._value" @input="updateProps"/>
   </div>
 </template>
@@ -52,5 +52,12 @@ import SelectionValue from "@/models/form/SelectionValue";
     updateProps() {
       this.$emit('props-updated', this.$props);
     }
+
+    updateBaseQuestionProps(newProps: BaseQuestionProps) {
+      this.title = newProps.title;
+      this.guidance = newProps.guidance
+      this.updateProps();
+    }
+
   }
 </script>

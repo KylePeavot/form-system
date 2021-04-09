@@ -1,6 +1,6 @@
 <template>
   <div name="checkbox-question-container">
-    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateProps($event)" @move-component="moveComponent($event)" @delete-component="deleteComponent" :current-form-display-mode="currentFormDisplayMode" />
+    <BaseQuestion :base-question-props="baseQuestionProps" @finish-editing="updateBaseQuestionProps($event)" @move-component="moveComponent($event)" @delete-component="deleteComponent" :current-form-display-mode="currentFormDisplayMode" />
     <Checkbox :id="id" :selection-value="selectionValue" :current-form-display-mode="currentFormDisplayMode" :is-deletable="false" :can-remove="false" @props-updated="updateProps"/>
   </div>
 </template>
@@ -50,6 +50,12 @@ import CurrentFormDisplayMode from "@/models/form/CurrentFormDisplayMode";
     updateProps() {
       this.$emit('props-updated', this.$props);
     }
+
+  updateBaseQuestionProps(newProps: BaseQuestionProps) {
+    this.title = newProps.title;
+    this.guidance = newProps.guidance
+    this.updateProps();
+  }
 
     moveComponent(direction: string) {
       this.$emit('move-component', direction);

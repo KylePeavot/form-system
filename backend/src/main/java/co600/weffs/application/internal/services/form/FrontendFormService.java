@@ -70,6 +70,8 @@ public class FrontendFormService {
         componentProps.put("selectionValues", frontendSelectionValues);
       } else if (FrontendComponentTypes.isText(questionDetail.getQuestionType())) {
         componentProps.put("textValue", new FrontendTextValue(""));
+      } else if (FrontendComponentTypes.isDate(questionDetail.getQuestionType())) {
+        componentProps.put("dateValue", new FrontendDateValue(null));
       }
 
       FrontendComponent componentToAdd = new FrontendComponent(questionDetail.getQuestionType(), componentProps, questionDetail.getOrderNumber());

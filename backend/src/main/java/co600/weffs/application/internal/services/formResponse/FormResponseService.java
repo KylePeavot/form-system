@@ -116,6 +116,16 @@ public class FormResponseService {
         questionResponse.setQuestionDetail(questionDetailService.getQuestionDetailById((Integer) frontendComponent.get_componentProps().get(BackendComponentProps.QUESTION_DETAIL_ID.getName())));
 
         questionResponseService.save(questionResponse);
+      } else if (FrontendComponentTypes.isDate(frontendComponent.get_componentType())) {
+        QuestionResponse questionResponse = new QuestionResponse();
+
+        String response = ((LinkedHashMap<String, String>) frontendComponent.get_componentProps().get(FrontendComponentProps.DATE_VALUE.getFrontendName())).get("_value");
+
+        questionResponse.setResponse(response);
+        questionResponse.setFormResponseDetail(newFormResponseDetail);
+        questionResponse.setQuestionDetail(questionDetailService.getQuestionDetailById((Integer) frontendComponent.get_componentProps().get(BackendComponentProps.QUESTION_DETAIL_ID.getName())));
+
+        questionResponseService.save(questionResponse);
       }
     }
   }
