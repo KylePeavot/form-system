@@ -9,7 +9,7 @@ export default class DateValue {
     this._value = value;
   }
 
-  static mapDateValueInterfaceToDateValue(dateValueInterface: any): DateValue {
+  public static mapDateValueInterfaceToDateValue(dateValueInterface: any): DateValue {
     dateValueInterface = dateValueInterface as DateValueInterface;
     return new DateValue(moment(dateValueInterface._value).format("YYYY-MM-DD"));
   }
