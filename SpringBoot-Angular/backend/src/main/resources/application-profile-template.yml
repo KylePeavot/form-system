@@ -1,0 +1,20 @@
+spring:
+  flyway:
+    password: dev
+    user: weffs
+    url: jdbc:mariadb://localhost:3306/app
+    schemas: app
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 0.0.1
+  datasource:
+    driverClassName: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/app
+    username: weffs
+    password: dev
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
