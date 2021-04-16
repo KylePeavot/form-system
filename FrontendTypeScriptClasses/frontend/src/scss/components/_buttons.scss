@@ -1,0 +1,33 @@
+.button {
+  @apply inline-block p-2 mr-1 rounded-md border-gray-300 border-2;
+
+  &--danger {
+    @apply text-white bg-red-700 border-red-700;
+    &:focus, &:hover {
+      @apply bg-red-900 border-red-900;
+    }
+    &:focus {
+      @apply outline-black;
+    }
+  }
+
+  &--primary {
+    @apply text-white bg-blue-500 border-blue-500;
+    &:focus, &:hover {
+      @apply bg-blue-600 border-blue-600;
+    }
+    &:focus {
+      @apply outline-black;
+    }
+  }
+
+  &--action {
+    @apply text-white bg-gray-700 border-gray-700;
+    &:focus, &:hover {
+      @apply bg-gray-800 border-gray-800;
+    }
+    &:focus {
+      @apply outline-black;
+    }
+  }
+}

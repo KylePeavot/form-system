@@ -1,0 +1,17 @@
+.question {
+  &__text-area, &__text-field {
+    @apply border-2 p-1 shadow-sm rounded border-gray-400 focus:border-blue-700 focus:outline-none min-w-full;
+    &-container {
+      @apply py-2;
+    }
+  }
+  &__text-field-container {
+    @apply w-1/3;
+  }
+  &__text-area-container {
+    @apply w-2/3;
+  }
+  &__text-area {
+    @apply w-2/3;
+  }
+}
