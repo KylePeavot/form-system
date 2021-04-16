@@ -26,7 +26,7 @@ dist/
 target/
 
 # JetBrains IDE
-.idea/
+../.idea/
 
 # Unit test reports
 TEST*.xml
@@ -49,8 +49,8 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-/docker/mariadb/.env
-/docker/mariadb/dbdata/
-/docker/jenkins/ran_before
-/frontend/cypress/screenshots/e2e/ComponentDemos/*
+/SpringBoot-Vue/docker/mariadb/.env
+/SpringBoot-Vue/docker/mariadb/dbdata/
+/SpringBoot-Vue/docker/jenkins/ran_before
+/SpringBoot-Vue/frontend/cypress/screenshots/e2e/ComponentDemos/*
 /backend/src/main/resources/db/application-local.yml

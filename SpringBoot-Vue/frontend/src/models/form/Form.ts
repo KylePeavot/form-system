@@ -1,4 +1,4 @@
-import FormComponent from "../form/FormComponent";
+import FormComponent from "./FormComponent";
 import FormInterface from "./interfaces/FormInterface";
 import TeamView from "@/models/team/TeamView";
 
